@@ -17,8 +17,7 @@ import { AuthServiceProvider } from './../../providers/auth-service/auth-service
 export class RegisterPage {
   response:any;
   user = {
-        "firstname": "",
-        "lastname": "",
+        "name": "",
         "email": "",
         "password": "", 
         "repassword": ""
@@ -34,6 +33,11 @@ export class RegisterPage {
   }
 
   register(){
+    if(this.user.name.length === 0 || this.user.email.length === 0 ||
+      this.user.password.length === 0 || this.user.repassword.length === 0){
+        this.alert("Fill the form"); 
+        return false;
+    }
     /*
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'

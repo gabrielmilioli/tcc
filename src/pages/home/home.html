@@ -7,10 +7,12 @@
 <ion-content padding center>
   <ion-list>
     <ion-item>
-      <ion-input placeholder="Email or login" [(ngModel)]="user.login"></ion-input>
+      <ion-label>Email or login</ion-label>
+      <ion-input [(ngModel)]="user.login"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-input placeholder="Password" type="password"[(ngModel)]="user.password"></ion-input>
+      <ion-label>Password</ion-label>
+      <ion-input type="password" [(ngModel)]="user.password"></ion-input>
     </ion-item>
   </ion-list>
 
