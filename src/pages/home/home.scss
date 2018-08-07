@@ -1,3 +1,6 @@
 page-home {
-
+    .list-ios > .item-block:first-child, .list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
+        border-bottom: none;
+        border-top: none;
+    }
 }
