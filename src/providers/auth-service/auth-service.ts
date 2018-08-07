@@ -17,6 +17,25 @@ export class AuthServiceProvider {
     console.log('Hello AuthServiceProvider Provider');
   }
 
+  login(credentials) {
+    console.log(credentials);
+    credentials.class = restClass;
+    credentials.method = "login";
+
+    return new Promise((resolve, reject) => {
+      
+
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          //resolve(res.json());
+          console.log(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+    
+  }
+
   register(credentials) {
     console.log(credentials);
     credentials.class = restClass;
@@ -26,7 +45,7 @@ export class AuthServiceProvider {
     return new Promise((resolve, reject) => {
       
 
-      this.http.post(restUrl, JSON.stringify(credentials), {headers: headers})
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
         .subscribe(res => {
           //resolve(res.json());
           console.log(res);
@@ -38,14 +57,22 @@ export class AuthServiceProvider {
   }
 
   getHeaders(){
-    let headers = new HttpHeaders();
+    /*let headers = new HttpHeaders();
 
     headers.append('Content-Type', 'application/json');
     headers.append('Access-Control-Allow-Origin', '*');
     headers.append('Accept', 'application/json');
     headers.append('Authorization', 'Basic' + btoa('talkingbus' + ":" + 'zx96@28#'));
+*/
 
-    //console.log(headers);
+    let headers = new HttpHeaders(
+      {'Content-Type':'application/json',
+      'Access-Control-Allow-Origin':'*',
+      'Accept':'*',
+      'Authorization':'Basic' + btoa('talkingbus' + ":" + 'zx96@28#')
+      });
+
+    console.log(headers);
     return headers;
   }
 

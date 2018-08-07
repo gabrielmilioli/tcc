@@ -1,6 +1,6 @@
-import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
 
 /**
  * Generated class for the RegisterPage page.
@@ -44,7 +44,7 @@ export class RegisterPage {
       console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
-        //localStorage.setItem('user', JSON.stringify(this.response.data));
+        localStorage.setItem('user', JSON.stringify(this.response.data));
         this.alert(this.response.data);
         //this.navCtrl.push(TabsPage);
       }else{ 
