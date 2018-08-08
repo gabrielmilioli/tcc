@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, AlertController, LoadingController } from 'ionic-angular';
 import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
 
 /**
@@ -23,7 +23,7 @@ export class RegisterPage {
         "repassword": ""
       };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, 
+  constructor(public navCtrl: NavController, 
     public authService:AuthServiceProvider, public alertCtrl: AlertController, 
     public loadingCtrl: LoadingController) {
   }

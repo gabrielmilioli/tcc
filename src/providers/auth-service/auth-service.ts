@@ -27,8 +27,7 @@ export class AuthServiceProvider {
 
       this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
         .subscribe(res => {
-          //resolve(res.json());
-          console.log(res);
+          resolve(res);
         }, (err) => {
           reject(err);
         });
@@ -40,15 +39,14 @@ export class AuthServiceProvider {
     console.log(credentials);
     credentials.class = restClass;
     credentials.method = "register";
-    var headers = this.getHeaders();
+    let headers = this.getHeaders();
 
     return new Promise((resolve, reject) => {
       
 
       this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
         .subscribe(res => {
-          //resolve(res.json());
-          console.log(res);
+          resolve(res);
         }, (err) => {
           reject(err);
         });

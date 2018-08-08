@@ -8,13 +8,21 @@ import { HttpClientModule } from '@angular/common/http';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { RegisterPage } from '../pages/register/register';
+import { TabsPage } from '../pages/tabs/tabs';
+import { MenuPage } from '../pages/menu/menu';
+import { MapPage } from '../pages/map/map';
+import { ChatPage } from '../pages/chat/chat';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    RegisterPage
+    RegisterPage,
+    TabsPage,
+    MenuPage,
+    MapPage,
+    ChatPage
   ],
   imports: [
     BrowserModule,
@@ -25,7 +33,11 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
   entryComponents: [
     MyApp,
     HomePage,
-    RegisterPage
+    RegisterPage,
+    TabsPage,
+    MenuPage,
+    MapPage,
+    ChatPage
   ],
   providers: [
     StatusBar,

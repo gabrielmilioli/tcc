@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import { RegisterPage } from '../register/register';
+import { TabsPage } from '../tabs/tabs';
 import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
 
 @Component({
@@ -17,7 +18,11 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, public authService: AuthServiceProvider, 
     public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
-      
+      console.log(localStorage.getItem('user'));
+      if(localStorage.getItem('user')){
+        // this.user = JSON.parse(localStorage.getItem('user'));
+        // faz login
+      }
   }
 
   login() {
@@ -31,9 +36,9 @@ export class HomePage {
       console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
-        //localStorage.setItem('user', JSON.stringify(this.response.data));
-        console.log(this.response.data);
-        //this.navCtrl.push(TabsPage);
+        localStorage.setItem('user', JSON.stringify(this.response.data));
+        console.log(JSON.stringify(this.response.data));
+        this.navCtrl.setRoot(TabsPage);
       }else{ 
         console.log(this.response.data); 
       }
