@@ -12,6 +12,12 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { MenuPage } from '../pages/menu/menu';
 import { MapPage } from '../pages/map/map';
 import { ChatPage } from '../pages/chat/chat';
+import { MessagesPage } from '../pages/messages/messages';
+import { ProfilePage } from '../pages/profile/profile';
+import { PlacesPage } from '../pages/places/places';
+import { AboutPage } from '../pages/about/about';
+import { SettingsPage } from '../pages/settings/settings';
+
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 
 @NgModule({
@@ -22,7 +28,12 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
     TabsPage,
     MenuPage,
     MapPage,
-    ChatPage
+    ChatPage,
+    MessagesPage,
+    ProfilePage,
+    PlacesPage,
+    AboutPage,
+    SettingsPage
   ],
   imports: [
     BrowserModule,
@@ -37,7 +48,12 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
     TabsPage,
     MenuPage,
     MapPage,
-    ChatPage
+    ChatPage,
+    MessagesPage,
+    ProfilePage,
+    PlacesPage,
+    AboutPage,
+    SettingsPage
   ],
   providers: [
     StatusBar,

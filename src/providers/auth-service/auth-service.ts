@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 let restUrl = "https://4p.pelainternet.com.br/rest.php";
 let restClass = "TalkingBus";
@@ -12,13 +13,34 @@ let restClass = "TalkingBus";
 */
 @Injectable()
 export class AuthServiceProvider {
+  public loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public user: BehaviorSubject<object> = new BehaviorSubject<object>({});
+  public userData:any;
 
   constructor(public http: HttpClient) {
-    console.log('Hello AuthServiceProvider Provider');
+    //console.log('Hello AuthServiceProvider Provider');
+  }
+
+  get_user() {
+    return this.userData;
+  }
+
+  setUser(object) {
+    this.userData = object;
+    //console.log('userData', this.userData);
+    //this.user.next(object);
+  }
+
+  get get_logged() {
+    return this.loggedIn.asObservable();
+  }
+
+  set_logged(status) {
+    this.loggedIn.next(status);
   }
 
   login(credentials) {
-    console.log(credentials);
+    //console.log(credentials);
     credentials.class = restClass;
     credentials.method = "login";
 
@@ -36,7 +58,7 @@ export class AuthServiceProvider {
   }
 
   register(credentials) {
-    console.log(credentials);
+    //console.log(credentials);
     credentials.class = restClass;
     credentials.method = "register";
     let headers = this.getHeaders();
@@ -55,23 +77,16 @@ export class AuthServiceProvider {
   }
 
   getHeaders(){
-    /*let headers = new HttpHeaders();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('Access-Control-Allow-Origin', '*');
-    headers.append('Accept', 'application/json');
-    headers.append('Authorization', 'Basic' + btoa('talkingbus' + ":" + 'zx96@28#'));
-*/
-
-    let headers = new HttpHeaders(
+   
+    return new HttpHeaders(
       {'Content-Type':'application/json',
       'Access-Control-Allow-Origin':'*',
       'Accept':'*',
       'Authorization':'Basic' + btoa('talkingbus' + ":" + 'zx96@28#')
       });
 
-    console.log(headers);
-    return headers;
+    //console.log(headers);
+    //return headers;
   }
 
 }

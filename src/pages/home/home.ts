@@ -18,7 +18,7 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, public authService: AuthServiceProvider, 
     public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
-      console.log(localStorage.getItem('user'));
+      this.authService.set_logged(false);
       if(localStorage.getItem('user')){
         // this.user = JSON.parse(localStorage.getItem('user'));
         // faz login
@@ -33,11 +33,12 @@ export class HomePage {
     loading.present();
 
     this.authService.login(this.user).then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         localStorage.setItem('user', JSON.stringify(this.response.data));
-        console.log(JSON.stringify(this.response.data));
+        
+        this.authService.set_logged(true);
+        this.authService.setUser(this.response.data);
         this.navCtrl.setRoot(TabsPage);
       }else{ 
         console.log(this.response.data); 

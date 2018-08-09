@@ -1,5 +1,38 @@
-<ion-tabs class="tabs-custom tabs-icon-bottom">
-    <ion-tab [root]="menuRoot" tabTitle="Menu" tabIcon="menu"></ion-tab>
-    <ion-tab [root]="mapRoot" tabTitle="Map" tabIcon="map"></ion-tab>
-    <ion-tab [root]="chatRoot" tabTitle="Chat" tabIcon="chatbubbles"></ion-tab>
+<ion-tabs #content class="tabs-custom tabs-icon-bottom">
+        <ion-tab *ngFor="let tab of tabs" [root]="tab.root" [tabTitle]="tab.title" 
+        [tabIcon]="tab.icon"></ion-tab>
+    <!--
+    <ion-tab [root]="tabPage1" tabTitle="Menu" tabIcon="menu"></ion-tab>
+    <ion-tab [root]="tabPage2" tabTitle="Map" tabIcon="map"></ion-tab>
+    <ion-tab [root]="tabPage3" tabTitle="Chat" tabIcon="chatbubbles"></ion-tab>
+    -->
 </ion-tabs>
+
+<ion-fab right bottom>
+    <button ion-fab color="light">
+        <ion-icon name="arrow-dropleft"></ion-icon>
+    </button>
+</ion-fab>
+
+<ion-menu [content]="content">
+    <ion-header>
+        <ion-toolbar>
+        <ion-title>Teste</ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+    <ion-content padding>
+    <ion-list>
+        <button *ngFor="let p of pages" menuClose ion-item (click)="openPage(p)">
+        <ion-icon item-left [name]="p.icon"></ion-icon>
+        {{p.title}}
+        </button>
+
+        <button menuClose ion-item (click)="logout()">
+            <ion-icon item-left name="log-out"></ion-icon>
+            Sair
+        </button>
+    </ion-list>
+    </ion-content>
+
+</ion-menu>
