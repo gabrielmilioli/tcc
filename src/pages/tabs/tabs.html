@@ -17,7 +17,12 @@
 <ion-menu [content]="content">
     <ion-header>
         <ion-toolbar>
-        <ion-title>Teste</ion-title>
+        <ion-title>{{name}}</ion-title>
+        <ion-buttons right>
+          <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+          </button>
+        </ion-buttons>
         </ion-toolbar>
     </ion-header>
 

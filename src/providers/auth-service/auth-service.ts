@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-let restUrl = "https://4p.pelainternet.com.br/rest.php";
+let restUrl = "http://tcc.pelainternetsistemas.com.br/rest.php";
 let restClass = "TalkingBus";
 
 /*
@@ -25,7 +25,7 @@ export class AuthServiceProvider {
     return this.userData;
   }
 
-  setUser(object) {
+  set_user(object) {
     this.userData = object;
     //console.log('userData', this.userData);
     //this.user.next(object);
@@ -61,11 +61,26 @@ export class AuthServiceProvider {
     //console.log(credentials);
     credentials.class = restClass;
     credentials.method = "register";
-    let headers = this.getHeaders();
-
+    
     return new Promise((resolve, reject) => {
       
 
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+    
+  }
+
+  check_login(credentials) {
+    //console.log(credentials);
+    credentials.class = restClass;
+    credentials.method = "check_login";
+
+    return new Promise((resolve, reject) => {
       this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
         .subscribe(res => {
           resolve(res);
@@ -82,7 +97,7 @@ export class AuthServiceProvider {
       {'Content-Type':'application/json',
       'Access-Control-Allow-Origin':'*',
       'Accept':'*',
-      'Authorization':'Basic' + btoa('talkingbus' + ":" + 'zx96@28#')
+      'Token':'Basic' + btoa('talkingbus' + ":" + 'zx96@28#')
       });
 
     //console.log(headers);

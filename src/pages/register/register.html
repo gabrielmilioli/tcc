@@ -6,29 +6,37 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>Register</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding center>
+<ion-content padding center no-bounce>
   <ion-list>
     <ion-item>
-      <ion-input placeholder="Name" [(ngModel)]="user.name"></ion-input>
+      <ion-label floating>Nome</ion-label>
+      <ion-input [(ngModel)]="user.name" (keypress)="keyPressChecker($event, 'name')"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-input placeholder="Email" [(ngModel)]="user.email"></ion-input>
+      <ion-label floating>Email</ion-label>
+      <ion-input [(ngModel)]="user.email" (keypress)="keyPressChecker($event, 'email')"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-input placeholder="Password" type="password" [(ngModel)]="user.password"></ion-input>
+      <ion-label floating>Login</ion-label>
+      <ion-input [(ngModel)]="user.login" (keypress)="keyPressChecker($event, 'login')"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-input placeholder="Repassword" type="repassword" [(ngModel)]="user.repassword"></ion-input>
+      <ion-label floating>Senha</ion-label>
+      <ion-input type="password" [(ngModel)]="user.password"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Repita a senha</ion-label>
+      <ion-input type="password" [(ngModel)]="user.repassword"></ion-input>
     </ion-item>
   </ion-list>
 
-  <button ion-button full (click)="register()">Register</button>
+  <button ion-button full (click)="register()">Criar conta</button>
 
 </ion-content>

@@ -1,22 +1,26 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>Home</ion-title>
+  <ion-navbar color="primary">
+    <ion-title class="title">Bem-vindo!</ion-title>
   </ion-navbar>
+  <ion-toolbar color="primary">
+    <ion-icon class="icon-title" name="bus" color="primary"></ion-icon>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content padding center>
+<ion-content padding no-bounce>
+    <ion-title class="sub-title">Faça seu login ou registre-se:</ion-title>
   <ion-list>
     <ion-item>
-      <ion-label>Email or login</ion-label>
+      <ion-label floating>Login ou email</ion-label>
       <ion-input [(ngModel)]="user.login"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Password</ion-label>
+      <ion-label floating>Senha</ion-label>
       <ion-input type="password" [(ngModel)]="user.password"></ion-input>
     </ion-item>
   </ion-list>
 
-  <button ion-button full (click)="login()">Log in</button>
-  <button ion-button full color="light" (click)="gotoRegister()">Register</button>
+  <button ion-button full (click)="login()">Entrar</button>
+  <button ion-button full color="light" (click)="gotoRegister()">Me registrar</button>
 
 </ion-content>

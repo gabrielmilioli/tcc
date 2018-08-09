@@ -3,4 +3,25 @@ page-home {
         border-bottom: none;
         border-top: none;
     }
+    ion-header{
+        text-align:center;
+        /*background:url('../../assets/imgs/criciuma-anoitecer.jpg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;*/
+    }
+    .title > .toolbar-title {
+        font-size: 3rem;
+    }
+    .sub-title > .toolbar-title {
+        font-size: 2rem;
+    }
+    .icon-title{
+        font-size: 10rem;
+        background-color:#f4f4f4;
+        border: 1px solid #f4f4f4;
+        border-radius: 50%;
+        width: 10rem;
+        height: 10rem;
+    }
 }
