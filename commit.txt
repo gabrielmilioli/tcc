@@ -43,3 +43,6 @@ C:\Users\gabi\AppData\Local\Android\sdk\build-tools\26.0.2
 
 zipalign -v 4 C:\Users\gabi\Desktop\git\tcc\platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk C:\Users\gabi\Desktop\git\tcc\talking-bus-v1.apk
 --------------
+
+// google maps
+ionic cordova plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="AIzaSyDDiqNrpZceSxElgCAoGwEnD2K05x8jZAQ" --variable API_KEY_FOR_IOS="AIzaSyDDiqNrpZceSxElgCAoGwEnD2K05x8jZAQ" --save --nofetch

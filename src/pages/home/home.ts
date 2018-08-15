@@ -19,6 +19,7 @@ export class HomePage {
   userLogged: object;
   isLogged: any = false;
   userInfo: any = {};
+  loading: any;
 
   constructor(public navParams: NavParams, public navCtrl: NavController, public authService: AuthServiceProvider, 
     public alertCtrl: AlertController, public loadingCtrl: LoadingController, public fb: Facebook) {
@@ -39,10 +40,10 @@ export class HomePage {
   }
 
   loginFb(){
-    let loading = this.loadingCtrl.create({
+    this.loading = this.loadingCtrl.create({
       content: 'Please wait...'
     });
-    loading.present();
+    this.loading.present();
 
     this.fb.login(["public_profile", "email"]).then(loginRes => {
       this.fb.api('me/?fields=id,email,first_name,picture', ["public_profile", "email"]).then(apiRes => {
@@ -65,22 +66,19 @@ export class HomePage {
             localStorage.setItem('user', JSON.stringify(this.response.data));
             this.authService.set_logged(true);
             this.authService.set_user(this.response.data);
+            this.loading.dismiss();
             this.navCtrl.setRoot(TabsPage);
           }else{ 
-            loading.dismiss();
             this.alert('Erro', this.response.data);
           }
         }).catch(error=>{
-          loading.dismiss();
           this.alert('Erro', error.message);
         });
 
       }).catch(error=>{
-        loading.dismiss();
         this.alert('Erro', error.message);
       });
     }).catch(error=>{
-      loading.dismiss();
       this.alert('Erro', error.message);
     });
 
@@ -128,6 +126,7 @@ export class HomePage {
   }
 
   alert(title, subTitle) {
+    this.loading.dismiss();
     let alert = this.alertCtrl.create({
       title: title,
       subTitle: subTitle,
