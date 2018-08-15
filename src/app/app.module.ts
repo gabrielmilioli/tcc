@@ -4,6 +4,8 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule }   from '@angular/forms';
+import { Facebook }   from '@ionic-native/facebook';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -38,7 +40,8 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -59,7 +62,8 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthServiceProvider
+    AuthServiceProvider,
+    Facebook
   ]
 })
 export class AppModule {}

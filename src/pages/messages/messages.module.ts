@@ -4,7 +4,7 @@ import { MessagesPage } from './messages';
 
 @NgModule({
   declarations: [
-    MessagesPage,
+    //MessagesPage,
   ],
   imports: [
     IonicPageModule.forChild(MessagesPage),

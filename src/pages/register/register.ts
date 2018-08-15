@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, AlertController, LoadingController } from 'ionic-angular';
 import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
+import { HomePage } from '../home/home';
+import { FormBuilder, Validators } from '@angular/forms';
 
 /**
  * Generated class for the RegisterPage page.
@@ -23,10 +25,42 @@ export class RegisterPage {
         "password": "", 
         "repassword": ""
       };
+  public registerForm: any;
+  messageError = ""
+  error = false;
 
-  constructor(public navCtrl: NavController, 
+  constructor(public formBuilder: FormBuilder, public navCtrl: NavController, 
     public authService:AuthServiceProvider, public alertCtrl: AlertController, 
     public loadingCtrl: LoadingController) {
+      console.log(formBuilder);
+
+      this.registerForm = formBuilder.group({
+        email: ['', Validators.required],
+        password: ['', Validators.compose([Validators.minLength(6), Validators.maxLength(20), Validators.required])],
+      });
+
+  }
+
+  keypress(){
+    let { email, password } = this.registerForm.controls;
+ 
+    if (!this.registerForm.valid) {
+      if (!email.valid) {
+        this.error = true;
+        this.messageError = "Ops! Email inválido";
+      } else {
+        this.messageError = "";
+      }
+ 
+      if (!password.valid) {
+        this.error = true;
+        this.messageError ="A senha precisa ter de 6 a 20 caracteres"
+      } else {
+        this.messageError = "";
+      }
+    }else {
+      console.log("Login Realizado");
+    }
   }
 
   ionViewDidLoad() {
@@ -49,9 +83,7 @@ export class RegisterPage {
       console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
-        localStorage.setItem('user', JSON.stringify(this.response.data));
-        this.alert('Sucesso', 'Conta criada!');
-        //this.navCtrl.push(TabsPage);
+        this.navCtrl.setRoot(HomePage, {"success":"Conta criada!"});
       }else{ 
         this.alert('Erro', this.response.data);
       }
@@ -72,7 +104,32 @@ export class RegisterPage {
     alert.present();
   }
 
-  keyPressChecker(event, field) {
+  onChangeName(event) {
+    var regex = new RegExp("^[A-zÀ-ÿçÇ ]+$");
+    let value = event._value;
+    if (!regex.test(value)) {
+      value = value.replace(/[^A-Za-z]/g, '');
+      console.log("nao tem string permitida");
+      this.user.name = value;
+      event._value = value;
+      this.onChangeName(event);
+    }
+    event.setFocus();
+    console.log(value);
+  }
+  onChangeLogin(event) {
+    let value = event._value;
+    value = value.replace(/[a-z0-9]/gi,'');
+    console.log(value);
+    this.user.login=value;
+  }
+  onChangeEmail(event) {
+    let value = event._value;
+    value = value.replace(/[a-z0-9.@]/gi,'');
+    console.log(value);
+    this.user.email=value;
+  }
+    /*
     if(field === 'name'){
       var regex = new RegExp("^[A-zÀ-ÿçÇ ]+$");
       var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
@@ -96,9 +153,9 @@ export class RegisterPage {
       this.authService.check_login(object).then((result) => {
         this.response = result;
         if(this.response.status === 'success'){
-          this.alert('Erro', this.response.data);
+          //this.alert('Erro', this.response.data);
         }else{ 
-          this.alert('Erro', this.response.data);
+          //this.alert('Erro', this.response.data);
         }
       }, (err) => {
         // Error log
@@ -113,6 +170,6 @@ export class RegisterPage {
         event.preventDefault();
         return false;
       }
-    }
-  }
+    }*/
+  
 }

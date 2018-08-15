@@ -14,29 +14,27 @@
 
 
 <ion-content padding center no-bounce>
-  <ion-list>
+  <div [formGroup]="registerForm" padding (submit)="register()" novalidate>
     <ion-item>
-      <ion-label floating>Nome</ion-label>
-      <ion-input [(ngModel)]="user.name" (keypress)="keyPressChecker($event, 'name')"></ion-input>
+      <ion-input [(ngModel)]="user.email"
+                 formControlName="email"
+                 type="text"
+                 placeholder="E-mail"
+                 clearInput clearOnEdit="false"
+                 (ionChange)="keypress()">
+      </ion-input>
     </ion-item>
     <ion-item>
-      <ion-label floating>Email</ion-label>
-      <ion-input [(ngModel)]="user.email" (keypress)="keyPressChecker($event, 'email')"></ion-input>
+      <ion-input [(ngModel)]="user.password"
+                 formControlName="password"
+                 type="password"
+                 placeholder="Senha"
+                 clearInput clearOnEdit="false"
+                 (ionChange)="keypress()">
+      </ion-input>
     </ion-item>
-    <ion-item>
-      <ion-label floating>Login</ion-label>
-      <ion-input [(ngModel)]="user.login" (keypress)="keyPressChecker($event, 'login')"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label floating>Senha</ion-label>
-      <ion-input type="password" [(ngModel)]="user.password"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label floating>Repita a senha</ion-label>
-      <ion-input type="password" [(ngModel)]="user.repassword"></ion-input>
-    </ion-item>
-  </ion-list>
-
-  <button ion-button full (click)="register()">Criar conta</button>
+    <h6 *ngIf="error" class="error">{{messageError}}</h6>
+    <button ion-button full>Criar conta</button>
+</div>
 
 </ion-content>

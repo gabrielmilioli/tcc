@@ -40,7 +40,19 @@ $colors: (
   light:      #f4f4f4,
   dark:       #222,
   darkFont:   #333,
-  transparent: transparent
+  transparent: transparent,
+  twitter: (
+    base: #55acee,
+    contrast: #ffffff
+  ),
+  facebook: (
+    base: #3b5998,
+    contrast: #ffffff
+  ),
+  googlePlus: (
+    base: #dd4b39,
+    contrast: #ffffff
+  )
 );
 
 

@@ -19,3 +19,27 @@ ionic cordova plugin add https://github.com/mapsplugin/cordova-plugin-googlemaps
 
 
 // keytool -genkeypair -v -keystore C:\Users\gabi\Desktop\Talking-Bus\src\talkingbus.keystore -alias talkingbus -keyalg RSA -keysize 2048 -validity 10000
+
+// facebook
+cordova plugin add cordova-plugin-facebook4 --save --variable APP_ID="1128491637318338" --variable APP_NAME="Talking Bus"
+
+npm install --save @ionic-native/facebook
+
+// run browser cordova
+npm run browser
+
+-----------------
+// cria apk
+npm i -D -E @ionic/app-scripts
+
+ionic cordova build android --prod --release
+
+keytool -genkeypair -v -keystore C:\Users\gabi\Desktop\git\tcc\talkingbus.keystore -alias talkingbus -keyalg RSA -keysize 2048 -validity 10000
+
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore C:\Users\gabi\Desktop\git\tcc\talkingbus.keystore C:\Users\gabi\Desktop\git\tcc\platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk talkingbus
+
+/**pasta zipalign**/
+C:\Users\gabi\AppData\Local\Android\sdk\build-tools\26.0.2
+
+zipalign -v 4 C:\Users\gabi\Desktop\git\tcc\platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk C:\Users\gabi\Desktop\git\tcc\talking-bus-v1.apk
+--------------

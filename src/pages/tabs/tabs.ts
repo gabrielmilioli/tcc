@@ -42,7 +42,7 @@ export class TabsPage {
 
 
   constructor(public app: App, public navCtrl: NavController, public authService: AuthServiceProvider) {
-    this.navCtrl.parent.select(2);
+    //this.navCtrl.parent.select(2);
     this.user = this.authService.get_user();
     if(this.user){
       this.name = this.user.name;

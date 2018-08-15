@@ -11,7 +11,7 @@
     <ion-title class="sub-title">Faça seu login ou registre-se:</ion-title>
   <ion-list>
     <ion-item>
-      <ion-label floating>Login ou email</ion-label>
+      <ion-label floating>Email</ion-label>
       <ion-input [(ngModel)]="user.login"></ion-input>
     </ion-item>
     <ion-item>
@@ -21,6 +21,13 @@
   </ion-list>
 
   <button ion-button full (click)="login()">Entrar</button>
-  <button ion-button full color="light" (click)="gotoRegister()">Me registrar</button>
+  <!--<button ion-button full color="light" (click)="gotoRegister()">Me registrar</button>-->
+  <br>
+  <button ion-button full color="facebook" (click)="loginFb()">
+    Entrar com Facebook
+  </button>
+  <button ion-button full color="googlePlus" (click)="loginFb()">
+    Entrar com Google+
+  </button>
 
 </ion-content>
