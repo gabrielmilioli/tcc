@@ -1,14 +1,11 @@
-<ion-header>
-  <ion-navbar color="primary">
-    <ion-title class="title">Bem-vindo!</ion-title>
+<ion-header color="light">
+  <ion-navbar color="light">
+      <img alt="logo" src="../../assets/imgs/logo-header.png"/> 
   </ion-navbar>
-  <ion-toolbar color="primary">
-    <ion-icon class="icon-title" name="bus" color="primary"></ion-icon>
-  </ion-toolbar>
 </ion-header>
 
 <ion-content padding no-bounce>
-    <ion-title class="sub-title">Faça seu login ou registre-se:</ion-title>
+  <ion-title class="sub-title">Faça seu login</ion-title>
   <ion-list>
     <ion-item>
       <ion-label floating>Email</ion-label>
@@ -23,11 +20,12 @@
   <button ion-button full (click)="login()">Entrar</button>
   <!--<button ion-button full color="light" (click)="gotoRegister()">Me registrar</button>-->
   <br>
-  <button ion-button full color="facebook" (click)="loginFb()">
-    Entrar com Facebook
+  <ion-title class="sub-title">Ou pelas redes sociais</ion-title>
+  <button class="button-fb" ion-button full color="facebook" (click)="loginFb()">
+      <ion-icon name="logo-facebook"></ion-icon>
   </button>
-  <button ion-button full color="googlePlus" (click)="loginFb()">
-    Entrar com Google+
+  <button class="button-gp" ion-button full color="googlePlus" (click)="loginFb()">
+    <ion-icon name="logo-googleplus"></ion-icon>
   </button>
 
 </ion-content>

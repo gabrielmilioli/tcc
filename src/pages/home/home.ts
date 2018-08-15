@@ -44,7 +44,7 @@ export class HomePage {
       content: 'Please wait...'
     });
     this.loading.present();
-
+    
     this.fb.login(["public_profile", "email"]).then(loginRes => {
       this.fb.api('me/?fields=id,email,first_name,picture', ["public_profile", "email"]).then(apiRes => {
         //this.userInfo = apiRes;

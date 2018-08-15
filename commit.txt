@@ -46,3 +46,13 @@ zipalign -v 4 C:\Users\gabi\Desktop\git\tcc\platforms\android\app\build\outputs\
 
 // google maps
 ionic cordova plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="AIzaSyDDiqNrpZceSxElgCAoGwEnD2K05x8jZAQ" --variable API_KEY_FOR_IOS="AIzaSyDDiqNrpZceSxElgCAoGwEnD2K05x8jZAQ" --save --nofetch
+
+
+
+// facebook
+
+debug: T1WfLE/ODP+TQIeQ3CkHAwoyrtQ=
+release: RhWcNNjdOKNkXhEpAXXGwbXry40=
+
+keytool -exportcert -alias talkingbusdebug -keystore "C:\Users\Usuario\Documents\tcc\debug.keystore" | "C:\Users\Usuario\Documents\openssl-0.9.8k_WIN32\bin\openssl" sha1 -binary | "C:\Users\Usuario\Documents\openssl-0.9.8k_WIN32\bin\openssl" base64
+keytool -exportcert -alias talkingbusrelease -keystore "C:\Users\Usuario\Documents\tcc\release.keystore" | "C:\Users\Usuario\Documents\openssl-0.9.8k_WIN32\bin\openssl" sha1 -binary | "C:\Users\Usuario\Documents\openssl-0.9.8k_WIN32\bin\openssl" base64
