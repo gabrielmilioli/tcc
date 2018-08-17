@@ -22,6 +22,7 @@ import { ProfilePage } from '../pages/profile/profile';
 import { PlacesPage } from '../pages/places/places';
 import { AboutPage } from '../pages/about/about';
 import { SettingsPage } from '../pages/settings/settings';
+import { FriendsPage } from '../pages/friends/friends';
 
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 
@@ -38,7 +39,8 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
     ProfilePage,
     PlacesPage,
     AboutPage,
-    SettingsPage
+    SettingsPage,
+    FriendsPage
   ],
   imports: [
     BrowserModule,
@@ -59,7 +61,8 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
     ProfilePage,
     PlacesPage,
     AboutPage,
-    SettingsPage
+    SettingsPage,
+    FriendsPage
   ],
   providers: [
     StatusBar,

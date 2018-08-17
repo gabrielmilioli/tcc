@@ -25,6 +25,10 @@ export class AuthServiceProvider {
     return this.userData;
   }
 
+  get_user_id() {
+    return this.userData.id;
+  }
+
   set_user(object) {
     this.userData = object;
     //console.log('userData', this.userData);
@@ -91,6 +95,28 @@ export class AuthServiceProvider {
     
   }
 
+  
+  get_friends() {
+    let user = this.get_user();
+    
+    let credentials = {
+      "class": restClass,
+      "method": "get_friends",
+      "id": user.id
+    };
+
+    //console.log(credentials);
+    
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+    
+  }
 
   get_messages() {
     let user = this.get_user();
@@ -101,7 +127,7 @@ export class AuthServiceProvider {
       "id": user.id
     };
 
-    console.log(credentials);
+    //console.log(credentials);
     
     return new Promise((resolve, reject) => {
       this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
