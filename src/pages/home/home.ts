@@ -41,6 +41,11 @@ export class HomePage {
   }
 
   loginGp(){
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    this.loading.present();
+    
     this.gp.login({}).then(res => {
       let credentials = {
         "accessToken": res.accessToken,

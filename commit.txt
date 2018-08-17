@@ -61,4 +61,4 @@ ionic cordova run android --device -l --debug
 
 ionic cordova plugin add cordova-plugin-googleplus --variable REVERSED_CLIENT_ID=apps.googleusercontent.com.138261567653-mtf1l084m5i8fqmml071uatu0smghbev --variable WEB_APPLICATION_CLIENT_ID=138261567653-mtf1l084m5i8fqmml071uatu0smghbev.apps.googleusercontent.com
 
-ionic corvoda run browser -l
+ionic cordova run browser -l

@@ -102,7 +102,7 @@ export class AuthServiceProvider {
     };
 
     console.log(credentials);
-    /*
+    
     return new Promise((resolve, reject) => {
       this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
         .subscribe(res => {
@@ -111,7 +111,7 @@ export class AuthServiceProvider {
           reject(err);
         });
     });
-    */
+    
   }
 
   getHeaders(){
