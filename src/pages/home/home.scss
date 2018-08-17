@@ -18,21 +18,31 @@ page-home {
         width:100%;
     }
     
+    #social-login{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        font-size: 3.5em;
+    }
+    //left
+    .button-fb{
+        width:30%;
+        height: 65px;
+    }
+    .button-tt{
+        width:30%;
+        height: 65px;
+    }
+    .button-gp{
+        width:30%;
+        height: 65px;
+    }
     .sub-title > .toolbar-title {
         font-size: 2rem;
     }
-
-    .button-fb{
-        width:45%;
-        float:left;
-        height: 65px;
-    }
-    .button-fb ion-icon, .button-gp ion-icon{
+    .button-fb ion-icon, .button-gp ion-icon, .button-tt ion-icon{
         font-size: 3.5em;
     }
-    .button-gp{
-        width:45%;
-        float:right;
-        height: 65px;
-    }
+    
 }

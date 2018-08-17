@@ -1,3 +1,4 @@
+import { GooglePlus } from '@ionic-native/google-plus';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -67,7 +68,8 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
     AuthServiceProvider,
     Facebook,
     Geolocation,
-    GoogleMaps
+    GoogleMaps,
+    GooglePlus
   ]
 })
 export class AppModule {}

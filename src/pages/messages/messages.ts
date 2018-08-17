@@ -1,3 +1,4 @@
+import { ChatPage } from './../chat/chat';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
@@ -14,12 +15,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'messages.html',
 })
 export class MessagesPage {
-
+  messages:any=[{}];
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MessagesPage');
+  }
+
+  openChat(friend_id){
+    this.navCtrl.push(ChatPage);
   }
 
 }

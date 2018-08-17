@@ -21,7 +21,7 @@ ionic cordova plugin add https://github.com/mapsplugin/cordova-plugin-googlemaps
 // keytool -genkeypair -v -keystore C:\Users\gabi\Desktop\Talking-Bus\src\talkingbus.keystore -alias talkingbus -keyalg RSA -keysize 2048 -validity 10000
 
 // facebook
-cordova plugin add cordova-plugin-facebook4 --save --variable APP_ID="1128491637318338" --variable APP_NAME="Talking Bus"
+cordova plugin add cordova-plugin-facebook4 --save --variable APP_ID="258244404810976" --variable APP_NAME="Talking Bus"
 
 npm install --save @ionic-native/facebook
 
@@ -56,3 +56,9 @@ release: RhWcNNjdOKNkXhEpAXXGwbXry40=
 
 keytool -exportcert -alias talkingbusdebug -keystore "C:\Users\Usuario\Documents\tcc\debug.keystore" | "C:\Users\Usuario\Documents\openssl-0.9.8k_WIN32\bin\openssl" sha1 -binary | "C:\Users\Usuario\Documents\openssl-0.9.8k_WIN32\bin\openssl" base64
 keytool -exportcert -alias talkingbusrelease -keystore "C:\Users\Usuario\Documents\tcc\release.keystore" | "C:\Users\Usuario\Documents\openssl-0.9.8k_WIN32\bin\openssl" sha1 -binary | "C:\Users\Usuario\Documents\openssl-0.9.8k_WIN32\bin\openssl" base64
+
+ionic cordova run android --device -l --debug
+
+ionic cordova plugin add cordova-plugin-googleplus --variable REVERSED_CLIENT_ID=apps.googleusercontent.com.138261567653-mtf1l084m5i8fqmml071uatu0smghbev --variable WEB_APPLICATION_CLIENT_ID=138261567653-mtf1l084m5i8fqmml071uatu0smghbev.apps.googleusercontent.com
+
+ionic corvoda run browser -l

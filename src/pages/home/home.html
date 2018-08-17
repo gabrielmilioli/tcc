@@ -9,7 +9,7 @@
   <ion-list>
     <ion-item>
       <ion-label floating>Email</ion-label>
-      <ion-input [(ngModel)]="user.login"></ion-input>
+      <ion-input [(ngModel)]="user.email"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label floating>Senha</ion-label>
@@ -21,11 +21,15 @@
   <!--<button ion-button full color="light" (click)="gotoRegister()">Me registrar</button>-->
   <br>
   <ion-title class="sub-title">Ou pelas redes sociais</ion-title>
-  <button class="button-fb" ion-button full color="facebook" (click)="loginFb()">
-      <ion-icon name="logo-facebook"></ion-icon>
-  </button>
-  <button class="button-gp" ion-button full color="googlePlus" (click)="loginFb()">
-    <ion-icon name="logo-googleplus"></ion-icon>
-  </button>
-
+  <div id="social-login">
+    <button class="button-fb" ion-button full color="facebook" (click)="loginFb()">
+        <ion-icon name="logo-facebook"></ion-icon>
+    </button>
+    <button class="button-tt" ion-button full color="twitter" (click)="loginFb()">
+        <ion-icon name="logo-twitter"></ion-icon>
+    </button>
+    <button class="button-gp" ion-button full color="googlePlus" (click)="loginGp()">
+      <ion-icon name="logo-googleplus"></ion-icon>
+    </button>
+  </div>
 </ion-content>

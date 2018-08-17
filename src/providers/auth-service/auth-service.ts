@@ -91,6 +91,29 @@ export class AuthServiceProvider {
     
   }
 
+
+  get_messages() {
+    let user = this.get_user();
+    
+    let credentials = {
+      "class": restClass,
+      "method": "get_messages",
+      "id": user.id
+    };
+
+    console.log(credentials);
+    /*
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+    */
+  }
+
   getHeaders(){
    
     return new HttpHeaders(

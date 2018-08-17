@@ -1,3 +1,4 @@
+import { GooglePlus } from '@ionic-native/google-plus';
 import { Facebook } from '@ionic-native/facebook';
 import { Component } from '@angular/core';
 import { NavParams, NavController, AlertController, LoadingController } from 'ionic-angular';
@@ -12,7 +13,7 @@ import { AuthServiceProvider } from './../../providers/auth-service/auth-service
 export class HomePage {
 
   user = {
-    "login": "",
+    "email": "",
     "password": ""
   };
   response: any;
@@ -22,7 +23,7 @@ export class HomePage {
   loading: any;
 
   constructor(public navParams: NavParams, public navCtrl: NavController, public authService: AuthServiceProvider, 
-    public alertCtrl: AlertController, public loadingCtrl: LoadingController, public fb: Facebook) {
+    public alertCtrl: AlertController, public loadingCtrl: LoadingController, public fb: Facebook, public gp: GooglePlus) {
       this.authService.set_logged(false);
       this.userLogged = this.authService.get_user();
       if(this.userLogged){
@@ -39,6 +40,45 @@ export class HomePage {
 
   }
 
+  loginGp(){
+    this.gp.login({}).then(res => {
+      let credentials = {
+        "accessToken": res.accessToken,
+        "displayName": res.displayName,
+        "email": res.email,
+        "expires": res.expires,
+        "expires_in": res.expires_in,
+        "familyName": res.familyName,
+        "givenName": res.givenName,
+        "idToken": res.idToken,
+        "imageUrl": res.imageUrl,
+        "serverAuthCode": res.serverAuthCode,
+        "userId": res.userId,
+        "login": "googleplus"
+      };
+
+      //registrar / logar
+      this.authService.login(credentials).then((result) => {
+        console.log(result);
+        this.response = result;
+        if(this.response.status === 'success'){
+          localStorage.setItem('user', JSON.stringify(this.response.data));
+
+          this.isLogged = true;
+          this.authService.set_logged(true);
+          this.authService.set_user(this.response.data);
+          this.loading.dismiss();
+          this.navCtrl.setRoot(TabsPage);
+        }else{ 
+          this.alert('Erro', this.response.data);
+        }
+      }).catch(error=>{
+        this.alert('Erro', error.message);
+      });
+    })
+    .catch(err => console.error(err));
+  }
+
   loginFb(){
     this.loading = this.loadingCtrl.create({
       content: 'Please wait...'
@@ -48,22 +88,22 @@ export class HomePage {
     this.fb.login(["public_profile", "email"]).then(loginRes => {
       this.fb.api('me/?fields=id,email,first_name,picture', ["public_profile", "email"]).then(apiRes => {
         //this.userInfo = apiRes;
-        this.isLogged = true;
-        //console.log(apiRes);
         this.userInfo = {
           "facebook_id": apiRes.id,
           "email": apiRes.email,
           "first_name": apiRes.first_name,
-          "picture": apiRes.picture
+          "picture": apiRes.picture,
+          "login": "facebook"
         };
 
-
-        //registrar db
-        this.authService.register(this.userInfo).then((result) => {
+        //registrar / logar
+        this.authService.login(this.userInfo).then((result) => {
           console.log(result);
           this.response = result;
           if(this.response.status === 'success'){
             localStorage.setItem('user', JSON.stringify(this.response.data));
+
+            this.isLogged = true;
             this.authService.set_logged(true);
             this.authService.set_user(this.response.data);
             this.loading.dismiss();
@@ -95,7 +135,7 @@ export class HomePage {
   }
 
   login() {
-    if(this.user.login.length === 0 || this.user.password.length === 0){
+    if(this.user.email.length === 0 || this.user.password.length === 0){
         this.alert('Erro', 'Preencha os campos!'); 
         return false;
     }
