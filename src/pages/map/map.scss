@@ -13,4 +13,24 @@ page-map {
         z-index: 999999999;
         width: 80%;
     }
+
+    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #ffffff;
+        opacity: 1; /* Firefox */
+    }
+
+    .searchbar-input{
+        z-index: 0;
+        position: absolute;
+        left: 0px;
+        top: 20px;
+        height: 45px;
+        font-size: 1.5em;
+        width: 80%;
+        margin: auto;
+        right: 0;
+        padding: 1em;
+        border: 0px solid rgb(219, 73, 73);
+        border-radius: 45px;
+    }
 }
