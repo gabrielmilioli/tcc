@@ -23,6 +23,7 @@ import { PlacesPage } from '../pages/places/places';
 import { AboutPage } from '../pages/about/about';
 import { SettingsPage } from '../pages/settings/settings';
 import { FriendsPage } from '../pages/friends/friends';
+import { PlacePage } from './../pages/place/place';
 
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 
@@ -40,11 +41,12 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
     PlacesPage,
     AboutPage,
     SettingsPage,
-    FriendsPage
+    FriendsPage,
+    PlacePage
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {tabsPlacement: 'bottom', tabsHideOnSubPages: true}),
     HttpClientModule,
     FormsModule
   ],
@@ -62,7 +64,8 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
     PlacesPage,
     AboutPage,
     SettingsPage,
-    FriendsPage
+    FriendsPage,
+    PlacePage
   ],
   providers: [
     StatusBar,
