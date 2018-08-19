@@ -96,6 +96,28 @@ export class AuthServiceProvider {
   }
 
   
+  get_place(id) {
+    let user = this.get_user();
+    
+    let credentials = {
+      "class": restClass,
+      "method": "get_place",
+      "id": id
+    };
+
+    //console.log(credentials);
+    
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+    
+  }
+
   get_places() {
     let user = this.get_user();
     

@@ -3,7 +3,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
-import { GoogleMapsEvent } from '../../../node_modules/@ionic-native/google-maps';
+import { GoogleMaps, GoogleMapsEvent } from '../../../node_modules/@ionic-native/google-maps';
 
 declare var google:any;
 /**
@@ -29,7 +29,8 @@ export class MapPage {
   loading:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, public authService: AuthServiceProvider,
-  public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
+  public alertCtrl: AlertController, public loadingCtrl: LoadingController, public map: GoogleMaps) {
+    console.log(map);
   }
 
   ionViewDidLoad() {
@@ -42,7 +43,7 @@ export class MapPage {
     this.lat = -28.684433;
     this.lon = -49.369194;
     this.geolocation.getCurrentPosition().then((resp) => {
-      console.log(resp);
+      //console.log(resp);
       this.lat = resp.coords.latitude;
       this.lon = resp.coords.longitude;
       // resp.coords.latitude
@@ -58,7 +59,7 @@ export class MapPage {
 
   loadPlaces(){
     this.authService.get_places().then((result) => {
-      console.log(result);
+      //console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.places = this.response.data;
@@ -83,7 +84,15 @@ export class MapPage {
       disableDefaultUI: true,
       mapTypeControl: false,
       scaleControl: false,
-      scrollwheel: false
+      scrollwheel: false,
+      styles: [
+        {
+          "featureType": "poi",
+          "stylers": [
+            { "visibility": "off" }
+          ]
+        }
+      ]
     };
 
     const map = new google.maps.Map(this.mapRef.nativeElement,options);
@@ -138,15 +147,35 @@ export class MapPage {
         map: map,
         title: name,
         animation: 'DROP',
-        zIndex: id
+        zIndex: id,
+        id: id
       });
 
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          console.log(marker);
+          this.navCtrl.push(PlacePage, {"id":marker.get("id"), "name":marker.get("title")});
+        }
+      })(marker, i));
+
+/*
       google.maps.event.addListener(marker, 'click', () => {
+        console.log(marker);
         //infoWindow.open(this.map, marker);
-        this.navCtrl.push(PlacePage, {"name":name});
+        //this.navCtrl.push(PlacePage, {"id":id, "name":name});
       });
-      
+      */
     }
+  }
+
+  setPositionAsContent(marker){
+    console.log(marker);
+  }
+
+  setMarkerEvent(marker){
+    google.maps.event.addListener(marker, 'click', function() {
+      this.navCtrl.push(PlacePage, {"id": marker.get('id'), "name": marker.get('name')});
+    });
   }
 
   addMarker(position,map) {
