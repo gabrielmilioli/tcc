@@ -151,21 +151,17 @@ export class MapPage {
         id: id
       });
 
-      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+      google.maps.event.addListener(marker, 'click', (function(marker, app) {
         return function() {
-          console.log(marker);
-          this.navCtrl.push(PlacePage, {"id":marker.get("id"), "name":marker.get("title")});
+          app.loadPlace(marker.get("id"), marker.get("title"));
         }
-      })(marker, i));
+      })(marker, this));
 
-/*
-      google.maps.event.addListener(marker, 'click', () => {
-        console.log(marker);
-        //infoWindow.open(this.map, marker);
-        //this.navCtrl.push(PlacePage, {"id":id, "name":name});
-      });
-      */
     }
+  }
+
+  loadPlace(id, name){
+    this.navCtrl.push(PlacePage, {"id":id, "name":name});
   }
 
   setPositionAsContent(marker){
