@@ -14,8 +14,8 @@
 
 <ion-content padding>
   <ion-card>
-    <ion-icon ng-if=" !place.photo " name="bus"></ion-icon>
-    <img ng-if=" place.photo " [src]="place.photo"/>
+    <ion-icon *ngIf=" place.photo === '' " name="bus"></ion-icon>
+    <img *ngIf=" place.photo !== '' " [src]="place.photo"/>
     <ion-card-content>
       <ion-card-title>
         {{place.name}}
@@ -23,16 +23,33 @@
       <p>
         {{place.address}}
       </p>
+      <div id="classification">
+        <button class="button-star" full>
+          <ion-icon class="star" name="star"></ion-icon>
+        </button>
+        <button class="button-star" full>
+          <ion-icon class="star" name="star"></ion-icon>
+        </button>
+        <button class="button-star" full>
+          <ion-icon class="star" name="star"></ion-icon>
+        </button>
+        <button class="button-star" full>
+          <ion-icon class="star" name="star"></ion-icon>
+        </button>
+        <button class="button-star" full>
+          <ion-icon class="star" name="star"></ion-icon>
+        </button>
+      </div>
     </ion-card-content>
   </ion-card>
   <ion-list>
-    <ion-item ng-if=" place.comments.length > 0 ">
+    <ion-item *ngIf=" place.comments.length < 1 ">
       <h2>Nenhum comentário ainda</h2>
     </ion-item>
 
     <ion-item *ngFor="let c of place.comments">
-      <ion-icon ng-if=" c.user_picture === '' " item-start name="contact"></ion-icon>
-      <ion-avatar ng-if=" c.user_picture !== '' " item-start>
+      <ion-icon *ngIf=" c.user_picture === '' " item-start name="contact"></ion-icon>
+      <ion-avatar *ngIf=" c.user_picture !== '' " item-start>
         <img [src]="c.user_picture">
       </ion-avatar>
       <h2>{{c.user_name}}</h2>
