@@ -1,7 +1,7 @@
 import { PlacePage } from './../place/place';
 import { PontosProvider } from './../../providers/pontos/pontos';
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, Searchbar } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 
 
@@ -18,16 +18,21 @@ import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
   templateUrl: 'places.html',
 })
 export class PlacesPage {
+  @ViewChild('searchbar', { read: ElementRef }) searchbarRef: ElementRef;
+  @ViewChild('searchbar') searchbarElement: Searchbar;
   pontos:Array<{id: string, nome: string, endereco: string, data_registro: string, imagem: string, favorito: string }>;
   loading:any;
   response:any;
   tab:string="t";
+  inputBuscar:string;
+  mostrarBuscar:boolean=false;
+  todosPontos:Array<{id: string, nome: string, endereco: string, data_registro: string, imagem: string, favorito: string }>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthServiceProvider,
     public alertCtrl: AlertController, public loadingCtrl: LoadingController, public ponto: PontosProvider) {
   }
 
-  ionViewDidEnter(){
+  ionViewDidEnter(refresher = null){
     this.loading = this.loadingCtrl.create({
       content: 'Carregando pontos...'
     });
@@ -40,6 +45,46 @@ export class PlacesPage {
     }
     
     this.loading.dismiss();
+    if(refresher){
+      refresher.complete();
+    }
+  }
+
+  buscar(e){
+    let val = e.target.value;
+    var results = [];
+    var buscarEm = "nome";
+    var buscarPor = val;
+    for (var i=0 ; i < this.pontos.length ; i++)
+    {
+      var nome = this.pontos[i].nome;
+      console.log("nome: " + nome);
+      console.log("buscarPor: " + buscarPor);
+      console.log("indexOf: " + nome.indexOf(buscarPor));
+      if(nome.indexOf(buscarPor) != -1){
+        results.push(this.pontos[i]);
+      }
+      /*
+      if (this.pontos[i][buscarEm] == buscarPor) {
+          results.push(this.pontos[i]);
+      }*/
+    }
+    
+    if(results.length > 0){
+      this.pontos = results;
+    }else{
+      this.pontos = this.todosPontos;
+    }
+    console.log(this.pontos);
+  }
+
+  toggleBusca(){
+    if (this.mostrarBuscar) {
+      this.mostrarBuscar = false;
+    } else {
+      this.mostrarBuscar = true;
+      this.searchbarElement.setFocus();
+    }
   }
 
   carregaPontos(){
@@ -50,6 +95,7 @@ export class PlacesPage {
       this.response = result;
       if(this.response.status === 'success'){
         this.pontos = this.response.data;
+        this.todosPontos = this.pontos;
       }else{ 
         this.alert('Erro', this.response.data);
       }
@@ -68,6 +114,7 @@ export class PlacesPage {
         this.response = result;
         if(this.response.status === 'success'){
           this.pontos = this.response.data;
+          this.todosPontos = this.pontos;
         }else{ 
           this.alert('Erro', this.response.data);
         }
@@ -81,8 +128,24 @@ export class PlacesPage {
     this.navCtrl.push(PlacePage, {"id":id, "nome":nome});
   }
 
-  favoritarPonto(id){
-    console.log("favoritar = "+id);
+  favoritarPonto(ponto_id){
+    //console.log("favoritar = "+ponto_id);
+    var id = this.authService.get_user_id();
+    if(id){
+      this.ponto.set_usuarios_pontos(id, ponto_id).then((result) => {
+        //console.log(result);
+        this.response = result;
+        if(this.response.status === 'success'){
+          let input = <HTMLInputElement>document.getElementById(ponto_id);
+          console.log(input);
+          this.ionViewDidEnter();
+        }else{ 
+          this.alert('Erro', this.response.data);
+        }
+      }).catch(error=>{
+        this.alert('Erro', error);
+      });
+    }
   }
 
   ionViewDidLoad() {

@@ -23,4 +23,18 @@ page-places {
         font-size: 4.0em;
         margin:10px;
     }
+    #pontos-opcoes{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        font-size: 3.5em;
+    }
+    #pontos-opcoes button{
+        width:50%;
+    }
+
+    #pontos-opcoes button icon{
+        padding-left:10px;
+    }
 }

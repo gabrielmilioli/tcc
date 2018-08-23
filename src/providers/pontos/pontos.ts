@@ -34,6 +34,23 @@ export class PontosProvider {
     });
   }
 
+  set_usuarios_pontos(id, ponto_id){
+    let credentials = {
+      "class": restClass,
+      "method": "set_usuarios_pontos",
+      "id": id,
+      "ponto_id": ponto_id
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
   get_pontos(id) {
     let credentials = {
       "class": restClass,
