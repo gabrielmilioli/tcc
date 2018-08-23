@@ -40,13 +40,16 @@
     </button>
   </div>
   
-  <ion-title *ngIf="this.pontos.length == 0">Nenhum ponto encontrado</ion-title>
+  <ion-title *ngIf="!this.pontos">Nenhum ponto encontrado</ion-title>
 
   <ion-card *ngFor="let p of pontos" (click)="visualizaPonto(p.id, p.nome);" [id]="p.id" >
-    <button primary color="primary" class="ponto-favorito" ion-fab (click)="favoritarPonto(p.id);$event.stopPropagation();">
-      <ion-icon [name]="p.favorito"></ion-icon>
-    </button>
+    <ion-fab right>
+      <button primary color="primary" ion-fab (click)="favoritarPonto(p.id);$event.stopPropagation();">
+        <ion-icon [name]="p.favorito"></ion-icon>
+      </button>
+    </ion-fab>
     <img [src]="p.imagem" class="p-imagem" />
+
     <ion-card-content>
       <ion-card-title>
         {{p.nome}}
@@ -55,18 +58,6 @@
         {{p.endereco}}
       </p>
       <div id="classification">
-        <button class="button-star" full>
-          <ion-icon class="star" name="star"></ion-icon>
-        </button>
-        <button class="button-star" full>
-          <ion-icon class="star" name="star"></ion-icon>
-        </button>
-        <button class="button-star" full>
-          <ion-icon class="star" name="star"></ion-icon>
-        </button>
-        <button class="button-star" full>
-          <ion-icon class="star" name="star"></ion-icon>
-        </button>
         <button class="button-star" full>
           <ion-icon class="star" name="star"></ion-icon>
         </button>

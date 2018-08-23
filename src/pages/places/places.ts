@@ -52,17 +52,18 @@ export class PlacesPage {
 
   buscar(e){
     let val = e.target.value;
-    var results = [];
+    let results = [];
     var buscarEm = "nome";
     var buscarPor = val;
-    for (var i=0 ; i < this.pontos.length ; i++)
+    this.pontos = this.todosPontos;
+    for (var i=0 ; i < this.todosPontos.length ; i++)
     {
-      var nome = this.pontos[i].nome;
+      var nome = this.todosPontos[i].nome;
       console.log("nome: " + nome);
       console.log("buscarPor: " + buscarPor);
       console.log("indexOf: " + nome.indexOf(buscarPor));
       if(nome.indexOf(buscarPor) != -1){
-        results.push(this.pontos[i]);
+        results.push(this.todosPontos[i]);
       }
       /*
       if (this.pontos[i][buscarEm] == buscarPor) {
@@ -70,11 +71,8 @@ export class PlacesPage {
       }*/
     }
     
-    if(results.length > 0){
-      this.pontos = results;
-    }else{
-      this.pontos = this.todosPontos;
-    }
+    this.pontos = results;
+
     console.log(this.pontos);
   }
 
