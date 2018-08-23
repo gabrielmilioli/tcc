@@ -1,6 +1,6 @@
 page-places {
     .star{
-        color:yellow;
+        color:#ecb943;
         font-size: xx-large !important;
     }
     .button-star{
@@ -17,9 +17,11 @@ page-places {
         flex-wrap: nowrap;
         justify-content: space-between;
         font-size: 3.5em;
+        text-align:center;
     }
     ion-fab{
         margin:10px;
+        margin-right: 25px;
     }
     #pontos-opcoes{
         display: flex;

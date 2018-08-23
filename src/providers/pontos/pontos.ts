@@ -67,6 +67,41 @@ export class PontosProvider {
     });
   }
 
+  get_ponto(id, ponto_id){
+    let credentials = {
+      "class": restClass,
+      "method": "get_ponto",
+      "id": id,
+      "ponto_id": ponto_id
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
+  set_pontos_classificacoes(id, ponto_id, classificacao){
+    let credentials = {
+      "class": restClass,
+      "method": "set_pontos_classificacoes",
+      "id": id,
+      "ponto_id": ponto_id,
+      "classificacao": classificacao
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
   getHeaders(){
    
     return new HttpHeaders(

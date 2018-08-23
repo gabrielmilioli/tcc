@@ -7,14 +7,17 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>{{ponto.nome}}</ion-title>
+    <ion-title *ngIf="ponto">{{ponto.nome}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-<ion-content padding>
+<ion-content padding *ngIf="ponto">
+
   <ion-card>
-    <img [src]="ponto.imagem" class="place-picture"/>
+    
+    <img [src]="ponto.imagem"/>
+
     <ion-card-content>
       <ion-card-title>
         {{ponto.nome}}
@@ -22,37 +25,51 @@
       <p>
         {{ponto.endereco}}
       </p>
+
       <div id="classification">
-        <button class="button-star" full>
-          <ion-icon class="star" name="star"></ion-icon>
+        <ng-container *ngIf="!ponto.class">
+          <p center color="primary">Nenhuma classificação ainda</p>
+        </ng-container>
+        <button class="button-star" *ngFor="let c of ponto.class" full>
+          <ion-icon class="star" [name]="c.icon"></ion-icon>
         </button>
-        <button class="button-star" full>
-          <ion-icon class="star" name="star"></ion-icon>
-        </button>
-        <button class="button-star" full>
-          <ion-icon class="star" name="star"></ion-icon>
-        </button>
-        <button class="button-star" full>
-          <ion-icon class="star" name="star"></ion-icon>
-        </button>
-        <button class="button-star" full>
-          <ion-icon class="star" name="star"></ion-icon>
-        </button>
+        <ion-note>
+          {{ponto.totalClass}} classificações
+        </ion-note>
       </div>
     </ion-card-content>
+
+    <ion-row>
+      <ion-col>
+        <button ion-button icon-start clear (click)="classificarPonto(ponto.id)">
+          <ion-icon color="primary" name="star"></ion-icon>
+          <div>Classificar este ponto</div>
+        </button>
+      </ion-col>
+      <ion-col center text-center>
+        <ion-note>
+          {{ponto.data_registro}}
+        </ion-note>
+      </ion-col>
+    </ion-row>
+
   </ion-card>
   <ion-list>
-    <ion-item *ngIf=" ponto.comentarios.length < 1 ">
-      <h2>Nenhum comentário ainda</h2>
-    </ion-item>
+    <ng-container *ngIf="!ponto.comentarios">
+      <ion-item color="primary" center text-center>
+        <h2>Nenhum comentário ainda</h2>
+      </ion-item>
+    </ng-container>
 
     <ion-item *ngFor="let c of ponto.comentarios">
-      <ion-icon *ngIf=" c.usuario_foto === '' " item-start name="contact"></ion-icon>
-      <ion-avatar *ngIf=" c.usuario_foto !== '' " item-start>
+      <ion-avatar *ngIf="c.usuario_foto" item-start>
         <img [src]="c.usuario_foto">
       </ion-avatar>
       <h2>{{c.usuario_nome}}</h2>
+      <ion-note>{{c.data_registro}}</ion-note>
       <p>{{c.comentario}}</p>
+      
     </ion-item>
   </ion-list>
+
 </ion-content>

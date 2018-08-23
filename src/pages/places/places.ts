@@ -20,13 +20,13 @@ import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 export class PlacesPage {
   @ViewChild('searchbar', { read: ElementRef }) searchbarRef: ElementRef;
   @ViewChild('searchbar') searchbarElement: Searchbar;
-  pontos:Array<{id: string, nome: string, endereco: string, data_registro: string, imagem: string, favorito: string }>;
+  pontos:Array<{id: string, nome: string, endereco: string, data_registro: string, imagem: string, favorito: string, class: [{icon:string}] }>;
   loading:any;
   response:any;
   tab:string="t";
   inputBuscar:string;
   mostrarBuscar:boolean=false;
-  todosPontos:Array<{id: string, nome: string, endereco: string, data_registro: string, imagem: string, favorito: string }>;
+  todosPontos:Array<{id: string, nome: string, endereco: string, data_registro: string, imagem: string, favorito: string, class: [{icon:string}] }>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthServiceProvider,
     public alertCtrl: AlertController, public loadingCtrl: LoadingController, public ponto: PontosProvider) {
@@ -65,15 +65,11 @@ export class PlacesPage {
       if(nome.indexOf(buscarPor) != -1){
         results.push(this.todosPontos[i]);
       }
-      /*
-      if (this.pontos[i][buscarEm] == buscarPor) {
-          results.push(this.pontos[i]);
-      }*/
     }
     
     this.pontos = results;
 
-    console.log(this.pontos);
+    //console.log(this.pontos);
   }
 
   toggleBusca(){
@@ -98,6 +94,7 @@ export class PlacesPage {
         this.alert('Erro', this.response.data);
       }
     }).catch(error=>{
+      console.log(error);
       this.alert('Erro', error);
     });
   }
@@ -117,6 +114,7 @@ export class PlacesPage {
           this.alert('Erro', this.response.data);
         }
       }).catch(error=>{
+        console.log(error);
         this.alert('Erro', error);
       });
     }
@@ -141,6 +139,7 @@ export class PlacesPage {
           this.alert('Erro', this.response.data);
         }
       }).catch(error=>{
+        console.log(error);
         this.alert('Erro', error);
       });
     }

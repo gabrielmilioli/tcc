@@ -22,7 +22,7 @@
 
 </ion-header>
 
-<ion-content full>
+<ion-content padding>
   <ion-refresher (ionRefresh)="ionViewDidEnter($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -58,8 +58,9 @@
         {{p.endereco}}
       </p>
       <div id="classification">
-        <button class="button-star" full>
-          <ion-icon class="star" name="star"></ion-icon>
+        <p center color="primary" *ngIf="!p.class">Nenhuma classificação ainda</p>
+        <button class="button-star" *ngFor="let c of p.class" full>
+          <ion-icon class="star" [name]="c.icon"></ion-icon>
         </button>
       </div>
     </ion-card-content>

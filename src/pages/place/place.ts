@@ -1,6 +1,8 @@
+import { Geolocation } from '@ionic-native/geolocation';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
+import { PontosProvider } from '../../providers/pontos/pontos';
 
 /**
  * Generated class for the PlacePage page.
@@ -15,38 +17,43 @@ import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
   templateUrl: 'place.html',
 })
 export class PlacePage {
-  ponto = {
-    "id": "",
-    "nome": "",
-    "endereco": "",
-    "data_registro": "",
-    "imagem": "",
-    "comentarios": []
-  };
+  ponto={id: "", nome: "", endereco: "", data_registro: "", imagem: "", favorito: "", 
+  class: [{icon:""}], totalClass: "",
+  comentarios: [{usuario_id:"", usuario_foto:"", usuario_nome:"", comentario:"", data_registro:""}] };
+
   loading:any;
   response:any;
+  position:any;
+  classificacao:any;
+  ponto_id:string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthServiceProvider,
-    public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
-
+    public alertCtrl: AlertController, public loadingCtrl: LoadingController, public pontoService: PontosProvider,
+    public geo: Geolocation) {
+      console.log(geo);
   }
 
   ionViewDidEnter(){
-    this.ponto.id = this.navParams.get('id');
-    console.log("id = "+this.ponto.id);
+    this.ponto_id = this.navParams.get('id');
+    this.ponto.id = this.ponto_id;
+
+    this.position = this.geo.getCurrentPosition();
+
+    console.log(this.ponto);
     this.loading = this.loadingCtrl.create({
       content: 'Carregando ponto...'
     });
     this.loading.present();
 
-    this.loadPlace();
+    this.carregaPonto();
 
     this.loading.dismiss();
   }
 
-  loadPlace(){
-    this.authService.get_place(this.ponto.id).then((result) => {
-      //console.log(result);
+  carregaPonto(){
+    var id = this.authService.get_user_id();
+    this.pontoService.get_ponto(id, this.ponto_id).then((result) => {
+      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.ponto = this.response.data;
@@ -54,8 +61,63 @@ export class PlacePage {
         this.alert('Erro', this.response.data);
       }
     }).catch(error=>{
+      console.log(error);
       this.alert('Erro', error);
     });
+  }
+
+  classificarPonto(ponto_id) {
+    let alert = this.alertCtrl.create();
+    alert.setTitle('Quantas estrelas esse ponto merece?');
+
+    alert.addInput({
+      type: 'radio',
+      label: 'Uma',
+      value: '1'
+    });
+    alert.addInput({
+      type: 'radio',
+      label: 'Duas',
+      value: '2'
+    });
+    alert.addInput({
+      type: 'radio',
+      label: 'Três',
+      value: '3'
+    });
+    alert.addInput({
+      type: 'radio',
+      label: 'Quatro',
+      value: '4'
+    });
+    alert.addInput({
+      type: 'radio',
+      label: 'Cinco',
+      value: '5'
+    });
+
+    alert.addButton('Cancelar');
+    alert.addButton({
+      text: 'Classificar',
+      handler: data => {
+        
+        var id = this.authService.get_user_id();
+        this.pontoService.set_pontos_classificacoes(id, this.ponto_id, data).then((result) => {
+          console.log(result);
+          this.response = result;
+          if(this.response.status === 'success'){
+            this.carregaPonto();
+          }else{ 
+            this.alert('Erro', this.response.data);
+          }
+        }).catch(error=>{
+          console.log(error);
+          this.alert('Erro', error);
+        });
+
+      }
+    });
+    alert.present();
   }
 
   ionViewDidLoad() {
