@@ -15,13 +15,13 @@ import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
   templateUrl: 'place.html',
 })
 export class PlacePage {
-  place = {
+  ponto = {
     "id": "",
-    "name": "",
-    "address": "",
-    "register_date": "",
-    "photo": "",
-    "comments": []
+    "nome": "",
+    "endereco": "",
+    "data_registro": "",
+    "imagem": "",
+    "comentarios": []
   };
   loading:any;
   response:any;
@@ -32,8 +32,8 @@ export class PlacePage {
   }
 
   ionViewDidEnter(){
-    this.place.id = this.navParams.get('id');
-    console.log("id = "+this.place.id);
+    this.ponto.id = this.navParams.get('id');
+    console.log("id = "+this.ponto.id);
     this.loading = this.loadingCtrl.create({
       content: 'Carregando ponto...'
     });
@@ -45,11 +45,11 @@ export class PlacePage {
   }
 
   loadPlace(){
-    this.authService.get_place(this.place.id).then((result) => {
+    this.authService.get_place(this.ponto.id).then((result) => {
       //console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
-        this.place = this.response.data;
+        this.ponto = this.response.data;
       }else{ 
         this.alert('Erro', this.response.data);
       }

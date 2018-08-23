@@ -1,3 +1,4 @@
+import { UserProvider } from './../../providers/user/user';
 import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
 import { Component } from '@angular/core';
 import { App, NavController } from 'ionic-angular';
@@ -41,7 +42,8 @@ export class TabsPage {
   };
 
 
-  constructor(public app: App, public navCtrl: NavController, public authService: AuthServiceProvider) {
+  constructor(public app: App, public navCtrl: NavController, public authService: AuthServiceProvider,
+    public userService: UserProvider) {
     //this.navCtrl.parent.select(2);
     this.user = this.authService.get_user();
     if(this.user){

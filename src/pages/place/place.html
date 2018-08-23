@@ -7,21 +7,20 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>{{place.name}}</ion-title>
+    <ion-title>{{ponto.nome}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 <ion-content padding>
   <ion-card>
-    <ion-icon *ngIf=" place.photo === '' " name="bus"></ion-icon>
-    <img *ngIf=" place.photo !== '' " [src]="place.photo"/>
+    <img [src]="ponto.imagem" class="place-picture"/>
     <ion-card-content>
       <ion-card-title>
-        {{place.name}}
+        {{ponto.nome}}
       </ion-card-title>
       <p>
-        {{place.address}}
+        {{ponto.endereco}}
       </p>
       <div id="classification">
         <button class="button-star" full>
@@ -43,17 +42,17 @@
     </ion-card-content>
   </ion-card>
   <ion-list>
-    <ion-item *ngIf=" place.comments.length < 1 ">
+    <ion-item *ngIf=" ponto.comentarios.length < 1 ">
       <h2>Nenhum comentário ainda</h2>
     </ion-item>
 
-    <ion-item *ngFor="let c of place.comments">
-      <ion-icon *ngIf=" c.user_picture === '' " item-start name="contact"></ion-icon>
-      <ion-avatar *ngIf=" c.user_picture !== '' " item-start>
-        <img [src]="c.user_picture">
+    <ion-item *ngFor="let c of ponto.comentarios">
+      <ion-icon *ngIf=" c.usuario_foto === '' " item-start name="contact"></ion-icon>
+      <ion-avatar *ngIf=" c.usuario_foto !== '' " item-start>
+        <img [src]="c.usuario_foto">
       </ion-avatar>
-      <h2>{{c.user_name}}</h2>
-      <p>{{c.commentary}}</p>
+      <h2>{{c.usuario_nome}}</h2>
+      <p>{{c.comentario}}</p>
     </ion-item>
   </ion-list>
 </ion-content>

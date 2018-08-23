@@ -188,6 +188,7 @@ export class AuthServiceProvider {
     return new HttpHeaders(
       {'Content-Type':'application/json',
       'Access-Control-Allow-Origin':'*',
+      'Access-Control-Allow-Headers':'*',
       'Accept':'*',
       'Token':'Basic' + btoa('talkingbus' + ":" + 'zx96@28#')
       });

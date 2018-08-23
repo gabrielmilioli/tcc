@@ -17,7 +17,45 @@
 
 </ion-header>
 
+<ion-content full>
+  <button ion-button round (click)="carregaPontos()">
+    <ion-icon name="bus"></ion-icon>
+    Todos
+  </button>
+  <button ion-button round (click)="carregaMeusPontos()">
+    <ion-icon name="heart"></ion-icon>
+    Meus favoritos
+  </button>
 
-<ion-content padding>
-
+  <ion-card *ngFor="let p of pontos" (click)="visualizaPonto(p.id, p.nome);">
+    <button primary color="primary" class="ponto-favorito" ion-fab (click)="favoritarPonto(p.id);">
+      <ion-icon [name]="p.favorito"></ion-icon>
+    </button>
+    <img [src]="p.imagem" class="p-imagem" />
+    <ion-card-content>
+      <ion-card-title>
+        {{p.nome}}
+      </ion-card-title>
+      <p>
+        {{p.endereco}}
+      </p>
+      <div id="classification">
+        <button class="button-star" full>
+          <ion-icon class="star" name="star"></ion-icon>
+        </button>
+        <button class="button-star" full>
+          <ion-icon class="star" name="star"></ion-icon>
+        </button>
+        <button class="button-star" full>
+          <ion-icon class="star" name="star"></ion-icon>
+        </button>
+        <button class="button-star" full>
+          <ion-icon class="star" name="star"></ion-icon>
+        </button>
+        <button class="button-star" full>
+          <ion-icon class="star" name="star"></ion-icon>
+        </button>
+      </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

@@ -26,6 +26,8 @@ import { FriendsPage } from '../pages/friends/friends';
 import { PlacePage } from './../pages/place/place';
 
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
+import { UserProvider } from '../providers/user/user';
+import { PontosProvider } from '../providers/pontos/pontos';
 
 @NgModule({
   declarations: [
@@ -75,7 +77,9 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
     Facebook,
     Geolocation,
     GoogleMaps,
-    GooglePlus
+    GooglePlus,
+    UserProvider,
+    PontosProvider
   ]
 })
 export class AppModule {}

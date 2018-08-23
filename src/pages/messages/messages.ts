@@ -30,7 +30,7 @@ export class MessagesPage {
 
   ionViewDidLoad() {
     this.loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: 'Carregando mensagens...'
     });
     this.loading.present();
     
@@ -68,16 +68,16 @@ export class MessagesPage {
     alert.present();
   }
 
-  openChat(friend_id){
+  openChat(amigo_id){
     this.navCtrl.push(ChatPage);
   }
 
   newChat(){
     let friendsModal = this.modalCtrl.create(FriendsPage, { userId: this.authService.get_user_id() });
     friendsModal.onDidDismiss(data => {
-      if(data.friend_id){
+      if(data.amigo_id){
         //this.alert("Informações", "onDidDismiss : "+data.friend_id);
-        this.openChat(data.friend_id);
+        this.openChat(data.amigo_id);
       }
     });
     friendsModal.present();

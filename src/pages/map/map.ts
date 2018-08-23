@@ -132,7 +132,7 @@ export class MapPage {
       var id = parseInt(place.id);
       var lat = place.lat;
       var lon = place.lon;
-      var name = place.name;
+      var nome = place.nome;
 
       var latlon = lat+','+lon;
       var commaPos = latlon.indexOf(',');
@@ -145,7 +145,7 @@ export class MapPage {
       var marker = new google.maps.Marker({
         position: {lat: coordinatesLat, lng: coordinatesLong},
         map: map,
-        title: name,
+        title: nome,
         animation: 'DROP',
         zIndex: id,
         id: id
@@ -160,8 +160,8 @@ export class MapPage {
     }
   }
 
-  loadPlace(id, name){
-    this.navCtrl.push(PlacePage, {"id":id, "name":name});
+  loadPlace(id, nome){
+    this.navCtrl.push(PlacePage, {"id":id, "nome":nome});
   }
 
   setPositionAsContent(marker){
@@ -170,7 +170,7 @@ export class MapPage {
 
   setMarkerEvent(marker){
     google.maps.event.addListener(marker, 'click', function() {
-      this.navCtrl.push(PlacePage, {"id": marker.get('id'), "name": marker.get('name')});
+      this.navCtrl.push(PlacePage, {"id": marker.get('id'), "nome": marker.get('nome')});
     });
   }
 

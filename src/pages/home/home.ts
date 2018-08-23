@@ -1,3 +1,4 @@
+import { UserProvider } from './../../providers/user/user';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Facebook } from '@ionic-native/facebook';
 import { Component } from '@angular/core';
@@ -23,7 +24,8 @@ export class HomePage {
   loading: any;
 
   constructor(public navParams: NavParams, public navCtrl: NavController, public authService: AuthServiceProvider, 
-    public alertCtrl: AlertController, public loadingCtrl: LoadingController, public fb: Facebook, public gp: GooglePlus) {
+    public alertCtrl: AlertController, public loadingCtrl: LoadingController, public fb: Facebook, public gp: GooglePlus,
+     public userService: UserProvider) {
       this.authService.set_logged(false);
       this.userLogged = this.authService.get_user();
       if(this.userLogged){
@@ -73,7 +75,11 @@ export class HomePage {
           this.authService.set_logged(true);
           this.authService.set_user(this.response.data);
           this.loading.dismiss();
-          this.navCtrl.setRoot(TabsPage);
+          if(this.response.data.concluirCadastro){
+            this.setSenha(this.response.data.id);
+          }else{
+            this.gotoTabs();
+          }
         }else{ 
           this.alert('Erro', this.response.data);
         }
@@ -82,6 +88,53 @@ export class HomePage {
       });
     })
     .catch(err => console.error(err));
+  }
+
+  setSenha(id){
+      let alert = this.alertCtrl.create({
+        title: 'Defina uma senha',
+        inputs: [
+          {
+            name: 'senha',
+            placeholder: 'Senha',
+            type: 'password'
+          },
+          {
+            name: 'repetir_senha',
+            placeholder: 'Repita a senha',
+            type: 'password'
+          }
+        ],
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: data => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'Salvar',
+            handler: data => {
+              if(data.senha != data.repetir_senha){
+                this.alert('Erro', 'Senhas incompatíveis');
+                return false;
+              }else if(data.senha.length < 4){
+                this.alert('Erro', 'Defina uma senha com no mínimo 4 dígitos');
+                return false;
+              }
+              //salvar senha
+              this.userService.set_usuario_senha(id, data.senha);
+              this.gotoTabs();
+            }
+          }
+        ]
+      });
+      alert.present();
+  }
+
+  gotoTabs(){
+    this.navCtrl.setRoot(TabsPage);
   }
 
   loginFb(){

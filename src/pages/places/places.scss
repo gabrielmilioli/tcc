@@ -1,3 +1,26 @@
 page-places {
-
+    .star{
+        color:yellow;
+        font-size: xx-large !important;
+    }
+    .button-star{
+        width:calc(100% / 5);
+        background-color: transparent;
+        border: 0px solid transparent;
+        border-radius: 60px;
+        width: 34px !important;
+        height: 34px;
+    }
+    #classification{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        font-size: 3.5em;
+    }
+    .ponto-favorito{
+        position: absolute;
+        font-size: 4.0em;
+        margin:10px;
+    }
 }

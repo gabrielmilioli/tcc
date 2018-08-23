@@ -25,13 +25,13 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item *ngFor="let m of messages" (click)="openChat(m.friend_id)">
-      <ion-icon *ngIf=" m.friend_picture === '' " item-start name="contact"></ion-icon>
-      <ion-avatar *ngIf=" m.friend_picture !== '' " item-start>
-        <img [src]="m.friend_picture">
+    <ion-item *ngFor="let m of messages" (click)="openChat(m.amigo_id)">
+      <ion-icon *ngIf=" m.amigo_foto === '' " item-start name="contact"></ion-icon>
+      <ion-avatar *ngIf=" m.amigo_foto !== '' " item-start>
+        <img [src]="m.amigo_foto">
       </ion-avatar>
-      <h2>{{m.friend_name}}</h2>
-      <p>{{m.message}}</p>
+      <h2>{{m.amigo_nome}}</h2>
+      <p>{{m.mensagem}}</p>
     </ion-item>
   </ion-list>
 
