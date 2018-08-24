@@ -5,31 +5,41 @@
 </ion-header>
 
 <ion-content padding no-bounce>
-  <ion-title class="sub-title">Faça seu login</ion-title>
-  <ion-list>
-    <ion-item>
-      <ion-label floating>Email</ion-label>
-      <ion-input [(ngModel)]="user.email"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label floating>Senha</ion-label>
-      <ion-input type="password" [(ngModel)]="user.password"></ion-input>
-    </ion-item>
-  </ion-list>
+  <div *ngIf="!online">
+    <ion-title class="sub-title">Você está offline! Enquanto isso, você pode...</ion-title>
+    <button ion-button full color="primary" (click)="horarios()">
+      Visualizar horários salvos
+      <ion-icon name="time"></ion-icon>
+    </button>
+  </div>
+  
+  <div *ngIf="online">
+    <ion-title class="sub-title">Faça seu login</ion-title>
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Email</ion-label>
+        <ion-input [(ngModel)]="user.email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Senha</ion-label>
+        <ion-input type="password" [(ngModel)]="user.password"></ion-input>
+      </ion-item>
+    </ion-list>
 
-  <button ion-button full (click)="login()">Entrar</button>
-  <!--<button ion-button full color="light" (click)="gotoRegister()">Me registrar</button>-->
-  <br>
-  <ion-title class="sub-title">Ou pelas redes sociais</ion-title>
-  <div id="social-login">
-    <button class="button-fb" ion-button full color="facebook" (click)="loginFb()">
-        <ion-icon name="logo-facebook"></ion-icon>
-    </button>
-    <button class="button-tt" ion-button full color="twitter" (click)="loginFb()">
-        <ion-icon name="logo-twitter"></ion-icon>
-    </button>
-    <button class="button-gp" ion-button full color="googlePlus" (click)="loginGp()">
-      <ion-icon name="logo-googleplus"></ion-icon>
-    </button>
+    <button ion-button full (click)="login()">Entrar</button>
+    <!--<button ion-button full color="light" (click)="gotoRegister()">Me registrar</button>-->
+    <br>
+    <ion-title class="sub-title">Ou pelas redes sociais</ion-title>
+    <div id="social-login">
+      <button class="button-fb" ion-button full color="facebook" (click)="loginFb()">
+          <ion-icon name="logo-facebook"></ion-icon>
+      </button>
+      <button class="button-tt" ion-button full color="twitter" (click)="loginFb()">
+          <ion-icon name="logo-twitter"></ion-icon>
+      </button>
+      <button class="button-gp" ion-button full color="googlePlus" (click)="loginGp()">
+        <ion-icon name="logo-googleplus"></ion-icon>
+      </button>
+    </div>
   </div>
 </ion-content>

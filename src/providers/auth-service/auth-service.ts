@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 
 let restUrl = "http://tcc.pelainternetsistemas.com.br/rest.php";
 let restClass = "TalkingBus";
@@ -17,7 +18,7 @@ export class AuthServiceProvider {
   public user: BehaviorSubject<object> = new BehaviorSubject<object>({});
   public userData:any;
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, private sqlite: SQLite) {
     //console.log('Hello AuthServiceProvider Provider');
   }
 
@@ -49,8 +50,6 @@ export class AuthServiceProvider {
     credentials.method = "login";
 
     return new Promise((resolve, reject) => {
-      
-
       this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
         .subscribe(res => {
           resolve(res);

@@ -24,6 +24,8 @@ import { AboutPage } from '../pages/about/about';
 import { SettingsPage } from '../pages/settings/settings';
 import { FriendsPage } from '../pages/friends/friends';
 import { PlacePage } from './../pages/place/place';
+import { HorariosPage } from '../pages/horarios/horarios';
+import { HorariosSalvosPage } from './../pages/horarios-salvos/horarios-salvos';
 
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { UserProvider } from '../providers/user/user';
@@ -44,7 +46,9 @@ import { PontosProvider } from '../providers/pontos/pontos';
     AboutPage,
     SettingsPage,
     FriendsPage,
-    PlacePage
+    PlacePage,
+    HorariosPage,
+    HorariosSalvosPage
   ],
   imports: [
     BrowserModule,
@@ -67,7 +71,9 @@ import { PontosProvider } from '../providers/pontos/pontos';
     AboutPage,
     SettingsPage,
     FriendsPage,
-    PlacePage
+    PlacePage,
+    HorariosPage,
+    HorariosSalvosPage
   ],
   providers: [
     StatusBar,

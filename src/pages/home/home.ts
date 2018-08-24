@@ -1,3 +1,4 @@
+import { HorariosSalvosPage } from './../horarios-salvos/horarios-salvos';
 import { UserProvider } from './../../providers/user/user';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Facebook } from '@ionic-native/facebook';
@@ -6,6 +7,7 @@ import { NavParams, NavController, AlertController, LoadingController } from 'io
 import { RegisterPage } from '../register/register';
 import { TabsPage } from '../tabs/tabs';
 import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
+import { Network } from '@ionic-native/network';
 
 @Component({
   selector: 'page-home',
@@ -22,10 +24,11 @@ export class HomePage {
   isLogged: any = false;
   userInfo: any = {};
   loading: any;
+  online: boolean = true;
 
   constructor(public navParams: NavParams, public navCtrl: NavController, public authService: AuthServiceProvider, 
     public alertCtrl: AlertController, public loadingCtrl: LoadingController, public fb: Facebook, public gp: GooglePlus,
-     public userService: UserProvider) {
+     public userService: UserProvider, public network: Network) {
       this.authService.set_logged(false);
       this.userLogged = this.authService.get_user();
       if(this.userLogged){
@@ -42,9 +45,23 @@ export class HomePage {
 
   }
 
+  ionViewDidEnter() {
+    this.network.onConnect().subscribe(data => {
+      this.online = true;
+      this.alert('Sucesso', 'Online!');
+      console.log(data)
+    }, error => console.error(error));
+   
+    this.network.onDisconnect().subscribe(data => {
+      this.online = false;
+      this.alert('Erro', 'Offline!');
+      console.log(data)
+    }, error => console.error(error));
+  }
+
   loginGp(){
     this.loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: 'Acessando...'
     });
     this.loading.present();
     
@@ -137,9 +154,13 @@ export class HomePage {
     this.navCtrl.setRoot(TabsPage);
   }
 
+  horarios(){
+    this.navCtrl.push(HorariosSalvosPage);
+  }
+
   loginFb(){
     this.loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: 'Acessando...'
     });
     this.loading.present();
     
@@ -197,16 +218,16 @@ export class HomePage {
         this.alert('Erro', 'Preencha os campos!'); 
         return false;
     }
-    /*
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+
+    this.loading = this.loadingCtrl.create({
+      content: 'Acessando...'
     });
-    loading.present();
-*/
+    this.loading.present();
+    
     this.authService.login(this.user).then((result) => {
       this.response = result;
-      //loading.dismiss();
       if(this.response.status === 'success'){
+        this.loading.dismiss();
         localStorage.setItem('user', JSON.stringify(this.response.data));
         
         this.authService.set_logged(true);
@@ -218,8 +239,6 @@ export class HomePage {
     }).catch(error=>{
       this.alert('Erro', error.message);
     });
-
-    //loading.dismiss();
 
   }
 
