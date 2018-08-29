@@ -1,3 +1,4 @@
+import { ClassificarPontoPage } from './../classificar-ponto/classificar-ponto';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
@@ -67,35 +68,8 @@ export class PlacePage {
   }
 
   classificarPonto(ponto_id) {
-    let alert = this.alertCtrl.create();
-    alert.setTitle('Quantas estrelas esse ponto merece?');
-
-    alert.addInput({
-      type: 'radio',
-      label: 'Uma',
-      value: '1'
-    });
-    alert.addInput({
-      type: 'radio',
-      label: 'Duas',
-      value: '2'
-    });
-    alert.addInput({
-      type: 'radio',
-      label: 'Três',
-      value: '3'
-    });
-    alert.addInput({
-      type: 'radio',
-      label: 'Quatro',
-      value: '4'
-    });
-    alert.addInput({
-      type: 'radio',
-      label: 'Cinco',
-      value: '5'
-    });
-
+    this.navCtrl.push(ClassificarPontoPage, {'ponto_id':ponto_id});
+    /*
     alert.addButton('Cancelar');
     alert.addButton({
       text: 'Classificar',
@@ -117,7 +91,7 @@ export class PlacePage {
 
       }
     });
-    alert.present();
+    */
   }
 
   ionViewDidLoad() {

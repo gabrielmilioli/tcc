@@ -20,13 +20,13 @@ import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 export class PlacesPage {
   @ViewChild('searchbar', { read: ElementRef }) searchbarRef: ElementRef;
   @ViewChild('searchbar') searchbarElement: Searchbar;
-  pontos:Array<{id: string, nome: string, endereco: string, data_registro: string, imagem: string, favorito: string, class: Array<{}> }>;
+  pontos:Array<{id: string, nome: string, endereco: string, data_registro: string, imagem: string, favorito: string, class: any }>;
   loading:any;
   response:any;
   tab:string="t";
   inputBuscar:string;
   mostrarBuscar:boolean=false;
-  todosPontos:Array<{id: string, nome: string, endereco: string, data_registro: string, imagem: string, favorito: string, class: Array<{}> }>;
+  todosPontos:Array<{id: string, nome: string, endereco: string, data_registro: string, imagem: string, favorito: string, class: any }>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthServiceProvider,
     public alertCtrl: AlertController, public loadingCtrl: LoadingController, public ponto: PontosProvider) {
@@ -85,7 +85,7 @@ export class PlacesPage {
     this.tab="t";
     var id = this.authService.get_user_id();
     this.ponto.get_pontos(id).then((result) => {
-      //console.log(result);
+      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.pontos = this.response.data;

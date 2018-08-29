@@ -29,10 +29,17 @@ export class MapPage {
   loading:any;
   track:boolean=false;
   trackClass:string="primary";
+  mostrarBuscar:boolean=false;
+  adicionar:boolean=false;
+  adicionarClass:string="primary";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, public authService: AuthServiceProvider,
   public alertCtrl: AlertController, public loadingCtrl: LoadingController, public map: GoogleMaps) {
     console.log(map);
+  }
+
+  ionViewDidEnter(){
+    this.ionViewDidLoad();
   }
 
   ionViewDidLoad() {
@@ -65,6 +72,7 @@ export class MapPage {
       this.track=false;
       this.trackClass="primary";
     }
+
     this.geolocation.getCurrentPosition().then(pos => {
       this.lat = pos.coords.latitude;
       this.lon = pos.coords.longitude;
@@ -74,8 +82,19 @@ export class MapPage {
     }).catch((error) => {
       this.alert('Erro', error);
     });
+
   }
 
+  adicionarPonto(){
+    if(!this.adicionar){
+      this.adicionar=true;
+      this.adicionarClass="lightPrimary";
+    }else{
+      this.adicionar=false;
+      this.adicionarClass="primary";
+    }
+  }
+  
   loadPlaces(){
     this.authService.get_places().then((result) => {
       //console.log(result);
@@ -88,6 +107,17 @@ export class MapPage {
     }).catch(error=>{
       this.alert('Erro', error);
     });
+  }
+
+  toggleBusca(){
+    let input = <HTMLInputElement>document.getElementById('searchbar');
+    if (this.mostrarBuscar) {
+      this.mostrarBuscar = false;
+    } else {
+      this.mostrarBuscar = true;
+      input.focus();
+    }
+    console.log(input);
   }
 
   displayMap() {

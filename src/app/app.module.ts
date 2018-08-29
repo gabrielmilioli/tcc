@@ -26,6 +26,7 @@ import { FriendsPage } from '../pages/friends/friends';
 import { PlacePage } from './../pages/place/place';
 import { HorariosPage } from '../pages/horarios/horarios';
 import { HorariosSalvosPage } from './../pages/horarios-salvos/horarios-salvos';
+import { ClassificarPontoPage } from './../pages/classificar-ponto/classificar-ponto';
 
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { UserProvider } from '../providers/user/user';
@@ -50,7 +51,8 @@ import { Network } from '@ionic-native/network';
     FriendsPage,
     PlacePage,
     HorariosPage,
-    HorariosSalvosPage
+    HorariosSalvosPage,
+    ClassificarPontoPage
   ],
   imports: [
     BrowserModule,
@@ -75,7 +77,8 @@ import { Network } from '@ionic-native/network';
     FriendsPage,
     PlacePage,
     HorariosPage,
-    HorariosSalvosPage
+    HorariosSalvosPage,
+    ClassificarPontoPage
   ],
   providers: [
     StatusBar,

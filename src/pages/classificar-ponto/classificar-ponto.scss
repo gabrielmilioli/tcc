@@ -1,0 +1,20 @@
+page-classificar-ponto {
+    .item-inner{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        text-align:center;
+    }
+    .item-inner > .input-wrapper{
+        display:none;
+    }
+    .radio-md .radio-icon {
+        width: 27px;
+        height: 27px;
+    }
+    .radio-md .radio-inner {
+        width: 19px;
+        height: 19px;
+    }
+}
