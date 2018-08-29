@@ -51,15 +51,15 @@ export class TabsPage {
     }
     this.pages = [
       { title: 'Perfil', component: ProfilePage, icon: 'contact' },
-      { title: 'Meus pontos', component: PlacesPage, icon: 'heart' },
-      { title: 'Reportar Bug', component: null, icon: 'bug' },
+      { title: 'Meus pontos', component: PlacesPage, icon: 'heart' }
+      /*{ title: 'Reportar Bug', component: null, icon: 'bug' },
       { title: 'Configurações', component: SettingsPage, icon: 'cog' },
-      { title: 'Sobre', component: AboutPage, icon: 'information-circle' },
+      { title: 'Sobre', component: AboutPage, icon: 'information-circle' },*/
       ];
     this.tabs = [
       { title: 'Pontos', root: PlacesPage, icon: 'bus' },
-      { title: 'Mapa', root: MapPage, icon: 'compass' },
-      { title: 'Mensagens', root: MessagesPage, icon: 'chatbubbles' }
+      { title: 'Mapa', root: MapPage, icon: 'compass' }
+      /*{ title: 'Mensagens', root: MessagesPage, icon: 'chatbubbles' }*/
       ];
   }
   

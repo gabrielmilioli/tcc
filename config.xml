@@ -102,8 +102,10 @@
         <variable name="REVERSED_CLIENT_ID" value="apps.googleusercontent.com.138261567653-mtf1l084m5i8fqmml071uatu0smghbev" />
     </plugin>
     <allow-navigation href="http://192.168.0.6:8100" />
-    <engine name="android" spec="^7.1.1" />
-    <engine name="browser" spec="5.0.4" />
     <plugin name="cordova-sqlite-storage" spec="^2.4.0" />
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
+    <allow-navigation href="http://169.254.214.241:8100" sessionid="3ad7a1a3" />
+    <allow-navigation href="http://192.168.0.47:8100" sessionid="77d48590" />
+    <engine name="android" spec="^7.1.1" />
+    <engine name="browser" spec="5.0.4" />
 </widget>

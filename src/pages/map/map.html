@@ -24,6 +24,12 @@
 
 
 <ion-content>
+  <ion-fab bottom right>
+    <button ion-fab [color]="trackClass" (click)="centralizar()">
+      Centralizar
+      <ion-icon name="locate"></ion-icon>
+    </button>
+  </ion-fab>
   <!--<ion-list id="search-button">
     <ion-item>
       <ion-input type="text" [(ngModel)]="address" placeholder="Buscar por lugar"></ion-input>

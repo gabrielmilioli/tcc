@@ -30,6 +30,8 @@ import { HorariosSalvosPage } from './../pages/horarios-salvos/horarios-salvos';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { UserProvider } from '../providers/user/user';
 import { PontosProvider } from '../providers/pontos/pontos';
+import { Network } from '@ionic-native/network';
+
 
 @NgModule({
   declarations: [
@@ -85,7 +87,8 @@ import { PontosProvider } from '../providers/pontos/pontos';
     GoogleMaps,
     GooglePlus,
     UserProvider,
-    PontosProvider
+    PontosProvider,
+    Network
   ]
 })
 export class AppModule {}

@@ -27,6 +27,8 @@ export class MapPage {
   response:any;
   places = [];
   loading:any;
+  track:boolean=false;
+  trackClass:string="primary";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, public authService: AuthServiceProvider,
   public alertCtrl: AlertController, public loadingCtrl: LoadingController, public map: GoogleMaps) {
@@ -42,12 +44,10 @@ export class MapPage {
 
     this.lat = -28.684433;
     this.lon = -49.369194;
-    this.geolocation.getCurrentPosition().then((resp) => {
-      //console.log(resp);
-      this.lat = resp.coords.latitude;
-      this.lon = resp.coords.longitude;
-      // resp.coords.latitude
-      // resp.coords.longitude
+
+    this.geolocation.getCurrentPosition().then(pos => {
+      this.lat = pos.coords.latitude;
+      this.lon = pos.coords.longitude;
     }).catch((error) => {
       this.alert('Erro', error);
     });
@@ -55,6 +55,25 @@ export class MapPage {
     this.displayMap();
 
     this.loading.dismiss();
+  }
+
+  centralizar(){
+    if(!this.track){
+      this.track=true;
+      this.trackClass="lightPrimary";
+    }else{
+      this.track=false;
+      this.trackClass="primary";
+    }
+    this.geolocation.getCurrentPosition().then(pos => {
+      this.lat = pos.coords.latitude;
+      this.lon = pos.coords.longitude;
+
+      this.displayMap();
+      
+    }).catch((error) => {
+      this.alert('Erro', error);
+    });
   }
 
   loadPlaces(){
@@ -162,10 +181,6 @@ export class MapPage {
 
   loadPlace(id, nome){
     this.navCtrl.push(PlacePage, {"id":id, "nome":nome});
-  }
-
-  setPositionAsContent(marker){
-    console.log(marker);
   }
 
   setMarkerEvent(marker){
