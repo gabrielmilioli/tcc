@@ -1,7 +1,7 @@
 import { PlacePage } from './../place/place';
 import { Geolocation } from '@ionic-native/geolocation';
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { Component, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, ModalController } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { GoogleMaps, GoogleMapsEvent } from '../../../node_modules/@ionic-native/google-maps';
 
@@ -34,8 +34,15 @@ export class MapPage {
   adicionarClass:string="primary";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, public authService: AuthServiceProvider,
-  public alertCtrl: AlertController, public loadingCtrl: LoadingController, public map: GoogleMaps) {
-    console.log(map);
+  public alertCtrl: AlertController, public loadingCtrl: LoadingController, public map: GoogleMaps, public zone: NgZone, public modalCtrl: ModalController) {
+    //console.log(map);
+    (window as any).angularComponent = { GoDetail: this.GoDetail, zone: zone };
+  }
+
+  GoDetail = (id: any, nome: any) => { 
+    this.zone.run(() => { 
+      this.navCtrl.push(PlacePage, {"id":id, "nome":nome});
+    }); 
   }
 
   ionViewDidEnter(){
@@ -182,6 +189,7 @@ export class MapPage {
       var lat = place.lat;
       var lon = place.lon;
       var nome = place.nome;
+      var imagem = place.imagem;
 
       var latlon = lat+','+lon;
       var commaPos = latlon.indexOf(',');
@@ -191,39 +199,88 @@ export class MapPage {
       //var type = place.type;
       //var register_date = place.register_date;
       
+
+      var infoBox = '<div class="info-box">'+
+      '<div class="info-header">'+
+      '<img src="'+imagem+'">'+
+      '</div>'+
+      '<div class="info-content">'+
+      '<h6>'+nome+'</h6>'+
+      '<div class="info-content-plus">'+
+      '<p>9 linhas</p>'+
+      '<p>10 comentários</p>'+
+      '<p>6 favoritos</p>'+
+      '</div>'+
+      '</div>'+
+      '<div class="info-footer">'+
+      '<button ion-button full onclick="window.angularComponent.GoDetail('+id+', \''+nome+'\');">'+
+      '<span class="button-inner">Visualizar</span>'+
+      '</button>'+
+      '</div>'+
+      '</div>';
+
+      var infowindow = new google.maps.InfoWindow({
+        content: infoBox,
+        maxWidth: 200
+      });
+
+      var image = {
+        url: 'http://tcc.pelainternetsistemas.com.br/app/images/marker-20.png',
+        // This marker is 20 pixels wide by 32 pixels high.
+        size: new google.maps.Size(20, 28),
+        // The origin for this image is (0, 0).
+        origin: new google.maps.Point(0, 0),
+        // The anchor for this image is the base of the flagpole at (0, 32).
+        anchor: new google.maps.Point(0, 28)
+      };
+
       var marker = new google.maps.Marker({
         position: {lat: coordinatesLat, lng: coordinatesLong},
         map: map,
         title: nome,
         animation: 'DROP',
         zIndex: id,
-        id: id
+        id: id,
+        icon: image
       });
 
       google.maps.event.addListener(marker, 'click', (function(marker, app) {
         return function() {
-          app.loadPlace(marker.get("id"), marker.get("title"));
+          //app.irPonto(marker.get("id"), marker.get("title"));
+          infowindow.open(map, marker);
         }
       })(marker, this));
 
     }
   }
 
+  irPonto(id, nome){
+    let alert = this.alertCtrl.create();
+    alert.setTitle(nome);
+    alert.setMessage('Message <strong>text</strong><br>'+
+    '<p>3<ion-icon name="bus"></ion-icon></p>'+
+    '<p>8 <ion-icon name="text"></ion-icon></p>'+
+    '<p>9 <ion-icon name="heart"></ion-icon></p>'
+    );
+    alert.addButton({
+      text: 'Voltar',
+      role: 'cancel',
+      handler: () => {
+        console.log('Confirm Cancel');
+      }
+    });
+    alert.addButton({
+      text: 'Ver',
+      handler: () => {
+        this.navCtrl.push(PlacePage, {"id":id, "nome":nome});
+      }
+    });
+
+    alert.present();  
+  }
+
   loadPlace(id, nome){
     this.navCtrl.push(PlacePage, {"id":id, "nome":nome});
-  }
-
-  setMarkerEvent(marker){
-    google.maps.event.addListener(marker, 'click', function() {
-      this.navCtrl.push(PlacePage, {"id": marker.get('id'), "nome": marker.get('nome')});
-    });
-  }
-
-  addMarker(position,map) {
-    return new google.maps.Marker({
-      position,
-      map
-    });
   }
 
   getAddress(place: Object) {       

@@ -3,7 +3,6 @@ page-map {
         height: 100%;
         width:100%;
     }
-    
     .searchbar-input{
         z-index: 0;
         position: absolute;
@@ -27,13 +26,53 @@ page-map {
     #addPonto{
         z-index: 99999;
         position: absolute;
-        height: 45px;
-        width: 45px;
-        font-size: 1.5em;
+        height: 20px;
+        width: 28px;
         margin: auto;
         right: 0px;
         left: 0px;
         top: 0px;
         bottom: 0px;
+    }
+    .info-box{
+        width: 200px;
+    }
+    .info-header{
+      width: 200px;
+      height: 100px;
+      position: relative;
+    }
+    .info-content{
+        width:100%;
+    }
+    .info-header > img{
+        position: absolute;
+        margin: auto;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        max-height: 100px;
+    }
+    .info-content-plus{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+    }
+    .info-footer{
+        width:100%;
+    }
+    .info-footer > button{
+        width:100%;
+        background-color:color($colors, primary);
+        color:color($colors, light);
+        font-size: 1em;
+        padding: 0.3em;
+        border: 0 solid transparent;
+        border-radius: 50px;
+    }
+    .gm-style-iw, .gm-style-iw > div, .gm-style-iw > div > div{
+        width:100%;
     }
 }

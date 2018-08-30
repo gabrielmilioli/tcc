@@ -10,14 +10,17 @@ page-home {
         //background-position: center;
         //background-size: cover;
     }
+    img{
+        display: initial;
+        border-radius: 50%;
+        overflow: hidden;
+        width: 65px;
+        height: 65px;
+    }
     ion-navbar{
         padding:0px !important;
         margin:0px;
     }
-    img{
-        width:100%;
-    }
-    
     #social-login{
         display: flex;
         flex-direction: row;

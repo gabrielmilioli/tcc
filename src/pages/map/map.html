@@ -39,7 +39,7 @@
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>
-  <ion-icon [hidden]="!adicionar" id="addPonto" name="pin"></ion-icon>
+  
   <!--<ion-list id="search-button">
     <ion-item>
       <ion-input type="text" [(ngModel)]="address" placeholder="Buscar por lugar"></ion-input>
@@ -48,5 +48,9 @@
       </button>
     </ion-item>
   </ion-list>-->
-  <div #map id="map"></div>
+  <div #map id="map">
+    <div id="addPonto">
+      <img [hidden]="!adicionar" src="http://tcc.pelainternetsistemas.com.br/app/images/marker-20.png">
+    </div>
+  </div>
 </ion-content>
