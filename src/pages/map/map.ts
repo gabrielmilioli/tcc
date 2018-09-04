@@ -93,12 +93,19 @@ export class MapPage {
   }
 
   adicionarPonto(){
+    let addPonto = '<div id="addPonto">'+
+    '<img src="http://tcc.pelainternetsistemas.com.br/app/images/marker-20.png">'+
+    '</div>'; 
+    let input = document.getElementById('map');
+    //console.log(input);
     if(!this.adicionar){
       this.adicionar=true;
       this.adicionarClass="lightPrimary";
+      input.innerHTML += addPonto;
     }else{
       this.adicionar=false;
       this.adicionarClass="primary";
+      document.getElementById('addPonto').remove();
     }
   }
   
@@ -117,14 +124,13 @@ export class MapPage {
   }
 
   toggleBusca(){
-    let input = <HTMLInputElement>document.getElementById('searchbar');
+    let input = document.getElementById('searchbar');
+    console.log(input);
     if (this.mostrarBuscar) {
       this.mostrarBuscar = false;
     } else {
       this.mostrarBuscar = true;
-      input.focus();
     }
-    console.log(input);
   }
 
   displayMap() {

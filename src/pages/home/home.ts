@@ -105,6 +105,9 @@ export class HomePage {
       });
     })
     .catch(err => console.error(err));
+    setTimeout(() => {
+      this.loading.dismiss();
+    }, 60000);
   }
 
   setSenha(id){
@@ -200,7 +203,9 @@ export class HomePage {
     }).catch(error=>{
       this.alert('Erro', error.message);
     });
-
+    setTimeout(() => {
+      this.loading.dismiss();
+    }, 60000);
     
   }
 
@@ -239,7 +244,9 @@ export class HomePage {
     }).catch(error=>{
       this.alert('Erro', error.message);
     });
-
+    setTimeout(() => {
+      this.loading.dismiss();
+    }, 60000);
   }
 
   alert(title, subTitle) {

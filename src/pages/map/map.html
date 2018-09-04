@@ -14,7 +14,7 @@
       </ion-buttons>
     <ion-title>
         <ion-searchbar color="primary" placeholder="Buscar por itinetário"
-        [(ngModel)]="address" #searchbar 
+        [(ngModel)]="address" #searchbar id="searchbar" 
         (setAddress)="getAddress($event)" [hidden]="!mostrarBuscar">
         </ion-searchbar>
     </ion-title>
@@ -49,8 +49,5 @@
     </ion-item>
   </ion-list>-->
   <div #map id="map">
-    <div id="addPonto">
-      <img [hidden]="!adicionar" src="http://tcc.pelainternetsistemas.com.br/app/images/marker-20.png">
-    </div>
   </div>
 </ion-content>
