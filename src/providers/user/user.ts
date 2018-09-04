@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 let restUrl = "http://tcc.pelainternetsistemas.com.br/rest.php";
-let restClass = "Users";
+let restClass = "apiUsuarios";
 
 /*
   Generated class for the UserProvider provider.

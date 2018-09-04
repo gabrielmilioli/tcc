@@ -1,0 +1,50 @@
+<!--
+  Generated template for the LinhasPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>
+      {{ponto_nome}}
+    </ion-title>
+    <ion-buttons right>
+      <button ion-button>
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-title>
+    Linhas do ponto {{ponto_nome}}
+  </ion-title>
+  <ion-list>
+    <ng-container *ngIf="!linhas">
+      <ion-item color="primary" center text-center>
+        <h2>Nenhuma linha presente neste ponto</h2>
+      </ion-item>
+    </ng-container>
+
+    <ion-item *ngFor="let l of linhas">
+      <ion-avatar item-start>
+        <ion-icon name="bus"></ion-icon>
+      </ion-avatar>
+      <h2>{{l.numero}} - {{l.nome}}</h2>
+      <p>Itinetários</p>
+      <p *ngFor="let i of l.itinetarios" (click)="buscarItinetario(i.itinetario);">{{i.itinetario}}</p>
+      <ion-note>{{l.data_ultima_alt}}</ion-note>
+<!--
+      <ion-label>
+          <h2>Recent</h2>
+          <ion-note>Settings you changed recently</ion-note>
+      </ion-label>
+-->
+    </ion-item>
+  </ion-list>
+</ion-content>

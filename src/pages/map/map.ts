@@ -1,9 +1,11 @@
+import { LinhasPage } from './../linhas/linhas';
 import { PlacePage } from './../place/place';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Component, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController, ModalController } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
-import { GoogleMaps, GoogleMapsEvent } from '../../../node_modules/@ionic-native/google-maps';
+import { GoogleMaps } from '../../../node_modules/@ionic-native/google-maps';
+
 
 declare var google:any;
 /**
@@ -21,6 +23,7 @@ declare var google:any;
 export class MapPage {
   @ViewChild('map') mapRef:ElementRef;
   @ViewChild('address') addressRef:ElementRef;
+  @ViewChild('searchbar') searchbarRef:ElementRef;
   address:string;
   lat:any;
   lon:any;
@@ -32,6 +35,7 @@ export class MapPage {
   mostrarBuscar:boolean=false;
   adicionar:boolean=false;
   adicionarClass:string="primary";
+  enderecoCentro:string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, public authService: AuthServiceProvider,
   public alertCtrl: AlertController, public loadingCtrl: LoadingController, public map: GoogleMaps, public zone: NgZone, public modalCtrl: ModalController) {
@@ -41,7 +45,7 @@ export class MapPage {
 
   GoDetail = (id: any, nome: any) => { 
     this.zone.run(() => { 
-      this.navCtrl.push(PlacePage, {"id":id, "nome":nome});
+      this.navCtrl.push(LinhasPage, {"id":id, "nome":nome});
     }); 
   }
 
@@ -93,19 +97,22 @@ export class MapPage {
   }
 
   adicionarPonto(){
-    let addPonto = '<div id="addPonto">'+
-    '<img src="http://tcc.pelainternetsistemas.com.br/app/images/marker-20.png">'+
-    '</div>'; 
-    let input = document.getElementById('map');
-    //console.log(input);
     if(!this.adicionar){
       this.adicionar=true;
       this.adicionarClass="lightPrimary";
-      input.innerHTML += addPonto;
     }else{
       this.adicionar=false;
       this.adicionarClass="primary";
-      document.getElementById('addPonto').remove();
+    }
+  }
+  
+  criarPonto(){
+    if(!this.adicionar){
+      this.adicionar=true;
+      this.adicionarClass="lightPrimary";
+    }else{
+      this.adicionar=false;
+      this.adicionarClass="primary";
     }
   }
   
@@ -124,8 +131,6 @@ export class MapPage {
   }
 
   toggleBusca(){
-    let input = document.getElementById('searchbar');
-    console.log(input);
     if (this.mostrarBuscar) {
       this.mostrarBuscar = false;
     } else {
@@ -134,7 +139,12 @@ export class MapPage {
   }
 
   displayMap() {
-    
+    this.mostrarBuscar = false;
+    this.adicionar=false;
+    this.adicionarClass="primary";
+    this.track=false;
+    this.trackClass="primary";
+
     const location = new google.maps.LatLng(this.lat,this.lon);
 
     const options = {
@@ -172,12 +182,17 @@ export class MapPage {
     });
     
     
-    let input = <HTMLInputElement>document.getElementsByClassName('searchbar-input')[0];
+    let input = <HTMLInputElement>document.getElementById('searchbar');
     var searchBox = new google.maps.places.SearchBox(input);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
     map.addListener('bounds_changed', function() {
       searchBox.setBounds(map.getBounds());
+    });
+
+    map.addListener(map, 'center_changed', () => {
+      console.log(map.getCenter());
+      //this.enderecoCentro = map.getCenter();
     });
 
     searchBox.addListener('places_changed', function() {

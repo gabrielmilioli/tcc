@@ -1,3 +1,4 @@
+import { LinhasPage } from './../pages/linhas/linhas';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -52,7 +53,8 @@ import { Network } from '@ionic-native/network';
     PlacePage,
     HorariosPage,
     HorariosSalvosPage,
-    ClassificarPontoPage
+    ClassificarPontoPage,
+    LinhasPage
   ],
   imports: [
     BrowserModule,
@@ -78,7 +80,8 @@ import { Network } from '@ionic-native/network';
     PlacePage,
     HorariosPage,
     HorariosSalvosPage,
-    ClassificarPontoPage
+    ClassificarPontoPage,
+    LinhasPage
   ],
   providers: [
     StatusBar,

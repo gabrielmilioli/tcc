@@ -29,14 +29,19 @@
 
 
 <ion-content>
-  <ion-fab bottom right>
-    <button ion-fab [color]="trackClass" (click)="centralizar()">
-      <ion-icon name="locate"></ion-icon>
-    </button>
-  </ion-fab>
-  <ion-fab bottom left>
+  <ion-fab bottom right [hidden]="adicionar">
     <button ion-fab [color]="adicionarClass" (click)="adicionarPonto()">
       <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+
+  <button ion-button round bottom center color="lightPrimary" [hidden]="!adicionar" (click)="criarPonto()" id="criarPonto">
+    Criar um ponto aqui
+  </button>
+
+  <ion-fab bottom left [hidden]="adicionar">
+    <button ion-fab [color]="trackClass" (click)="centralizar()">
+      <ion-icon name="locate"></ion-icon>
     </button>
   </ion-fab>
   
@@ -48,6 +53,10 @@
       </button>
     </ion-item>
   </ion-list>-->
-  <div #map id="map">
+  <div id="div">
+    <div #map id="map"></div>
+    <div id="addPonto" [hidden]="!adicionar">
+      <img src="http://tcc.pelainternetsistemas.com.br/app/images/marker-20.png">
+    </div>
   </div>
 </ion-content>
