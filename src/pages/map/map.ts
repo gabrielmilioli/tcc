@@ -107,13 +107,7 @@ export class MapPage {
   }
   
   criarPonto(){
-    if(!this.adicionar){
-      this.adicionar=true;
-      this.adicionarClass="lightPrimary";
-    }else{
-      this.adicionar=false;
-      this.adicionarClass="primary";
-    }
+    console.log(this.enderecoCentro);
   }
   
   loadPlaces(){
@@ -156,7 +150,7 @@ export class MapPage {
       disableDefaultUI: true,
       mapTypeControl: false,
       scaleControl: false,
-      scrollwheel: false,
+      //scrollwheel: false,
       styles: [
         {
           "featureType": "poi",
@@ -181,7 +175,7 @@ export class MapPage {
       this.alert('Erro', error);
     });
     
-    
+    var geocoder = new google.maps.Geocoder;
     let input = <HTMLInputElement>document.getElementById('searchbar');
     var searchBox = new google.maps.places.SearchBox(input);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
@@ -190,9 +184,10 @@ export class MapPage {
       searchBox.setBounds(map.getBounds());
     });
 
-    map.addListener(map, 'center_changed', () => {
-      console.log(map.getCenter());
-      //this.enderecoCentro = map.getCenter();
+    google.maps.event.addListener(map, 'center_changed', () => {
+      //console.log(map.getCenter().lat());
+      //console.log(map.getCenter().lng());
+      this.enderecoCentro = map.getCenter().lat()+","+map.getCenter().lng();
     });
 
     searchBox.addListener('places_changed', function() {
@@ -200,6 +195,75 @@ export class MapPage {
       console.log(places);
     });
 
+    document.getElementById('criarPonto').addEventListener('click', () => {
+      console.log('teste');
+      //this.geocodeLatLng(geocoder, map);
+    });
+
+  }
+
+  geocodeLatLng(geocoder, map) {
+    var input = this.enderecoCentro;
+    var latlngStr = input.split(',', 2);
+    var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+    geocoder.geocode({'location': latlng}, function(results, status) {
+      if (status === 'OK') {
+        if (results[0]) {
+          //map.setZoom(11);
+          let result = results[0];
+          let criciuma = false;
+          
+          let endereco = {
+            pais: "",
+            estado: "",
+            cidade: "",
+            bairro: "",
+            rua: "",
+            numero: "",
+            cep: "",
+            estabelecimento: ""
+          };
+
+          result.address_components.forEach(element => {
+            let types = element.types;
+            let long_name = element.long_name;
+            //let short_name = element.short_name;
+            if(types.includes('country')){
+              endereco.pais = long_name;
+            }else if(types.includes('administrative_area_level_1')){
+              endereco.estado = long_name;
+            }else if(types.includes('administrative_area_level_2')){
+              endereco.cidade = long_name;
+              if(long_name.indexOf('Criciúma') !== -1){
+                criciuma = true;
+              }
+            }else if(types.includes('sublocality')){
+              endereco.bairro = long_name;
+            }else if(types.includes('route')){
+              endereco.rua = long_name;
+            }else if(types.includes('street_number')){
+              endereco.numero = long_name;
+            }else if(types.includes('postal_code')){
+              endereco.cep = long_name;
+            }else if(types.includes('establishment')){
+              endereco.estabelecimento = long_name;
+            }
+            
+          });
+
+          if(!criciuma){
+            this.alert('Erro', 'Escolha um endereço válido em Criciúma');
+          }else{
+            console.log(endereco);
+          }
+
+        } else {
+          this.alert('Erro', 'Nenhum endereço encontrado');
+        }
+      } else {
+        this.alert('Erro', 'Geocoder falhou: ' + status);
+      }
+    });
   }
 
   addMarkers(places, map){
