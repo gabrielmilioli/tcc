@@ -164,6 +164,24 @@ export class PontosProvider {
     });
   }
   
+  set_usuarios_ponto_class(id, ponto_id, classificacoes){
+    let credentials = {
+      "class": 'apiClassificacao',
+      "method": "set_usuarios_ponto_class",
+      "id": id,
+      "ponto_id": ponto_id,
+      "classificacoes": classificacoes
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+  
   getHeaders(){
    
     return new HttpHeaders(

@@ -53,7 +53,6 @@ export class PlacesPage {
   buscar(e){
     let val = e.target.value;
     let results = [];
-    var buscarEm = "nome";
     var buscarPor = val;
     this.pontos = this.todosPontos;
     for (var i=0 ; i < this.todosPontos.length ; i++)

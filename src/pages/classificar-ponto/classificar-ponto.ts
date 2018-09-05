@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { PontosProvider } from './../../providers/pontos/pontos';
+import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 
 /**
  * Generated class for the ClassificarPontoPage page.
@@ -23,10 +24,11 @@ export class ClassificarPontoPage {
   classificacoes:Array<{id: string, metodo: string, pergunta: string, descricao: string }>;
   
   constructor(public navCtrl: NavController, public navParams: NavParams, public ponto: PontosProvider,
-    public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
+    public alertCtrl: AlertController, public loadingCtrl: LoadingController, public authService: AuthServiceProvider) {
     this.ponto_id = this.navParams.get("ponto_id");
 
     var indexes = [];
+    indexes[0] = ""; // comentario
     indexes[1] = 3;
     indexes[2] = 3;
     indexes[3] = 3;
@@ -81,7 +83,31 @@ export class ClassificarPontoPage {
   }
 
   classificar(){
-    console.log(this.valoresClassificacao);
+    var id = this.authService.get_user_id();
+    this.ponto.set_usuarios_ponto_class(id, this.ponto_id, this.valoresClassificacao).then((result) => {
+      //console.log(result);
+      this.response = result;
+      if(this.response.status === 'success'){
+        let alert = this.alertCtrl.create({
+          title: 'Sucesso',
+          subTitle: this.response.data,
+          buttons: [
+            {
+              text: 'Ok',
+              handler: data => {
+                this.navCtrl.pop();
+              }
+            }
+          ]
+        });
+        alert.present();
+      }else{ 
+        this.alert('Erro', this.response.data);
+      }
+    }).catch(error=>{
+      console.log(error);
+      this.alert('Erro', error);
+    });
   }
 
   alert(title, subTitle) {

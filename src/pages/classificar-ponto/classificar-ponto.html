@@ -14,7 +14,7 @@
 
 
 <ion-content padding>
-  <ion-row *ngFor="let c of classificacoes" radio-group [(ngModel)]="valoresClassificacao[c.id]">
+  <ion-row class="metodo" *ngFor="let c of classificacoes" radio-group [(ngModel)]="valoresClassificacao[c.id]">
     <ion-col>
       <h5>{{c.metodo}}</h5>
       <p *ngIf="c.pergunta">{{c.pergunta}}</p>
@@ -29,11 +29,11 @@
     </ion-col>
   </ion-row>
   
-  <ion-row>
+  <ion-row class="metodo">
     <ion-col>
       <h5>Deseja adicionar um comentário?</h5>
       <p>Diga-nos o porquê da sua classificação.</p>
-      <ion-textarea placeholder="Escreva algo..."></ion-textarea>
+      <ion-textarea placeholder="Escreva algo..." [(ngModel)]="valoresClassificacao[0]"></ion-textarea>
     </ion-col>
   </ion-row>
 

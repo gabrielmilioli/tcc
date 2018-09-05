@@ -19,7 +19,7 @@ import { LinhasPage } from './../linhas/linhas';
   templateUrl: 'place.html',
 })
 export class PlacePage {
-  ponto={id: "", nome: "", endereco: "", data_registro: "", imagem: "", favorito: "", 
+  ponto={id: "", nome: "", endereco: "", data_registro: "", imagem: "", favorito: "", classificou: false,
   class: [{icon:""}], totalClass: "",
   comentarios: [{usuario_id:"", usuario_foto:"", usuario_nome:"", comentario:"", data_registro:""}] };
 

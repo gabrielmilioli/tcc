@@ -49,7 +49,7 @@
     
   <ion-row center text-center id="ponto-opcoes">
     <ion-col>
-      <button color="primary" icon-end ion-button round (click)="classificarPonto(ponto.id)">
+      <button color="primary" icon-end ion-button round [disabled]="ponto.classificou" (click)="classificarPonto(ponto.id)">
         Classificar
         <ion-icon name="star"></ion-icon>
       </button>
