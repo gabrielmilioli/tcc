@@ -32,7 +32,7 @@ export class PlacesPage {
     public alertCtrl: AlertController, public loadingCtrl: LoadingController, public ponto: PontosProvider) {
   }
 
-  ionViewDidEnter(refresher = null){
+  ionViewWillEnter(refresher = null){
     this.loading = this.loadingCtrl.create({
       content: 'Carregando pontos...'
     });
@@ -134,7 +134,7 @@ export class PlacesPage {
         if(this.response.status === 'success'){
           let input = <HTMLInputElement>document.getElementById(ponto_id);
           console.log(input);
-          this.ionViewDidEnter();
+          this.ionViewWillEnter();
         }else{ 
           this.alert('Erro', this.response.data);
         }

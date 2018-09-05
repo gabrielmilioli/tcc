@@ -49,10 +49,12 @@ export class MapPage {
   }
 
   ionViewDidEnter(){
-    this.ionViewDidLoad();
+    console.log('ionViewDidEnter');
+    this.displayMap();
   }
 
-  ionViewDidLoad() {
+  ionViewWillEnter() {
+    console.log('ionViewWillEnter');
     this.loading = this.loadingCtrl.create({
       content: 'Carregando mapa...'
     });
@@ -68,8 +70,6 @@ export class MapPage {
     }).catch((error) => {
       this.alert('Erro', error);
     });
-
-    this.displayMap();
 
     this.loading.dismiss();
   }
