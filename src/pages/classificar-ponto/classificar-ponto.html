@@ -14,42 +14,33 @@
 
 
 <ion-content padding>
-
-  <ion-list no-lines>
-    
-    <h4>Segurança</h4>
-    <ion-label>Como você classificaria a segurança desse ponto?</ion-label>
-    <ion-item>
-      <ion-radio value="1"></ion-radio>
-      <ion-radio value="2"></ion-radio>
-      <ion-radio value="3"></ion-radio>
-      <ion-radio value="4"></ion-radio>
-      <ion-radio value="5"></ion-radio>
-    </ion-item>
-
-    <h4>Cobertura</h4>
-    <ion-label>Como você classificaria a cobertura desse ponto?</ion-label>
-    <ion-item>
-      <ion-radio value="1"></ion-radio>
-      <ion-radio value="2"></ion-radio>
-      <ion-radio value="3"></ion-radio>
-      <ion-radio value="4"></ion-radio>
-      <ion-radio value="5"></ion-radio>
-    </ion-item>
+  <ion-row *ngFor="let c of classificacoes" radio-group [(ngModel)]="valoresClassificacao[c.id]">
+    <ion-col>
+      <h5>{{c.metodo}}</h5>
+      <p *ngIf="c.pergunta">{{c.pergunta}}</p>
+      <p *ngIf="c.descricao">{{c.descricao}}</p>
+      <div class="classificacao">
+        <div class="opcao" *ngFor="let n of classificacaoNivel">
+          <ion-note [color]="n.cor">{{n.nome}}</ion-note>
+          <br>
+          <ion-radio [color]="n.cor" [value]="n.valor" [checked]="n.valorInicial"></ion-radio>
+        </div>
+      </div>
+    </ion-col>
+  </ion-row>
   
-    <h4>Deseja adicionar um comentário?</h4>
-    <ion-label>Diga-nos o porquê da sua classificação.</ion-label>
-    <ion-item>
+  <ion-row>
+    <ion-col>
+      <h5>Deseja adicionar um comentário?</h5>
+      <p>Diga-nos o porquê da sua classificação.</p>
       <ion-textarea placeholder="Escreva algo..."></ion-textarea>
-    </ion-item>
-    
-  </ion-list>
+    </ion-col>
+  </ion-row>
 
 </ion-content>
 
-<ion-footer>
-  <button ion-button full>
+<ion-footer padding bottom center>
+  <button ion-button full round (click)="classificar()">
     Enviar classificação
-    <ion-icon name="send"></ion-icon>
   </button>
 </ion-footer>

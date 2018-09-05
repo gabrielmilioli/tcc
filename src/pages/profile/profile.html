@@ -53,14 +53,12 @@
         </ion-col>
       </ion-row>
 
-      <ion-row bottom center>
-        <ion-col>
-          <button [hidden]="!editando" ion-button full round bottom center color="primary" id="confirmarEdicao" (click)="confirmarEdicao(usuario.id)">
-            Salvar alterações
-          </button>
-        </ion-col>
-      </ion-row>
-
     </ion-card>
   </ng-container>
 </ion-content>
+
+<ion-footer padding bottom center>
+  <button [hidden]="!editando" ion-button full round color="primary" id="confirmarEdicao" (click)="confirmarEdicao(usuario.id)">
+    Salvar alterações
+  </button>
+</ion-footer>

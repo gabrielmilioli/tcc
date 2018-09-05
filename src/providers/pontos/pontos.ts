@@ -134,6 +134,36 @@ export class PontosProvider {
     });
   }
 
+  get_classificacoes(){
+    let credentials = {
+      "class": 'apiClassificacao',
+      "method": "get_classificacoes"
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
+  get_classificacao_nivel(){
+    let credentials = {
+      "class": 'apiClassificacao',
+      "method": "get_classificacao_nivel"
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+  
   getHeaders(){
    
     return new HttpHeaders(

@@ -1,13 +1,14 @@
 page-classificar-ponto {
-    .item-inner{
+    .classificacao{
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
         justify-content: space-between;
         text-align:center;
     }
-    .item-inner > .input-wrapper{
-        display:none;
+    .classificacao > div{
+        width:20%;
+        text-align:center;
     }
     .radio-md .radio-icon {
         width: 27px;
