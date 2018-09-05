@@ -8,11 +8,59 @@
 
   <ion-navbar color="primary">
     <ion-title>Perfil</ion-title>
+    <ion-buttons right>
+      <button ion-button (click)="editar()">
+        <ion-icon name="create"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
+<ion-content full>
+  <ng-container *ngIf="usuario">
+    <ion-card>
+      <div id="foto">
+        <img [src]="usuario.foto"/>
+      </div>
+      <ion-fab id="escolherUpload" top [hidden]="!editando">
+        <button ion-fab color="primary" (click)="escolherUpload()">
+          <ion-icon name="create"></ion-icon>
+        </button>
+      </ion-fab>
 
-<ion-content padding>
+      <ion-card-content [hidden]="editando">
+        <ion-card-title>
+          {{usuario.nome}}
+        </ion-card-title>
+        <p>
+          {{usuario.email}}
+        </p>
+      </ion-card-content>
 
+      <ion-card-content [hidden]="!editando">
+        <ion-card-title>
+          <ion-input [(ngModel)]="usuario.nome"></ion-input>
+        </ion-card-title>
+        <p>
+          <ion-input [(ngModel)]="usuario.email"></ion-input>
+        </p>
+      </ion-card-content>
+
+      <ion-row>
+        <ion-col>
+          <ion-note>{{usuario.register_date}}</ion-note>
+        </ion-col>
+      </ion-row>
+
+      <ion-row bottom center>
+        <ion-col>
+          <button [hidden]="!editando" ion-button full round bottom center color="primary" id="confirmarEdicao" (click)="confirmarEdicao(usuario.id)">
+            Salvar alterações
+          </button>
+        </ion-col>
+      </ion-row>
+
+    </ion-card>
+  </ng-container>
 </ion-content>

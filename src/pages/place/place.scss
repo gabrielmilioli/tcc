@@ -16,7 +16,31 @@ page-place {
         flex-direction: row;
         flex-wrap: nowrap;
         justify-content: space-between;
-        font-size: 3.5em;
+        font-size: 1.4em;
         text-align:center;
+        padding-left: 15%;
+        padding-right: 15%;
+    }
+    #ponto-img > img{
+        width:100%;
+        display: block;
+    }
+    #ponto-img > ion-note{
+        position: absolute;
+        background-color: color($colors, light);
+        color: color($colors, primary);
+        right: 0px;
+        font-size: 0.8em;
+        padding: 2px;
+    }
+    #ponto-opcoes button icon{
+        padding-left:10px;
+    }
+    #ponto-opcoes button{
+        width: 100%;
+    }
+    p > ion-note{
+        font-size: 0.8em;
+        float: right;
     }
 }

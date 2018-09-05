@@ -37,6 +37,7 @@ export class LinhasPage {
       this.response = result;
       if(this.response.status === 'success'){
         this.linhas = this.response.data;
+        console.log(this.linhas);
       }else{ 
         this.alert('Erro', this.response.data);
       }

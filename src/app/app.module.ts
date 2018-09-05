@@ -33,7 +33,9 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { UserProvider } from '../providers/user/user';
 import { PontosProvider } from '../providers/pontos/pontos';
 import { Network } from '@ionic-native/network';
-
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { File } from '@ionic-native/file';
+import { Camera } from '@ionic-native/camera';
 
 @NgModule({
   declarations: [
@@ -94,7 +96,10 @@ import { Network } from '@ionic-native/network';
     GooglePlus,
     UserProvider,
     PontosProvider,
-    Network
+    Network,
+    FileTransfer,
+    File,
+    Camera
   ]
 })
 export class AppModule {}

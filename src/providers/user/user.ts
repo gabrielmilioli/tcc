@@ -52,7 +52,22 @@ export class UserProvider {
     });
   }
 
-
+  set_usuario(id, dados){
+    let credentials = {
+      "class": restClass,
+      "method": "set_usuario",
+      "id": id,
+      "dados": dados
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
 
   getHeaders(){
    

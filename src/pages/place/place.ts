@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { PontosProvider } from '../../providers/pontos/pontos';
+import { LinhasPage } from './../linhas/linhas';
 
 /**
  * Generated class for the PlacePage page.
@@ -92,6 +93,10 @@ export class PlacePage {
       }
     });
     */
+  }
+
+  linhas(ponto_id){
+    this.navCtrl.push(LinhasPage, {'ponto_id':ponto_id});
   }
 
   ionViewDidLoad() {

@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 
 let restUrl = "http://tcc.pelainternetsistemas.com.br/rest.php";
 let restClass = "apiPontos";
@@ -107,6 +106,23 @@ export class PontosProvider {
       "class": restClass,
       "method": "get_pontos_linhas",
       "ponto_id": ponto_id
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
+  set_ponto(id, endereco){
+    let credentials = {
+      "class": restClass,
+      "method": "get_ponto",
+      "id": id,
+      "endereco": endereco
     };
     return new Promise((resolve, reject) => {
       this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})

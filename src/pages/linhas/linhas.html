@@ -8,7 +8,7 @@
 
   <ion-navbar color="primary">
     <ion-title>
-      {{ponto_nome}}
+      Linhas
     </ion-title>
     <ion-buttons right>
       <button ion-button>
@@ -21,23 +21,22 @@
 
 
 <ion-content padding>
-  <ion-title>
-    Linhas do ponto {{ponto_nome}}
-  </ion-title>
-  <ion-list>
-    <ng-container *ngIf="!linhas">
-      <ion-item color="primary" center text-center>
-        <h2>Nenhuma linha presente neste ponto</h2>
-      </ion-item>
-    </ng-container>
+  <ng-container *ngIf="!linhas" center>
+    <h2>Nenhuma linha presente neste ponto</h2>
+  </ng-container>
 
+  <ion-list>
     <ion-item *ngFor="let l of linhas">
       <ion-avatar item-start>
         <ion-icon name="bus"></ion-icon>
       </ion-avatar>
       <h2>{{l.numero}} - {{l.nome}}</h2>
-      <p>Itinetários</p>
-      <p *ngFor="let i of l.itinetarios" (click)="buscarItinetario(i.itinetario);">{{i.itinetario}}</p>
+      <ion-label>Itinetários</ion-label>
+      <div id="itinetarios">
+        <p *ngFor="let i of l.itinetarios" (click)="buscarItinetario(i.itinetario);">
+          {{i.itinetario}}
+        </p>
+      </div>
       <ion-note>{{l.data_ultima_alt}}</ion-note>
 <!--
       <ion-label>

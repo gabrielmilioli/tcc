@@ -12,20 +12,22 @@
 
 </ion-header>
 
-<ion-content padding *ngIf="ponto">
+<ion-content full *ngIf="ponto">
 
-  <ion-card>
-    
+  <div id="ponto-img">
+    <ion-note>{{ponto.data_registro}}</ion-note>
     <img [src]="ponto.imagem"/>
+  </div>
 
-    <ion-card-content>
-      <ion-card-title>
-        {{ponto.nome}}
-      </ion-card-title>
-      <p>
-        {{ponto.endereco}}
-      </p>
+  <ion-row>
+    <ion-col>
+      <h2>{{ponto.nome}}</h2>
+      <p>{{ponto.endereco}}</p>
+    </ion-col>
+  </ion-row>
 
+  <ion-row center>
+    <ion-col>
       <div id="classification">
         <ng-container *ngIf="!ponto.class">
           <p center color="primary">Nenhuma classificação ainda</p>
@@ -33,27 +35,33 @@
         <button class="button-star" *ngFor="let c of ponto.class" full>
           <ion-icon class="star" [name]="c.icon"></ion-icon>
         </button>
-        <ion-note>
-          {{ponto.totalClass}} classificações
-        </ion-note>
       </div>
-    </ion-card-content>
+    </ion-col>
+  </ion-row>
 
-    <ion-row>
-      <ion-col>
-        <button ion-button icon-start clear (click)="classificarPonto(ponto.id)">
-          <ion-icon color="primary" name="star"></ion-icon>
-          Classificar este ponto
-        </button>
-      </ion-col>
-      <ion-col center text-center>
-        <ion-note>
-          {{ponto.data_registro}}
-        </ion-note>
-      </ion-col>
-    </ion-row>
+  <ion-row center text-center>
+    <ion-col>
+      <ion-note>
+        {{ponto.totalClass}} classificações
+      </ion-note>
+    </ion-col>
+  </ion-row>
+    
+  <ion-row center text-center id="ponto-opcoes">
+    <ion-col>
+      <button color="primary" icon-end ion-button round (click)="classificarPonto(ponto.id)">
+        Classificar
+        <ion-icon name="star"></ion-icon>
+      </button>
+    </ion-col>
+    <ion-col>
+      <button color="primary" icon-end ion-button round (click)="linhas(ponto.id)">
+        Linhas
+        <ion-icon name="bus"></ion-icon>
+      </button>
+    </ion-col>
+  </ion-row>
 
-  </ion-card>
   <ion-list>
     <ng-container *ngIf="!ponto.comentarios">
       <ion-item color="primary" center text-center>
@@ -65,9 +73,14 @@
       <ion-avatar *ngIf="c.usuario_foto" item-start>
         <img [src]="c.usuario_foto">
       </ion-avatar>
-      <h2>{{c.usuario_nome}}</h2>
-      <ion-note>{{c.data_registro}}</ion-note>
-      <p>{{c.comentario}}</p>
+      <h2>
+        {{c.usuario_nome}}
+      </h2>
+      
+      <p text-wrap>
+        {{c.comentario}}
+        <ion-note>{{c.data_registro}}</ion-note>
+      </p>
       
     </ion-item>
   </ion-list>

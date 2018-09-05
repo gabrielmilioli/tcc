@@ -1,4 +1,3 @@
-import { LinhasPage } from './../linhas/linhas';
 import { PlacePage } from './../place/place';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Component, ViewChild, ElementRef, NgZone } from '@angular/core';
@@ -45,7 +44,7 @@ export class MapPage {
 
   GoDetail = (id: any, nome: any) => { 
     this.zone.run(() => { 
-      this.navCtrl.push(LinhasPage, {"id":id, "nome":nome});
+      this.navCtrl.push(PlacePage, {"id":id, "nome":nome});
     }); 
   }
 
@@ -104,10 +103,6 @@ export class MapPage {
       this.adicionar=false;
       this.adicionarClass="primary";
     }
-  }
-  
-  criarPonto(){
-    console.log(this.enderecoCentro);
   }
   
   loadPlaces(){
@@ -175,7 +170,7 @@ export class MapPage {
       this.alert('Erro', error);
     });
     
-    var geocoder = new google.maps.Geocoder;
+    
     let input = <HTMLInputElement>document.getElementById('searchbar');
     var searchBox = new google.maps.places.SearchBox(input);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
@@ -195,14 +190,10 @@ export class MapPage {
       console.log(places);
     });
 
-    document.getElementById('criarPonto').addEventListener('click', () => {
-      console.log('teste');
-      //this.geocodeLatLng(geocoder, map);
-    });
-
   }
 
-  geocodeLatLng(geocoder, map) {
+  criarPonto() {
+    var geocoder = new google.maps.Geocoder;
     var input = this.enderecoCentro;
     var latlngStr = input.split(',', 2);
     var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
@@ -221,7 +212,9 @@ export class MapPage {
             rua: "",
             numero: "",
             cep: "",
-            estabelecimento: ""
+            estabelecimento: "",
+            lat: latlngStr[0],
+            lon: latlngStr[1]
           };
 
           result.address_components.forEach(element => {
@@ -255,6 +248,7 @@ export class MapPage {
             this.alert('Erro', 'Escolha um endereço válido em Criciúma');
           }else{
             console.log(endereco);
+            this.alert('Informação', 'Localização selecionada: ' + result.formatted_address);
           }
 
         } else {
@@ -264,6 +258,7 @@ export class MapPage {
         this.alert('Erro', 'Geocoder falhou: ' + status);
       }
     });
+    this.adicionarPonto();
   }
 
   addMarkers(places, map){

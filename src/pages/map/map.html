@@ -35,7 +35,8 @@
     </button>
   </ion-fab>
 
-  <button ion-button round bottom center color="lightPrimary" [hidden]="!adicionar" id="criarPonto">
+  <button ion-button round bottom center color="lightPrimary" [hidden]="!adicionar" id="criarPonto" (click)="criarPonto()">
+    <ion-icon name="pin"></ion-icon>
     Criar um ponto aqui
   </button>
 

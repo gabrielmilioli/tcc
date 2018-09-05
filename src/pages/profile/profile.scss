@@ -1,3 +1,39 @@
 page-profile {
-
+    ion-button{
+        width:100%;
+    }
+    ion-card{
+        margin: 0px !important;
+        border-radius: 0px !important;
+        width: 100% !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+    }
+    ion-input{
+        margin: 0px 0px !important;
+    }
+    #foto{
+        width: 250px;
+        height: 250px;
+        margin: auto;
+        margin-top: 5%;
+        border: 5px solid transparent;
+        border-radius: 100%;
+        overflow: hidden;
+        position: relative;
+    }
+    #foto > img{
+        position: absolute;
+        margin: auto;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width:100%;
+    }
+    #escolherUpload{
+        margin-top: 5%;
+        margin-right: 15%;
+        right: 0px;
+    }
 }

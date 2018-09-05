@@ -13,10 +13,9 @@ page-map {
         padding: 1em;
         border: 1px solid transparent;
         border-radius: 45px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     }
     #searchbar:focus{
-        border-color: rgb(219, 73, 73);
+        border-color:color($colors, primary);
     }
     #addPonto{
         position: absolute;
