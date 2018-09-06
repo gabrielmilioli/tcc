@@ -207,9 +207,11 @@ export class MapPage {
             rua: "",
             numero: "",
             cep: "",
-            estabelecimento: "",
+            nome: "",
             lat: latlngStr[0],
-            lon: latlngStr[1]
+            lon: latlngStr[1],
+            endereco_completo: "",
+            place_id: ""
           };
 
           result.address_components.forEach(element => {
@@ -234,15 +236,16 @@ export class MapPage {
             }else if(types.includes('postal_code')){
               endereco.cep = long_name;
             }else if(types.includes('establishment')){
-              endereco.estabelecimento = long_name;
+              endereco.nome = long_name;
             }
             
           });
-
+          endereco.place_id = result.place_id;
+          endereco.endereco_completo = result.formatted_address;
           if(!criciuma){
             this.alert('Erro', 'Escolha um endereço válido em Criciúma');
           }else{
-            console.log(endereco);
+            console.log(result);
             app.adicionarPonto(endereco);
             //.adicionarPonto();
             //this.alert('Informação', 'Localização selecionada: ' + result.formatted_address);

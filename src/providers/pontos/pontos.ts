@@ -120,7 +120,7 @@ export class PontosProvider {
   set_ponto(id, endereco){
     let credentials = {
       "class": restClass,
-      "method": "get_ponto",
+      "method": "set_ponto",
       "id": id,
       "endereco": endereco
     };
@@ -182,23 +182,6 @@ export class PontosProvider {
     });
   }
 
-  set_place(id, endereco){
-    let credentials = {
-      "class": restClass,
-      "method": "set_place",
-      "id": id,
-      "endereco": endereco
-    };
-    return new Promise((resolve, reject) => {
-      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
-        .subscribe(res => {
-          resolve(res);
-        }, (err) => {
-          reject(err);
-        });
-    });
-  }
-  
   getHeaders(){
    
     return new HttpHeaders(

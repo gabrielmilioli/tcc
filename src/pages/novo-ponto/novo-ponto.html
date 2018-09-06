@@ -17,8 +17,18 @@
 
 <ion-content padding>
   <ng-container *ngIf="endereco">
-
+    
     <ion-row>
+      <ion-col>
+        <div id="foto">
+          <img [src]="imagem"/>
+        </div>
+        <ion-fab id="escolherUpload" top>
+          <button ion-fab color="primary" (click)="escolherUpload()" mini>
+            <ion-icon name="create"></ion-icon>
+          </button>
+        </ion-fab>
+      </ion-col>
       <ion-col>
         <ion-label color="primary">Estado</ion-label>
         <ion-input disabled [(ngModel)]="endereco.estado"></ion-input>
@@ -30,34 +40,31 @@
     </ion-row>
     
     <ion-row>
-      <ion-col>
-        <ion-label color="primary">Rua</ion-label>
-        <ion-input disabled [(ngModel)]="endereco.rua"></ion-input>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col>
+      <ion-col col-8>
         <ion-label color="primary">Bairro</ion-label>
         <ion-input disabled [(ngModel)]="endereco.bairro"></ion-input>
       </ion-col>
-    </ion-row>
-    
-    <ion-row>
-      <ion-col>
-        <ion-label color="primary">Número</ion-label>
-        <ion-input disabled [(ngModel)]="endereco.numero"></ion-input>
-      </ion-col>
-      <ion-col>
+      <ion-col col-4>
         <ion-label color="primary">CEP</ion-label>
         <ion-input disabled [(ngModel)]="endereco.cep"></ion-input>
       </ion-col>
     </ion-row>
-
+    
+    <ion-row>
+      <ion-col col-8>
+        <ion-label color="primary">Rua</ion-label>
+        <ion-input disabled [(ngModel)]="endereco.rua"></ion-input>
+      </ion-col>
+      <ion-col col-4>
+        <ion-label color="primary">Número</ion-label>
+        <ion-input disabled [(ngModel)]="endereco.numero"></ion-input>
+      </ion-col>
+    </ion-row>
+  
     <ion-row>
       <ion-col>
         <ion-label color="primary">Nome do ponto</ion-label>
-        <ion-input [(ngModel)]="endereco.estabelecimento"></ion-input>
+        <ion-input [(ngModel)]="endereco.nome"></ion-input>
       </ion-col>
     </ion-row>
     
