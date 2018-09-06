@@ -1,3 +1,4 @@
+import { NovoPontoPage } from './../pages/novo-ponto/novo-ponto';
 import { LinhasPage } from './../pages/linhas/linhas';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { BrowserModule } from '@angular/platform-browser';
@@ -56,7 +57,8 @@ import { Camera } from '@ionic-native/camera';
     HorariosPage,
     HorariosSalvosPage,
     ClassificarPontoPage,
-    LinhasPage
+    LinhasPage,
+    NovoPontoPage
   ],
   imports: [
     BrowserModule,
@@ -83,7 +85,8 @@ import { Camera } from '@ionic-native/camera';
     HorariosPage,
     HorariosSalvosPage,
     ClassificarPontoPage,
-    LinhasPage
+    LinhasPage,
+    NovoPontoPage
   ],
   providers: [
     StatusBar,

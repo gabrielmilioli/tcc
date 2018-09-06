@@ -1,0 +1,71 @@
+<!--
+  Generated template for the NovoPontoPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>
+      Criar ponto
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ng-container *ngIf="endereco">
+
+    <ion-row>
+      <ion-col>
+        <ion-label color="primary">Estado</ion-label>
+        <ion-input disabled [(ngModel)]="endereco.estado"></ion-input>
+      </ion-col>
+      <ion-col>
+        <ion-label color="primary">Cidade</ion-label>
+        <ion-input disabled [(ngModel)]="endereco.cidade"></ion-input>
+      </ion-col>
+    </ion-row>
+    
+    <ion-row>
+      <ion-col>
+        <ion-label color="primary">Rua</ion-label>
+        <ion-input disabled [(ngModel)]="endereco.rua"></ion-input>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-label color="primary">Bairro</ion-label>
+        <ion-input disabled [(ngModel)]="endereco.bairro"></ion-input>
+      </ion-col>
+    </ion-row>
+    
+    <ion-row>
+      <ion-col>
+        <ion-label color="primary">Número</ion-label>
+        <ion-input disabled [(ngModel)]="endereco.numero"></ion-input>
+      </ion-col>
+      <ion-col>
+        <ion-label color="primary">CEP</ion-label>
+        <ion-input disabled [(ngModel)]="endereco.cep"></ion-input>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-label color="primary">Nome do ponto</ion-label>
+        <ion-input [(ngModel)]="endereco.estabelecimento"></ion-input>
+      </ion-col>
+    </ion-row>
+    
+  </ng-container>
+</ion-content>
+
+<ion-footer padding bottom center>
+  <button ion-button full round color="primary" (click)="adicionarPonto()">
+    Criar ponto
+  </button>
+</ion-footer>

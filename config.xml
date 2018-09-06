@@ -102,9 +102,6 @@
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
     <allow-navigation href="http://169.254.214.241:8100" sessionid="3ad7a1a3" />
     <allow-navigation href="http://192.168.0.47:8100" sessionid="77d48590" />
-    <engine name="android" spec="^7.1.1" />
-    <engine name="browser" spec="5.0.4" />
-    <engine name="ios" spec="~4.5.5" />
     <plugin name="cordova-plugin-googleplus" spec="^5.3.0">
         <variable name="WEB_APPLICATION_CLIENT_ID" value="138261567653-mtf1l084m5i8fqmml071uatu0smghbev.apps.googleusercontent.com" />
         <variable name="REVERSED_CLIENT_ID" value="apps.googleusercontent.com.138261567653-mtf1l084m5i8fqmml071uatu0smghbev" />
@@ -112,4 +109,8 @@
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
+    <allow-navigation href="http://192.168.6.195:8100" sessionid="91ea5efc" />
+    <engine name="android" spec="^7.1.1" />
+    <engine name="browser" spec="5.0.4" />
+    <engine name="ios" spec="4.5.5" />
 </widget>

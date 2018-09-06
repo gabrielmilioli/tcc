@@ -1,3 +1,4 @@
+import { NovoPontoPage } from './../novo-ponto/novo-ponto';
 import { PlacePage } from './../place/place';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Component, ViewChild, ElementRef, NgZone } from '@angular/core';
@@ -37,15 +38,8 @@ export class MapPage {
   enderecoCentro:string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, public authService: AuthServiceProvider,
-  public alertCtrl: AlertController, public loadingCtrl: LoadingController, public map: GoogleMaps, public zone: NgZone, public modalCtrl: ModalController) {
+  public alertCtrl: AlertController, public loadingCtrl: LoadingController, public map: GoogleMaps) {
     //console.log(map);
-    (window as any).angularComponent = { GoDetail: this.GoDetail, zone: zone };
-  }
-
-  GoDetail = (id: any, nome: any) => { 
-    this.zone.run(() => { 
-      this.navCtrl.push(PlacePage, {"id":id, "nome":nome});
-    }); 
   }
 
   ionViewDidEnter(){
@@ -95,7 +89,7 @@ export class MapPage {
 
   }
 
-  adicionarPonto(){
+  toggleCriar(){
     if(!this.adicionar){
       this.adicionar=true;
       this.adicionarClass="lightPrimary";
@@ -197,6 +191,7 @@ export class MapPage {
     var input = this.enderecoCentro;
     var latlngStr = input.split(',', 2);
     var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+    var app = this;
     geocoder.geocode({'location': latlng}, function(results, status) {
       if (status === 'OK') {
         if (results[0]) {
@@ -220,11 +215,11 @@ export class MapPage {
           result.address_components.forEach(element => {
             let types = element.types;
             let long_name = element.long_name;
-            //let short_name = element.short_name;
+            let short_name = element.short_name;
             if(types.includes('country')){
-              endereco.pais = long_name;
+              endereco.pais = short_name;
             }else if(types.includes('administrative_area_level_1')){
-              endereco.estado = long_name;
+              endereco.estado = short_name;
             }else if(types.includes('administrative_area_level_2')){
               endereco.cidade = long_name;
               if(long_name.indexOf('Criciúma') !== -1){
@@ -248,17 +243,23 @@ export class MapPage {
             this.alert('Erro', 'Escolha um endereço válido em Criciúma');
           }else{
             console.log(endereco);
-            this.alert('Informação', 'Localização selecionada: ' + result.formatted_address);
+            app.adicionarPonto(endereco);
+            //.adicionarPonto();
+            //this.alert('Informação', 'Localização selecionada: ' + result.formatted_address);
           }
 
         } else {
-          this.alert('Erro', 'Nenhum endereço encontrado');
+          app.alert('Erro', 'Nenhum endereço encontrado');
         }
       } else {
-        this.alert('Erro', 'Geocoder falhou: ' + status);
+        app.alert('Erro', 'Geocoder falhou: ' + status);
       }
     });
-    this.adicionarPonto();
+    this.toggleCriar();
+  }
+
+  adicionarPonto(endereco) {
+    this.navCtrl.push(NovoPontoPage, {"endereco":endereco});
   }
 
   addMarkers(places, map){
