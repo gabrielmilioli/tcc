@@ -31,6 +31,7 @@ npm run browser
 -----------------
 // cria apk
 npm i -D -E @ionic/app-scripts
+npm install @ionic/app-scripts@latest --save-dev
 
 ionic cordova build android --prod --release
 

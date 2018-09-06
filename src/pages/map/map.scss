@@ -7,15 +7,10 @@ page-map {
         height: 100%;
         width:100%;
     }
-    #searchbar{
-        font-size: 1.5em;
-        width: 80%;
-        padding: 1em;
-        border: 1px solid transparent;
-        border-radius: 45px;
-    }
-    #searchbar:focus{
-        border-color:color($colors, primary);
+    #enderecos{
+        position: absolute;
+        width: 100%;
+        z-index: 10;
     }
     #addPonto{
         position: absolute;

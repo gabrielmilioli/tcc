@@ -83,6 +83,11 @@ export class ProfilePage {
   }
 
   carregarFoto(sourceType:number) {
+    this.loading = this.loadingCtrl.create({
+      content: 'Carregando foto...'
+    });
+    this.loading.present();
+    
     const options: CameraOptions = {
       quality: 50,
       destinationType: this.camera.DestinationType.DATA_URL,
@@ -93,6 +98,7 @@ export class ProfilePage {
     }
 
     this.camera.getPicture(options).then((imageData) => {
+      this.loading.dismiss();
       this.usuario.foto = 'data:image/jpeg;base64,' + imageData;
     }).catch(error=>{
       this.alert('Erro', error);

@@ -17,7 +17,7 @@ export class HomePage {
 
   user = {
     "email": "",
-    "password": ""
+    "senha": ""
   };
   response: any;
   userLogged: object;
@@ -219,7 +219,7 @@ export class HomePage {
   }
 
   login() {
-    if(this.user.email.length === 0 || this.user.password.length === 0){
+    if(this.user.email.length === 0 || this.user.senha.length === 0){
         this.alert('Erro', 'Preencha os campos!'); 
         return false;
     }
@@ -259,8 +259,75 @@ export class HomePage {
     alert.present();
   }
 
-  gotoRegister() {
-    this.navCtrl.push(RegisterPage);
+  registrar() {
+    let alert = this.alertCtrl.create({
+      title: 'Insira seus dados',
+      inputs: [
+        {
+          name: 'nome',
+          placeholder: 'Nome'
+        },
+        {
+          name: 'email',
+          placeholder: 'E-mail',
+          type: 'email'
+        },
+        {
+          name: 'senha',
+          placeholder: 'Senha',
+          type: 'password'
+        },
+        {
+          name: 'repetir_senha',
+          placeholder: 'Repita a senha',
+          type: 'password'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Salvar',
+          handler: data => {
+            this.loading = this.loadingCtrl.create({
+              content: 'Criando conta...'
+            });
+            this.loading.present();
+            
+            if(data.nome.length < 1){
+              this.alert('Erro', 'Insira um nome válido');
+              return false;
+            }
+            if(data.email.length < 1){
+              this.alert('Erro', 'Insira um e-mail válido');
+              return false;
+            }else if(data.email.indexOf('@') === -1){
+              this.alert('Erro', 'Insira um e-mail válido');
+              return false;
+            }
+            if(data.senha != data.repetir_senha){
+              this.alert('Erro', 'Senhas incompatíveis');
+              return false;
+            }else if(data.senha.length < 4){
+              this.alert('Erro', 'Defina uma senha com no mínimo 4 dígitos');
+              return false;
+            }
+            
+            this.loading.dismiss();
+            //salvar senha
+            this.userService.set_usuario(null, data);
+            this.user = data;
+            this.login();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
 }

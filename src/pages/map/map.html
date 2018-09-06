@@ -14,8 +14,8 @@
       </ion-buttons>
     <ion-title>
         <ion-searchbar color="primary" placeholder="Buscar por itinetário"
-        [(ngModel)]="address" #searchbar id="searchbar" 
-        (setAddress)="getAddress($event)" [hidden]="!mostrarBuscar">
+        [(ngModel)]="endereco" #searchbar id="searchbar" 
+        (setAddress)="irEndereco($event)" [hidden]="!mostrarBuscar" (ionInput)="updateSearchResults()">
         </ion-searchbar>
     </ion-title>
     <ion-buttons right>
@@ -29,6 +29,12 @@
 
 
 <ion-content>
+  <ion-list id="enderecos" [hidden]="enderecos.length == 0">
+    <ion-item *ngFor="let e of enderecos" tappable (click)="irEndereco(e)">
+      {{ e.description }}
+    </ion-item>
+  </ion-list>
+
   <ion-fab bottom right [hidden]="adicionar">
     <button ion-fab [color]="adicionarClass" (click)="toggleCriar()">
       <ion-icon name="add"></ion-icon>
@@ -36,12 +42,12 @@
   </ion-fab>
 
   <button ion-button round bottom center color="lightPrimary" [hidden]="!adicionar" id="criarPonto" (click)="criarPonto()">
-    <ion-icon name="pin"></ion-icon>
     Criar um ponto aqui
+    <ion-icon name="pin"></ion-icon>
   </button>
 
   <ion-fab bottom left [hidden]="adicionar">
-    <button ion-fab [color]="trackClass" (click)="centralizar()">
+    <button ion-fab color="primary" (click)="centralizar()">
       <ion-icon name="locate"></ion-icon>
     </button>
   </ion-fab>
@@ -57,7 +63,7 @@
   <div id="div">
     <div #map id="map"></div>
     <div id="addPonto" [hidden]="!adicionar">
-      <img src="http://tcc.pelainternetsistemas.com.br/app/images/marker-20.png">
+      <img src="http://tcc.pelainternetsistemas.com.br/app/images/marker.png">
     </div>
   </div>
 </ion-content>

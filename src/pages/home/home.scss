@@ -26,26 +26,15 @@ page-home {
         flex-direction: row;
         flex-wrap: nowrap;
         justify-content: space-between;
-        font-size: 3.5em;
-    }
-    //left
-    .button-fb{
-        width:30%;
-        height: 65px;
-    }
-    .button-tt{
-        width:30%;
-        height: 65px;
-    }
-    .button-gp{
-        width:30%;
-        height: 65px;
+        padding-left:10%;
+        padding-right:10%;
+        margin-top:16px;
     }
     .sub-title > .toolbar-title {
         font-size: 2rem;
     }
     .button-fb ion-icon, .button-gp ion-icon, .button-tt ion-icon{
-        font-size: 3.5em;
+        font-size: 2.5em;
     }
     
 }

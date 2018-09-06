@@ -24,37 +24,63 @@ export class MapPage {
   @ViewChild('map') mapRef:ElementRef;
   @ViewChild('address') addressRef:ElementRef;
   @ViewChild('searchbar') searchbarRef:ElementRef;
-  address:string;
+  endereco:string;
   lat:any;
   lon:any;
   response:any;
   places = [];
   loading:any;
-  track:boolean=false;
-  trackClass:string="primary";
   mostrarBuscar:boolean=false;
   adicionar:boolean=false;
   adicionarClass:string="primary";
   enderecoCentro:string;
+  mapa:any;
+
+  GoogleAutocomplete = new google.maps.places.AutocompleteService();
+  enderecos = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, public authService: AuthServiceProvider,
-  public alertCtrl: AlertController, public loadingCtrl: LoadingController, public map: GoogleMaps) {
+  public alertCtrl: AlertController, public loadingCtrl: LoadingController, public map: GoogleMaps, public zone: NgZone) {
     //console.log(map);
+  }
+
+  ionViewDidLoad(){
+    console.log('ionViewDidLoad');
+    this.criarMapa();
   }
 
   ionViewDidEnter(){
     console.log('ionViewDidEnter');
-    this.displayMap();
+    //this.displayMap();
   }
 
-  ionViewWillEnter() {
-    console.log('ionViewWillEnter');
+  updateSearchResults(){
+    if (this.endereco == '') {
+      this.enderecos = [];
+      return;
+    }
+    
+    this.GoogleAutocomplete.getPlacePredictions({ input: this.endereco },
+    (predictions, status) => {
+      this.enderecos = [];
+      this.zone.run(() => {
+        predictions.forEach((prediction) => {
+          //Criciúma
+          console.log(prediction);
+          if(prediction.description.indexOf('Criciúma - SC') !== -1){
+            this.enderecos.push(prediction);
+          }
+        });
+      });
+    });
+  }
+
+  criarMapa() {
     this.loading = this.loadingCtrl.create({
       content: 'Carregando mapa...'
     });
     this.loading.present();
-    this.loadPlaces();
-
+    
     this.lat = -28.684433;
     this.lon = -49.369194;
 
@@ -64,69 +90,6 @@ export class MapPage {
     }).catch((error) => {
       this.alert('Erro', error);
     });
-
-    this.loading.dismiss();
-  }
-
-  centralizar(){
-    if(!this.track){
-      this.track=true;
-      this.trackClass="lightPrimary";
-    }else{
-      this.track=false;
-      this.trackClass="primary";
-    }
-
-    this.geolocation.getCurrentPosition().then(pos => {
-      this.lat = pos.coords.latitude;
-      this.lon = pos.coords.longitude;
-
-      this.displayMap();
-      
-    }).catch((error) => {
-      this.alert('Erro', error);
-    });
-
-  }
-
-  toggleCriar(){
-    if(!this.adicionar){
-      this.adicionar=true;
-      this.adicionarClass="lightPrimary";
-    }else{
-      this.adicionar=false;
-      this.adicionarClass="primary";
-    }
-  }
-  
-  loadPlaces(){
-    this.authService.get_places().then((result) => {
-      //console.log(result);
-      this.response = result;
-      if(this.response.status === 'success'){
-        this.places = this.response.data;
-      }else{ 
-        this.alert('Erro', this.response.data);
-      }
-    }).catch(error=>{
-      this.alert('Erro', error);
-    });
-  }
-
-  toggleBusca(){
-    if (this.mostrarBuscar) {
-      this.mostrarBuscar = false;
-    } else {
-      this.mostrarBuscar = true;
-    }
-  }
-
-  displayMap() {
-    this.mostrarBuscar = false;
-    this.adicionar=false;
-    this.adicionarClass="primary";
-    this.track=false;
-    this.trackClass="primary";
 
     const location = new google.maps.LatLng(this.lat,this.lon);
 
@@ -139,7 +102,6 @@ export class MapPage {
       disableDefaultUI: true,
       mapTypeControl: false,
       scaleControl: false,
-      //scrollwheel: false,
       styles: [
         {
           "featureType": "poi",
@@ -150,13 +112,14 @@ export class MapPage {
       ]
     };
 
-    const map = new google.maps.Map(this.mapRef.nativeElement,options);
+    this.mapa = new google.maps.Map(this.mapRef.nativeElement,options);
+    
     this.authService.get_places().then((result) => {
       //console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.places = this.response.data;
-        this.addMarkers(this.places, map);
+        this.addMarkers(this.places, this.mapa);
       }else{ 
         this.alert('Erro', this.response.data);
       }
@@ -164,26 +127,68 @@ export class MapPage {
       this.alert('Erro', error);
     });
     
+    google.maps.event.addListener(this.mapa, 'center_changed', () => {
+      console.log(this.mapa.getCenter().lat() + ', ' +this.mapa.getCenter().lng());
+      this.enderecoCentro = this.mapa.getCenter().lat()+","+this.mapa.getCenter().lng();
+    });
+
+    this.loading.dismiss();
+  }
+
+  centralizar(){
+    this.loading = this.loadingCtrl.create({
+      content: 'Centralizando...'
+    });
+    this.loading.present();
+    this.enderecos = [];
     
-    let input = <HTMLInputElement>document.getElementById('searchbar');
-    var searchBox = new google.maps.places.SearchBox(input);
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    this.geolocation.getCurrentPosition().then(pos => {
+      this.lat = pos.coords.latitude;
+      this.lon = pos.coords.longitude;
 
-    map.addListener('bounds_changed', function() {
-      searchBox.setBounds(map.getBounds());
+      this.loading.dismiss();
+      this.mapa.setCenter(new google.maps.LatLng(this.lat, this.lon));
+    }).catch((error) => {
+      this.alert('Erro', error);
     });
+    
+    setTimeout(() => {
+      this.loading.dismiss();
+    }, 10000);
+  }
 
-    google.maps.event.addListener(map, 'center_changed', () => {
-      //console.log(map.getCenter().lat());
-      //console.log(map.getCenter().lng());
-      this.enderecoCentro = map.getCenter().lat()+","+map.getCenter().lng();
+  toggleCriar(){
+    if(!this.adicionar){
+      this.adicionar=true;
+      this.adicionarClass="lightPrimary";
+    }else{
+      this.adicionar=false;
+      this.adicionarClass="primary";
+    }
+    this.enderecos = [];
+  }
+  
+  toggleBusca(){
+    if (this.mostrarBuscar) {
+      this.mostrarBuscar = false;
+    } else {
+      this.mostrarBuscar = true;
+    }
+    this.enderecos = [];
+  }
+
+  loadPlaces(){
+    this.authService.get_places().then((result) => {
+      //console.log(result);
+      this.response = result;
+      if(this.response.status === 'success'){
+        this.places = this.response.data;
+      }else{ 
+        this.alert('Erro', this.response.data);
+      }
+    }).catch(error=>{
+      this.alert('Erro', error);
     });
-
-    searchBox.addListener('places_changed', function() {
-      var places = searchBox.getPlaces();
-      console.log(places);
-    });
-
   }
 
   criarPonto() {
@@ -246,7 +251,7 @@ export class MapPage {
             this.alert('Erro', 'Escolha um endereço válido em Criciúma');
           }else{
             console.log(result);
-            app.adicionarPonto(endereco);
+            app.navCtrl.push(NovoPontoPage, {"endereco":endereco});
             //.adicionarPonto();
             //this.alert('Informação', 'Localização selecionada: ' + result.formatted_address);
           }
@@ -261,10 +266,6 @@ export class MapPage {
     this.toggleCriar();
   }
 
-  adicionarPonto(endereco) {
-    this.navCtrl.push(NovoPontoPage, {"endereco":endereco});
-  }
-
   addMarkers(places, map){
     for (var i = 0; i < places.length; i++) {
       var place = places[i];
@@ -274,105 +275,99 @@ export class MapPage {
       var lon = place.lon;
       var nome = place.nome;
       var imagem = place.imagem;
+      //console.log("marcador id = "+id);
 
-      var latlon = lat+','+lon;
-      var commaPos = latlon.indexOf(',');
-
-      var coordinatesLat = parseFloat(lat.substring(0, commaPos));
-      var coordinatesLong = parseFloat(latlon.substring(commaPos + 1, latlon.length));
-      //var type = place.type;
-      //var register_date = place.register_date;
-      
-
-      var infoBox = '<div class="info-box">'+
-      '<div class="info-header">'+
-      '<img src="'+imagem+'">'+
-      '</div>'+
-      '<div class="info-content">'+
-      '<h6>'+nome+'</h6>'+
-      '<div class="info-content-plus">'+
-      '<p>9 linhas</p>'+
-      '<p>10 comentários</p>'+
-      '<p>6 favoritos</p>'+
-      '</div>'+
-      '</div>'+
-      '<div class="info-footer">'+
-      '<button ion-button full onclick="window.angularComponent.GoDetail('+id+', \''+nome+'\');">'+
-      '<span class="button-inner">Visualizar</span>'+
-      '</button>'+
-      '</div>'+
-      '</div>';
-
-      var infowindow = new google.maps.InfoWindow({
-        content: infoBox,
-        maxWidth: 200
-      });
+      lat = parseFloat(lat);
+      lon = parseFloat(lon);
 
       var image = {
-        url: 'http://tcc.pelainternetsistemas.com.br/app/images/marker-20.png',
+        url: 'http://tcc.pelainternetsistemas.com.br/app/images/marker.png'/*,
         // This marker is 20 pixels wide by 32 pixels high.
         size: new google.maps.Size(20, 28),
         // The origin for this image is (0, 0).
         origin: new google.maps.Point(0, 0),
         // The anchor for this image is the base of the flagpole at (0, 32).
-        anchor: new google.maps.Point(0, 28)
+        anchor: new google.maps.Point(0, 28)*/
       };
 
       var marker = new google.maps.Marker({
-        position: {lat: coordinatesLat, lng: coordinatesLong},
+        position: {lat: lat, lng: lon},
         map: map,
         title: nome,
         animation: 'DROP',
         zIndex: id,
         id: id,
-        icon: image
+        icon: image,
+        imagem: imagem
       });
 
       google.maps.event.addListener(marker, 'click', (function(marker, app) {
         return function() {
-          //app.irPonto(marker.get("id"), marker.get("title"));
+          let id = marker.get("id");
+          let nome = marker.get("title");
+          let imagem = marker.get("imagem");
+          console.log("touch id = "+id);
+          //console.log("touch nome = "+nome);
+
+          var elementid = 'infobox'+id;
+          let infoBox = '<div class="info-box" id="'+elementid+'">'+
+          '<div class="info-header">'+
+          '<img src="'+imagem+'">'+
+          '</div>'+
+          '<div class="info-content">'+
+          '<h6>'+nome+'</h6>'+
+          '</div>'+
+          '<div class="info-footer">'+
+          '<button ion-button full>'+
+          '<span class="button-inner">Visualizar</span>'+
+          '</button>'+
+          '</div>'+
+          '</div>';
+    
+          let infowindow = new google.maps.InfoWindow({
+            content: infoBox,
+            maxWidth: 200
+          });
+    
           infowindow.open(map, marker);
+          
+          //app.irPonto(marker.get("id"), marker.get("title"));
+          google.maps.event.addListenerOnce(infowindow, 'domready', () => {
+            document.getElementById(elementid).addEventListener('click', () => {
+              console.log("touch = "+id);
+              infowindow.close();
+              app.navCtrl.push(PlacePage, {"id":id, "nome":nome});
+            });
+          });
         }
       })(marker, this));
 
     }
   }
 
-  irPonto(id, nome){
-    let alert = this.alertCtrl.create();
-    alert.setTitle(nome);
-    alert.setMessage('Message <strong>text</strong><br>'+
-    '<p>3<ion-icon name="bus"></ion-icon></p>'+
-    '<p>8 <ion-icon name="text"></ion-icon></p>'+
-    '<p>9 <ion-icon name="heart"></ion-icon></p>'
-    );
-    alert.addButton({
-      text: 'Voltar',
-      role: 'cancel',
-      handler: () => {
-        console.log('Confirm Cancel');
-      }
-    });
-    alert.addButton({
-      text: 'Ver',
-      handler: () => {
-        this.navCtrl.push(PlacePage, {"id":id, "nome":nome});
-      }
-    });
-
-    alert.present();  
-  }
-
-  loadPlace(id, nome){
-    this.navCtrl.push(PlacePage, {"id":id, "nome":nome});
-  }
-
-  getAddress(place: Object) {       
-    this.address = place['formatted_address'];
+  irEndereco(place) {       
+    console.log('place', place);
+    /*
+    this.endereco = place['formatted_address'];
     var location = place['geometry']['location'];
     var lat =  location.lat();
     var lng = location.lng();
-    console.log('Address Object', place);
+
+    var geocoder = new google.maps.Geocoder;
+    var latlng = {lat: parseFloat(lat), lng: parseFloat(lng)};
+    var app = this;
+    geocoder.geocode({'location': latlng}, function(results, status) {
+      console.log(results);
+      if (status === 'OK') {
+        if (results[0]) {
+          
+        } else {
+          app.alert('Erro', 'Nenhum endereço encontrado');
+        }
+      } else {
+        app.alert('Erro', 'Geocoder falhou: ' + status);
+      }
+    });*/
   }
 
   alert(title, subTitle) {
