@@ -42,7 +42,7 @@
   
   <ion-title *ngIf="!this.pontos">Nenhum ponto encontrado</ion-title>
 
-  <ion-card *ngFor="let p of pontos" (click)="visualizaPonto(p.id, p.nome);" [id]="p.id" >
+  <ion-card *ngFor="let p of pontos" (click)="visualizarPonto(p.id, p.nome);" [id]="p.id" >
     <ion-fab right>
       <button primary color="primary" ion-fab (click)="favoritarPonto(p.id);$event.stopPropagation();">
         <ion-icon [name]="p.favorito"></ion-icon>

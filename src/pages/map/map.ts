@@ -102,6 +102,7 @@ export class MapPage {
       disableDefaultUI: true,
       mapTypeControl: false,
       scaleControl: false,
+      clickableIcons: false,
       styles: [
         {
           "featureType": "poi",

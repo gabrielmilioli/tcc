@@ -69,7 +69,7 @@
       </ion-item>
     </ng-container>
 
-    <ion-item *ngFor="let c of ponto.comentarios">
+    <ion-item *ngFor="let c of ponto.comentarios" (click)="visualizarPerfil(c.usuario_id)">
       <ion-avatar *ngIf="c.usuario_foto" item-start>
         <img [src]="c.usuario_foto">
       </ion-avatar>

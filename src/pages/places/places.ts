@@ -119,7 +119,7 @@ export class PlacesPage {
     }
   }
 
-  visualizaPonto(id, nome){
+  visualizarPonto(id, nome){
     this.navCtrl.push(PlacePage, {"id":id, "nome":nome});
   }
 

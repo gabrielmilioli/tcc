@@ -1,3 +1,4 @@
+import { ProfilePage } from './../profile/profile';
 import { ClassificarPontoPage } from './../classificar-ponto/classificar-ponto';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Component } from '@angular/core';
@@ -52,6 +53,11 @@ export class PlacePage {
     this.loading.dismiss();
   }
 
+  visualizarPerfil(id){
+    //console.log(id);
+    this.navCtrl.push(ProfilePage, {"id":id});
+  }
+
   carregaPonto(){
     var id = this.authService.get_user_id();
     this.pontoService.get_ponto(id, this.ponto_id).then((result) => {
@@ -70,29 +76,6 @@ export class PlacePage {
 
   classificarPonto(ponto_id) {
     this.navCtrl.push(ClassificarPontoPage, {'ponto_id':ponto_id});
-    /*
-    alert.addButton('Cancelar');
-    alert.addButton({
-      text: 'Classificar',
-      handler: data => {
-        
-        var id = this.authService.get_user_id();
-        this.pontoService.set_pontos_classificacoes(id, this.ponto_id, data).then((result) => {
-          console.log(result);
-          this.response = result;
-          if(this.response.status === 'success'){
-            this.carregaPonto();
-          }else{ 
-            this.alert('Erro', this.response.data);
-          }
-        }).catch(error=>{
-          console.log(error);
-          this.alert('Erro', error);
-        });
-
-      }
-    });
-    */
   }
 
   linhas(ponto_id){

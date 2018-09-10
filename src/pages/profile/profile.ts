@@ -25,10 +25,12 @@ export class ProfilePage {
   editando:boolean=false;
   imageURI:any;
   imageFileName:any;
+  userLogged:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public userService: UserProvider,
     public alertCtrl: AlertController, public loadingCtrl: LoadingController, public authService: AuthServiceProvider,
     private transfer: FileTransfer, private camera: Camera, public actionSheetCtrl: ActionSheetController) {
+      this.userLogged = this.authService.get_user_id();
   }
 
   ionViewDidEnter(){
@@ -42,7 +44,7 @@ export class ProfilePage {
     if(this.navParams.get('id')){
       id = this.navParams.get('id');
     }else{
-      var user = this.authService.get_user();
+      var user = this.authService.get_user_id();
       if(user){
         id = user.id;
       }
@@ -106,6 +108,9 @@ export class ProfilePage {
   }
 
   editar(){
+    if(this.usuario.id == this.userLogged){
+      return false;
+    }
     if(!this.editando){
       this.editando=true;
     }else{
@@ -146,6 +151,13 @@ export class ProfilePage {
     }).catch(error=>{
       this.alert('Erro', error);
     });
+  }
+
+  adicionarAmigo(id){
+    console.log(id+" = "+this.userLogged);
+    if(id == this.userLogged){
+      return false;
+    }
   }
 
   alert(title, subTitle) {

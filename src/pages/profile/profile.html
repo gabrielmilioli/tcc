@@ -8,8 +8,8 @@
 
   <ion-navbar color="primary">
     <ion-title>Perfil</ion-title>
-    <ion-buttons right>
-      <button ion-button (click)="editar()">
+    <ion-buttons right *ngIf="usuario">
+      <button ion-button (click)="editar()" *ngIf="usuario.id != userLogged">
         <ion-icon name="create"></ion-icon>
       </button>
     </ion-buttons>
@@ -17,7 +17,7 @@
 
 </ion-header>
 
-<ion-content full>
+<ion-content full center text-center>
   <ng-container *ngIf="usuario">
     <ion-card>
       <div id="foto">
@@ -33,17 +33,33 @@
         <ion-card-title>
           {{usuario.nome}}
         </ion-card-title>
-        <p>
+        <p *ngIf="usuario.id == userLogged">
           {{usuario.email}}
         </p>
+        
+        <ion-row *ngIf="usuario.id != userLogged">
+          <ion-col>
+            <button ion-button full round color="primary" item-right (click)="adicionarAmigo(usuario.id)">
+              Solicitar amizade
+              <ion-icon name="add"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+  
       </ion-card-content>
 
       <ion-card-content [hidden]="!editando">
         <ion-card-title>
-          <ion-input [(ngModel)]="usuario.nome"></ion-input>
+          <ion-input type="text" [(ngModel)]="usuario.nome"></ion-input>
+          <button ion-button clear color="primary" item-right>
+            <ion-icon name="create"></ion-icon>
+          </button>
         </ion-card-title>
         <p>
-          <ion-input [(ngModel)]="usuario.email"></ion-input>
+          <ion-input type="text" [(ngModel)]="usuario.email"></ion-input>
+          <button ion-button clear color="primary" item-right>
+            <ion-icon name="create"></ion-icon>
+          </button>
         </p>
       </ion-card-content>
 
