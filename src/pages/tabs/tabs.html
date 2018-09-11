@@ -11,7 +11,7 @@
 <ion-menu [content]="content" [swipeEnabled]="false">
     <ion-header>
         <ion-toolbar>
-        <ion-title>{{name}}</ion-title>
+        <ion-title>{{usuario.nome}}</ion-title>
         <ion-buttons right>
           <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
@@ -23,8 +23,9 @@
     <ion-content padding>
     <ion-list>
         <button *ngFor="let p of pages" menuClose ion-item (click)="openPage(p)">
-        <ion-icon item-left [name]="p.icon"></ion-icon>
-        {{p.title}}
+            <ion-icon item-left [name]="p.icon"></ion-icon>
+            {{p.title}}
+            <ion-badge *ngIf="p.badge" color="primary" item-end>{{p.badge}}</ion-badge>
         </button>
 
         <button menuClose ion-item (click)="logout()">

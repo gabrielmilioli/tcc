@@ -24,7 +24,7 @@ import { ProfilePage } from '../pages/profile/profile';
 import { PlacesPage } from '../pages/places/places';
 import { AboutPage } from '../pages/about/about';
 import { SettingsPage } from '../pages/settings/settings';
-import { FriendsPage } from '../pages/friends/friends';
+import { AmigosPage } from '../pages/amigos/amigos';
 import { PlacePage } from './../pages/place/place';
 import { HorariosPage } from '../pages/horarios/horarios';
 import { HorariosSalvosPage } from './../pages/horarios-salvos/horarios-salvos';
@@ -52,7 +52,7 @@ import { Camera } from '@ionic-native/camera';
     PlacesPage,
     AboutPage,
     SettingsPage,
-    FriendsPage,
+    AmigosPage,
     PlacePage,
     HorariosPage,
     HorariosSalvosPage,
@@ -80,7 +80,7 @@ import { Camera } from '@ionic-native/camera';
     PlacesPage,
     AboutPage,
     SettingsPage,
-    FriendsPage,
+    AmigosPage,
     PlacePage,
     HorariosPage,
     HorariosSalvosPage,

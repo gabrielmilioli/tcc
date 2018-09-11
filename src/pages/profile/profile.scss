@@ -36,4 +36,14 @@ page-profile {
         margin-right: 15%;
         right: 0px;
     }
+    .editar-perfil{
+        display: flex;
+        align-items: flex-end;
+        position: absolute;
+        margin: 18px;
+        right: 0px;
+        font-size: 20px;
+        min-width: 0 !important;
+        text-align: left !important;
+    }
 }

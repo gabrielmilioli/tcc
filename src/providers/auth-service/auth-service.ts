@@ -137,12 +137,12 @@ export class AuthServiceProvider {
     
   }
 
-  get_friends() {
+  get_Amigos() {
     let user = this.get_user();
     
     let credentials = {
       "class": restClass,
-      "method": "get_friends",
+      "method": "get_Amigos",
       "id": user.id
     };
 

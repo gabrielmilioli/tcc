@@ -1,4 +1,4 @@
-import { FriendsPage } from './../friends/friends';
+import { AmigosPage } from './../amigos/amigos';
 import { ChatPage } from './../chat/chat';
 import { Component } from '@angular/core';
 import { ModalController, IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
@@ -73,14 +73,14 @@ export class MessagesPage {
   }
 
   newChat(){
-    let friendsModal = this.modalCtrl.create(FriendsPage, { userId: this.authService.get_user_id() });
-    friendsModal.onDidDismiss(data => {
+    let AmigosModal = this.modalCtrl.create(AmigosPage, { userId: this.authService.get_user_id() });
+    AmigosModal.onDidDismiss(data => {
       if(data.amigo_id){
         //this.alert("Informações", "onDidDismiss : "+data.friend_id);
         this.openChat(data.amigo_id);
       }
     });
-    friendsModal.present();
+    AmigosModal.present();
   }
 
 }

@@ -16,8 +16,8 @@ import { Network } from '@ionic-native/network';
 export class HomePage {
 
   user = {
-    "email": "",
-    "senha": ""
+    "email": "gmilioli@Outlook.com",
+    "senha": "admin"
   };
   response: any;
   userLogged: object;

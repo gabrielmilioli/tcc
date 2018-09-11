@@ -1,7 +1,7 @@
 import { PlacePage } from './../place/place';
 import { PontosProvider } from './../../providers/pontos/pontos';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController, Searchbar } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, Searchbar, Content } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 
 
@@ -20,6 +20,7 @@ import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 export class PlacesPage {
   @ViewChild('searchbar', { read: ElementRef }) searchbarRef: ElementRef;
   @ViewChild('searchbar') searchbarElement: Searchbar;
+  @ViewChild(Content) content: Content;
   pontos:Array<{id: string, nome: string, endereco: string, data_registro: string, imagem: string, favorito: string, class: any }>;
   loading:any;
   response:any;
@@ -87,8 +88,17 @@ export class PlacesPage {
       console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
-        this.pontos = this.response.data;
-        this.todosPontos = this.pontos;
+        this.todosPontos = this.response.data;
+        let length = 3;
+        if(this.pontos){
+          length = this.pontos.length;
+        }
+        this.pontos = [];
+        for (let i = 0; i < length; i++) {
+          if(this.todosPontos[i]){
+            this.pontos.push( this.todosPontos[i] );
+          }
+        }
       }else{ 
         this.alert('Erro', this.response.data);
       }
@@ -104,11 +114,20 @@ export class PlacesPage {
     var id = this.authService.get_user_id();
     if(id){
       this.ponto.get_usuarios_pontos(id).then((result) => {
-        //console.log(result);
+        console.log(result);
         this.response = result;
         if(this.response.status === 'success'){
-          this.pontos = this.response.data;
-          this.todosPontos = this.pontos;
+          this.todosPontos = this.response.data;
+          let length = 3;
+          if(this.pontos){
+            length = this.pontos.length;
+          }
+          this.pontos = [];
+          for (let i = 0; i < length; i++) {
+            if(this.todosPontos[i]){
+              this.pontos.push( this.todosPontos[i] );
+            }
+          }
         }else{ 
           this.alert('Erro', this.response.data);
         }
@@ -123,17 +142,15 @@ export class PlacesPage {
     this.navCtrl.push(PlacePage, {"id":id, "nome":nome});
   }
 
-  favoritarPonto(ponto_id){
-    //console.log("favoritar = "+ponto_id);
+  favoritarPonto(ponto_id, index){
     var id = this.authService.get_user_id();
     if(id){
       this.ponto.set_usuarios_pontos(id, ponto_id).then((result) => {
         //console.log(result);
         this.response = result;
         if(this.response.status === 'success'){
-          let input = <HTMLInputElement>document.getElementById(ponto_id);
-          console.log(input);
           this.ionViewWillEnter();
+          this.scrollTo(index);
         }else{ 
           this.alert('Erro', this.response.data);
         }
@@ -142,10 +159,29 @@ export class PlacesPage {
         this.alert('Erro', error);
       });
     }
+    return false;
+  }
+
+  scrollTo(element:string) {
+    console.log(this.content);
+    console.log(element);
+    console.log(document.getElementById(element));
+    let yOffset = document.getElementById(element).offsetTop;
+    this.content.scrollTo(0, yOffset, 500)
+  }
+
+  carregarMais(infiniteScroll){
+    setTimeout(() => {
+      for (let i = this.pontos.length; i < this.todosPontos.length; i++) {
+        this.pontos.push( this.todosPontos[i] );
+      }
+
+      infiniteScroll.complete();
+    }, 500);
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PlacesPage');
+    
   }
 
   alert(title, subTitle) {

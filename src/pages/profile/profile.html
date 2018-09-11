@@ -8,8 +8,8 @@
 
   <ion-navbar color="primary">
     <ion-title>Perfil</ion-title>
-    <ion-buttons right *ngIf="usuario">
-      <button ion-button (click)="editar()" *ngIf="usuario.id != userLogged">
+    <ion-buttons right [hidden]="!usuarioLogado">
+      <button ion-button (click)="editar()">
         <ion-icon name="create"></ion-icon>
       </button>
     </ion-buttons>
@@ -31,17 +31,35 @@
 
       <ion-card-content [hidden]="editando">
         <ion-card-title>
-          {{usuario.nome}}
+          <ion-input type="text" [(ngModel)]="usuario.nome" readonly text-center></ion-input>
         </ion-card-title>
-        <p *ngIf="usuario.id == userLogged">
-          {{usuario.email}}
+        <p [hidden]="!usuarioLogado">
+          <ion-input type="text" [(ngModel)]="usuario.email" readonly text-center></ion-input>
         </p>
         
-        <ion-row *ngIf="usuario.id != userLogged">
-          <ion-col>
+        <ion-row [hidden]="usuarioLogado">
+          <ion-col *ngIf="!usuario.amizade_aceita && !usuario.solicitou_amizade">
             <button ion-button full round color="primary" item-right (click)="adicionarAmigo(usuario.id)">
               Solicitar amizade
               <ion-icon name="add"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col *ngIf="usuario.solicitou_amizade">
+            <button disabled ion-button full round color="lightPrimary" item-right>
+              Amizade solicitada
+              <ion-icon name="checkmark"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col *ngIf="usuario.amizade_aceita">
+            <button disabled ion-button full round color="lightPrimary" item-right>
+              Desfazer amizade
+              <ion-icon name="close"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col *ngIf="usuario.amizade_aceita && usuario.solicitou_amizade">
+            <button ion-button full round color="primary" item-right (click)="adicionarAmigo(usuario.id)">
+              Conversar
+              <ion-icon name="chatbubbles"></ion-icon>
             </button>
           </ion-col>
         </ion-row>
@@ -50,16 +68,12 @@
 
       <ion-card-content [hidden]="!editando">
         <ion-card-title>
-          <ion-input type="text" [(ngModel)]="usuario.nome"></ion-input>
-          <button ion-button clear color="primary" item-right>
-            <ion-icon name="create"></ion-icon>
-          </button>
+          <ion-icon color="primary" name="create" class="editar-perfil"></ion-icon>
+          <ion-input type="text" [(ngModel)]="usuario.nome" text-center></ion-input>
         </ion-card-title>
         <p>
-          <ion-input type="text" [(ngModel)]="usuario.email"></ion-input>
-          <button ion-button clear color="primary" item-right>
-            <ion-icon name="create"></ion-icon>
-          </button>
+          <ion-icon color="primary" name="create" class="editar-perfil"></ion-icon>
+          <ion-input type="text" [(ngModel)]="usuario.email" text-center></ion-input>
         </p>
       </ion-card-content>
 

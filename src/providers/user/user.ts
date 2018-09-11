@@ -19,11 +19,12 @@ export class UserProvider {
     console.log('Hello UserProvider Provider');
   }
 
-  get_user(id) {
+  get_usuario(id, usuario_id) {
     let credentials = {
       "class": restClass,
-      "method": "get_user",
-      "id": id
+      "method": "get_usuario",
+      "id": id,
+      "usuario_id": usuario_id
     };
     return new Promise((resolve, reject) => {
       this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
@@ -67,6 +68,42 @@ export class UserProvider {
           reject(err);
         });
     });
+  }
+
+  set_usuarios_amigos(id, amigo_id){
+    let credentials = {
+      "class": restClass,
+      "method": "set_usuarios_amigos",
+      "id": id,
+      "amigo_id": amigo_id
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
+  get_usuarios_amigos(id, tipo) {
+    let credentials = {
+      "class": restClass,
+      "method": "get_usuarios_amigos",
+      "id": id,
+      "tipo": tipo
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+    
   }
 
   getHeaders(){

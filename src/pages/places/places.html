@@ -22,7 +22,7 @@
 
 </ion-header>
 
-<ion-content>
+<ion-content #content>
   <ion-refresher (ionRefresh)="ionViewWillEnter($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -40,11 +40,11 @@
     </button>
   </div>
   
-  <ion-title *ngIf="!this.pontos">Nenhum ponto encontrado</ion-title>
+  <ion-title *ngIf="!this.pontos" text-center>Nenhum ponto encontrado</ion-title>
 
-  <ion-card *ngFor="let p of pontos" (click)="visualizarPonto(p.id, p.nome);" [id]="p.id" >
+  <ion-card *ngFor="let p of pontos; let i = index" (click)="visualizarPonto(p.id, p.nome);" [id]="i" >
     <ion-fab right>
-      <button primary color="primary" ion-fab (click)="favoritarPonto(p.id);$event.stopPropagation();">
+      <button primary color="primary" ion-fab (click)="favoritarPonto(p.id, i);$event.stopPropagation();">
         <ion-icon [name]="p.favorito"></ion-icon>
       </button>
     </ion-fab>
@@ -65,4 +65,9 @@
       </div>
     </ion-card-content>
   </ion-card>
+
+  <ion-infinite-scroll (ionInfinite)="carregarMais($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
 </ion-content>

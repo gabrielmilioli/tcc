@@ -1,0 +1,56 @@
+<!--
+  Generated template for the AmigosPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Amigos</ion-title>
+  </ion-navbar>
+  
+</ion-header>
+
+
+<ion-content padding>
+  <ng-container *ngIf="amigos">
+    <div>
+      <ion-segment [(ngModel)]="contatos">
+        <ion-segment-button value="a">
+          Amigos
+        </ion-segment-button>
+        <ion-segment-button value="p">
+          Pendentes
+          <ion-badge *ngIf="amigos.pendentes_total" color="primary" item-end>{{amigos.pendentes_total}}</ion-badge>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
+    <div [ngSwitch]="contatos">
+      <ion-list *ngSwitchCase="'a'">
+        <ion-title *ngIf="!amigos.aceitos" text-center>Nenhum amigo adicionado</ion-title>
+        <ion-item *ngFor="let a of amigos.aceitos">
+          <ion-avatar item-start left>
+            <img [src]="a.amigo_foto" item-left>
+          </ion-avatar>
+          <h2>{{a.amigo_nome}}</h2>
+          <ion-icon color="primary" item-end right item-right name="arrow-forward"></ion-icon>
+        </ion-item>
+      </ion-list>
+    
+      <ion-list *ngSwitchCase="'p'">
+        <ion-title *ngIf="!amigos.pendentes" text-center>Nenhuma amizade pendente</ion-title>
+        <ion-item *ngFor="let p of amigos.pendentes">
+          <ion-avatar item-start left>
+            <img [src]="p.amigo_foto" item-left>
+          </ion-avatar>
+          <h2>{{p.amigo_nome}}</h2>
+          <button color="primary" ion-button outline item-end>
+            Aceitar
+          </button>
+        </ion-item>
+      </ion-list>
+    </div>
+  </ng-container>
+</ion-content>

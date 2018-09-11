@@ -1,7 +1,7 @@
 import { UserProvider } from './../../providers/user/user';
 import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
 import { Component } from '@angular/core';
-import { App, NavController } from 'ionic-angular';
+import { App, NavController, Events } from 'ionic-angular';
 
 import { MapPage } from '../map/map';
 import { MessagesPage } from '../messages/messages';
@@ -10,6 +10,7 @@ import { HomePage } from '../home/home';
 import { ProfilePage } from '../profile/profile';
 import { PlacesPage } from '../places/places';
 import { SettingsPage } from '../settings/settings';
+import { AmigosPage } from '../amigos/amigos';
 
 
 /**
@@ -23,37 +24,28 @@ import { SettingsPage } from '../settings/settings';
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
-  pages: Array<{title: string, component: any, icon: any }>;
+  pages: Array<{title: string, component: any, icon: any, badge: string }>;
   tabs: Array<{title: string, root: any, icon: any }>;
   
-  tabPage1 = AboutPage;
-  tabPage2 = MapPage;
-  tabPage3 = MessagesPage;
   rootPage:any = MapPage;
-
-  name:string;
-  user:{
-    "id":"",
-    "name":"",
-    "email":"",
-    "login":"",
-    "password":"",
-    "registration_date":"",
-  };
-
+  usuario:{id: string, nome: string, email: string, foto: string, register_date: string, 
+    amizade_aceita:boolean, solicitou_amizade:boolean};
+  response:any;
+  badge:any;
 
   constructor(public app: App, public navCtrl: NavController, public authService: AuthServiceProvider,
-    public userService: UserProvider) {
+    public userService: UserProvider, public events: Events) {
     //this.navCtrl.parent.select(2);
-    this.user = this.authService.get_user();
-    if(this.user){
-      this.name = this.user.name;
+    this.carregaUsuario();
+    this.carregaPendentes();
+    if(!this.badge){
+      this.badge = false;
     }
     this.pages = [
-      { title: 'Perfil', component: ProfilePage, icon: 'contact' },
-      { title: 'Meus pontos', component: PlacesPage, icon: 'heart' }
-      /*{ title: 'Reportar Bug', component: null, icon: 'bug' },
-      { title: 'Configurações', component: SettingsPage, icon: 'cog' },
+      { title: 'Perfil', component: ProfilePage, icon: 'contact', badge: '' },
+      { title: 'Meus pontos', component: PlacesPage, icon: 'heart', badge: '' },
+      { title: 'Contatos', component: AmigosPage, icon: 'people', badge: this.badge }
+      /*{ title: 'Configurações', component: SettingsPage, icon: 'cog' },
       { title: 'Sobre', component: AboutPage, icon: 'information-circle' },*/
       ];
     this.tabs = [
@@ -61,6 +53,41 @@ export class TabsPage {
       { title: 'Mapa', root: MapPage, icon: 'compass' }
       /*{ title: 'Mensagens', root: MessagesPage, icon: 'chatbubbles' }*/
       ];
+    events.subscribe('usuario:changed', usuario => {
+        console.log(usuario);
+        if(usuario !== undefined && usuario !== ""){
+          this.usuario = usuario;
+        }
+     })
+  }
+
+  carregaPendentes(){
+    this.usuario = this.authService.get_user();
+    this.userService.get_usuarios_amigos(this.usuario.id, 2).then((result) => {
+      this.response = result;
+      if(this.response.status === 'success'){
+        console.log(this.response.data);
+        this.badge = this.response.data.pendentes_total;
+      }else{ 
+        console.log(this.response.data);
+      }
+    }).catch(error=>{
+      console.log(error);
+    });
+  }
+  
+  carregaUsuario(){
+    this.usuario = this.authService.get_user();
+    this.userService.get_usuario(this.usuario.id, null).then((result) => {
+      this.response = result;
+      if(this.response.status === 'success'){
+        this.usuario = this.response.data;
+      }else{ 
+        console.log(this.response.data);
+      }
+    }).catch(error=>{
+      console.log(error);
+    });
   }
   
   openPage(p){
