@@ -44,8 +44,8 @@ export class MapPage {
     //console.log(map);
   }
 
-  ionViewDidLoad(){
-    console.log('ionViewDidLoad');
+  ionViewWillEnter(){
+    console.log('ionViewWillEnter');
     this.criarMapa();
   }
 
@@ -59,8 +59,14 @@ export class MapPage {
       this.enderecos = [];
       return;
     }
-    
-    this.GoogleAutocomplete.getPlacePredictions({ input: this.endereco },
+
+    var options = {
+      input: this.endereco,
+      types: ['establishment'],
+      componentRestrictions: {country: 'BR', state: 'SC', city: 'Criciúma'}
+    };
+
+    this.GoogleAutocomplete.getPlacePredictions(options,
     (predictions, status) => {
       this.enderecos = [];
       this.zone.run(() => {
@@ -133,7 +139,9 @@ export class MapPage {
       this.enderecoCentro = this.mapa.getCenter().lat()+","+this.mapa.getCenter().lng();
     });
 
-    this.loading.dismiss();
+    if(this.loading){
+      this.loading.dismiss();
+    }
   }
 
   centralizar(){
@@ -153,9 +161,9 @@ export class MapPage {
       this.alert('Erro', error);
     });
     
-    setTimeout(() => {
+    if(this.loading){
       this.loading.dismiss();
-    }, 10000);
+    }
   }
 
   toggleCriar(){
@@ -372,7 +380,9 @@ export class MapPage {
   }
 
   alert(title, subTitle) {
-    this.loading.dismiss();
+    if(this.loading){
+      this.loading.dismiss();
+    }
     let alert = this.alertCtrl.create({
       title: title,
       subTitle: subTitle,

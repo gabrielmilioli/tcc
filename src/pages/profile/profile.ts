@@ -160,7 +160,7 @@ export class ProfilePage {
     if(id == this.usuarioLogadoId){
       return false;
     }
-    this.userService.set_usuarios_amigos(this.usuarioLogadoId, id).then((result) => {
+    this.userService.set_usuarios_amigos(this.usuarioLogadoId, id, null).then((result) => {
       this.response = result;
       if(this.response.status === 'success'){
         //this.usuario = this.response.data;

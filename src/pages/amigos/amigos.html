@@ -7,13 +7,14 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Amigos</ion-title>
+    <ion-title>Contatos</ion-title>
   </ion-navbar>
   
 </ion-header>
 
 
 <ion-content padding>
+  <ion-title *ngIf="!amigos" text-center>Nenhuma amizade ainda</ion-title>
   <ng-container *ngIf="amigos">
     <div>
       <ion-segment [(ngModel)]="contatos">
@@ -30,23 +31,25 @@
     <div [ngSwitch]="contatos">
       <ion-list *ngSwitchCase="'a'">
         <ion-title *ngIf="!amigos.aceitos" text-center>Nenhum amigo adicionado</ion-title>
-        <ion-item *ngFor="let a of amigos.aceitos">
-          <ion-avatar item-start left>
+        <ion-item *ngFor="let a of amigos.aceitos" (click)="visualizarPerfil(a.amigo_id);">
+          <ion-avatar class="usuario-foto" item-start left>
             <img [src]="a.amigo_foto" item-left>
           </ion-avatar>
           <h2>{{a.amigo_nome}}</h2>
-          <ion-icon color="primary" item-end right item-right name="arrow-forward"></ion-icon>
+          <button color="primary" ion-button outline item-end (click)="$event.stopPropagation();">
+            Conversar
+          </button>
         </ion-item>
       </ion-list>
     
       <ion-list *ngSwitchCase="'p'">
         <ion-title *ngIf="!amigos.pendentes" text-center>Nenhuma amizade pendente</ion-title>
-        <ion-item *ngFor="let p of amigos.pendentes">
-          <ion-avatar item-start left>
+        <ion-item *ngFor="let p of amigos.pendentes" (click)="visualizarPerfil(p.amigo_id);">
+          <ion-avatar class="usuario-foto" item-start left>
             <img [src]="p.amigo_foto" item-left>
           </ion-avatar>
           <h2>{{p.amigo_nome}}</h2>
-          <button color="primary" ion-button outline item-end>
+          <button color="primary" ion-button outline item-end (click)="aceitarAmizade(p.amigo_id);$event.stopPropagation();">
             Aceitar
           </button>
         </ion-item>

@@ -4,7 +4,7 @@ import { GooglePlus } from '@ionic-native/google-plus';
 import { Facebook } from '@ionic-native/facebook';
 import { Component } from '@angular/core';
 import { NavParams, NavController, AlertController, LoadingController } from 'ionic-angular';
-import { RegisterPage } from '../register/register';
+import { RegistrarPage } from '../registrar/registrar';
 import { TabsPage } from '../tabs/tabs';
 import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
 import { Network } from '@ionic-native/network';
@@ -111,6 +111,8 @@ export class HomePage {
   }
 
   setSenha(id){
+    this.navCtrl.push(RegistrarPage, {id: id});
+    /*
       let alert = this.alertCtrl.create({
         title: 'Defina uma senha',
         inputs: [
@@ -150,7 +152,7 @@ export class HomePage {
           }
         ]
       });
-      alert.present();
+      alert.present();*/
   }
 
   gotoTabs(){
@@ -260,6 +262,8 @@ export class HomePage {
   }
 
   registrar() {
+    this.navCtrl.push(RegistrarPage);
+    /*
     let alert = this.alertCtrl.create({
       title: 'Insira seus dados',
       inputs: [
@@ -327,7 +331,7 @@ export class HomePage {
         }
       ]
     });
-    alert.present();
+    alert.present();*/
   }
 
 }

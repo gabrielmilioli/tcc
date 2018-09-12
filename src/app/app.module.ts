@@ -14,7 +14,7 @@ import { GoogleMaps } from '@ionic-native/google-maps';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { RegisterPage } from '../pages/register/register';
+import { RegistrarPage } from '../pages/registrar/registrar';
 import { TabsPage } from '../pages/tabs/tabs';
 import { MenuPage } from '../pages/menu/menu';
 import { MapPage } from '../pages/map/map';
@@ -42,7 +42,7 @@ import { Camera } from '@ionic-native/camera';
   declarations: [
     MyApp,
     HomePage,
-    RegisterPage,
+    RegistrarPage,
     TabsPage,
     MenuPage,
     MapPage,
@@ -70,7 +70,7 @@ import { Camera } from '@ionic-native/camera';
   entryComponents: [
     MyApp,
     HomePage,
-    RegisterPage,
+    RegistrarPage,
     TabsPage,
     MenuPage,
     MapPage,

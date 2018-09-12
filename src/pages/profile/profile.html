@@ -41,25 +41,21 @@
           <ion-col *ngIf="!usuario.amizade_aceita && !usuario.solicitou_amizade">
             <button ion-button full round color="primary" item-right (click)="adicionarAmigo(usuario.id)">
               Solicitar amizade
-              <ion-icon name="add"></ion-icon>
             </button>
           </ion-col>
           <ion-col *ngIf="usuario.solicitou_amizade">
             <button disabled ion-button full round color="lightPrimary" item-right>
               Amizade solicitada
-              <ion-icon name="checkmark"></ion-icon>
             </button>
           </ion-col>
           <ion-col *ngIf="usuario.amizade_aceita">
             <button disabled ion-button full round color="lightPrimary" item-right>
               Desfazer amizade
-              <ion-icon name="close"></ion-icon>
             </button>
           </ion-col>
-          <ion-col *ngIf="usuario.amizade_aceita && usuario.solicitou_amizade">
+          <ion-col *ngIf="usuario.amizade_aceita">
             <button ion-button full round color="primary" item-right (click)="adicionarAmigo(usuario.id)">
               Conversar
-              <ion-icon name="chatbubbles"></ion-icon>
             </button>
           </ion-col>
         </ion-row>

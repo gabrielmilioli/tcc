@@ -1,3 +1,4 @@
+import { ProfilePage } from './../profile/profile';
 import { UserProvider } from './../../providers/user/user';
 import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
 import { Component } from '@angular/core';
@@ -55,6 +56,25 @@ export class AmigosPage {
     }).catch(error=>{
       this.alert('Erro', error.message);
     });
+  }
+
+  aceitarAmizade(id){
+    this.userService.set_usuarios_amigos(this.usuario_id, id, 1).then((result) => {
+      console.log(result);
+      this.response = result;
+      if(this.response.status === 'success'){
+        this.carregaAmigos();
+      }else{ 
+        this.alert('Erro', this.response.data);
+      }
+    }).catch(error=>{
+      this.alert('Erro', error.message);
+    });
+  }
+  
+  visualizarPerfil(id){
+    //console.log(id);
+    this.navCtrl.push(ProfilePage, {"id":id});
   }
 
   alert(title, subTitle) {

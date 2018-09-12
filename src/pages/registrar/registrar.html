@@ -1,0 +1,67 @@
+<!--
+  Generated template for the RegistrarPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>registrar</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding center no-bounce>
+  <ion-list>
+    <ion-item>
+      <ion-label floating>Nome</ion-label>
+      <ion-input [(ngModel)]="usuario.nome"
+                 type="text"
+                 clearInput clearOnEdit="false">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>E-mail</ion-label>
+      <ion-input [(ngModel)]="usuario.email"
+                 type="text"
+                 clearInput clearOnEdit="false">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Senha</ion-label>
+      <ion-input [(ngModel)]="usuario.senha"
+                 type="password"
+                 clearInput clearOnEdit="true">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Repita a senha</ion-label>
+      <ion-input [(ngModel)]="usuario.resenha"
+                 type="password"
+                 clearInput clearOnEdit="true">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Estado</ion-label>
+      <ion-select [(ngModel)]="usuario.estado">
+        <ion-option *ngFor="let e of estados" [value]="e.id">{{e.sigla}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Cidade</ion-label>
+      <ion-select [(ngModel)]="usuario.cidade">
+        <ion-option *ngFor="let c of cidades" [value]="c.id">{{c.nome}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <h6 *ngIf="error" class="error">{{messageError}}</h6>
+  </ion-list>
+
+</ion-content>
+
+<ion-footer padding bottom center>
+  <button ion-button full round color="primary" (click)="registrar()">
+    Criar conta
+  </button>
+</ion-footer>

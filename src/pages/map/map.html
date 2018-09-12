@@ -41,10 +41,14 @@
     </button>
   </ion-fab>
 
-  <button ion-button round bottom center color="lightPrimary" [hidden]="!adicionar" id="criarPonto" (click)="criarPonto()">
-    Criar um ponto aqui
-    <ion-icon name="pin"></ion-icon>
-  </button>
+  <div id="divAdicionar" [hidden]="!adicionar">
+    <button ion-button round bottom center color="lightPrimary" id="cancelarPonto" (click)="toggleCriar()">
+      <ion-icon name="close"></ion-icon>
+    </button>
+    <button ion-button round full bottom center color="primary" id="criarPonto" (click)="criarPonto()">
+      Criar um ponto aqui
+    </button>
+  </div>
 
   <ion-fab bottom left [hidden]="adicionar">
     <button ion-fab color="primary" (click)="centralizar()">

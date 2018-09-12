@@ -59,10 +59,10 @@ export class AuthServiceProvider {
     
   }
 
-  register(credentials) {
+  registrar(credentials) {
     //console.log(credentials);
     credentials.class = restClass;
-    credentials.method = "register";
+    credentials.method = "registrar";
     
     return new Promise((resolve, reject) => {
       
