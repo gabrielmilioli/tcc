@@ -103,8 +103,7 @@ export class HomePage {
       }).catch(error=>{
         this.alert('Erro', error.message);
       });
-    })
-    .catch(err => console.error(err));
+    }).catch(err => console.error(err));
     setTimeout(() => {
       this.loading.dismiss();
     }, 60000);

@@ -1,8 +1,8 @@
 <ion-header color="light" center text-center>
   <ion-navbar color="light">
-    <ion-avatar center>
+    <div id="logo" center>
       <img src="../../assets/imgs/logo.png"/> 
-    </ion-avatar>
+    </div>
   </ion-navbar>
 </ion-header>
 
@@ -28,8 +28,9 @@
       </ion-item>
     </ion-list>
 
-    <button ion-button full (click)="login()">Entrar</button>
-    <button ion-button full color="light" (click)="registrar()">Me registrar</button>
+    <button ion-button round full (click)="login()">Entrar</button>
+    <button ion-button round full color="light" (click)="registrar()">Me registrar</button>
+    <!--
     <br>
     <ion-title class="sub-title">Ou pelas redes sociais</ion-title>
     <div id="social-login">
@@ -42,6 +43,6 @@
       <button class="button-gp" ion-fab full color="googlePlus" (click)="loginGp()">
         <ion-icon name="logo-googleplus"></ion-icon>
       </button>
-    </div>
+    </div>-->
   </div>
 </ion-content>

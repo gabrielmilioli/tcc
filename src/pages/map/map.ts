@@ -2,7 +2,7 @@ import { NovoPontoPage } from './../novo-ponto/novo-ponto';
 import { PlacePage } from './../place/place';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Component, ViewChild, ElementRef, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { GoogleMaps } from '../../../node_modules/@ionic-native/google-maps';
 
@@ -35,6 +35,7 @@ export class MapPage {
   adicionarClass:string="primary";
   enderecoCentro:string;
   mapa:any;
+  marcadores = [];
 
   GoogleAutocomplete = new google.maps.places.AutocompleteService();
   enderecos = [];
@@ -44,14 +45,15 @@ export class MapPage {
     //console.log(map);
   }
 
-  ionViewWillEnter(){
-    console.log('ionViewWillEnter');
+  ionViewDidLoad(){
+    console.log('ionViewDidLoad');
     this.criarMapa();
   }
 
-  ionViewDidEnter(){
+  ionViewWillEnter(){
     console.log('ionViewDidEnter');
-    //this.displayMap();
+    this.deletarMarcadores();
+    this.carregarPontos();
   }
 
   updateSearchResults(){
@@ -121,27 +123,140 @@ export class MapPage {
 
     this.mapa = new google.maps.Map(this.mapRef.nativeElement,options);
     
-    this.authService.get_places().then((result) => {
-      //console.log(result);
-      this.response = result;
-      if(this.response.status === 'success'){
-        this.places = this.response.data;
-        this.addMarkers(this.places, this.mapa);
-      }else{ 
-        this.alert('Erro', this.response.data);
-      }
-    }).catch(error=>{
-      this.alert('Erro', error);
-    });
-    
     google.maps.event.addListener(this.mapa, 'center_changed', () => {
       console.log(this.mapa.getCenter().lat() + ', ' +this.mapa.getCenter().lng());
       this.enderecoCentro = this.mapa.getCenter().lat()+","+this.mapa.getCenter().lng();
     });
 
+    this.carregarPontos();
+
     if(this.loading){
       this.loading.dismiss();
     }
+  }
+  
+  carregarPontos(){
+    this.authService.get_places().then((result) => {
+      //console.log(result);
+      this.response = result;
+      if(this.response.status === 'success'){
+        this.places = this.response.data;
+        this.adicionarMarcadores(this.places);
+      }else{ 
+        this.alert('Erro', this.response.data);
+      }
+    }).catch(error=>{
+      this.alert('Erro', error.message);
+    });
+  }
+
+  // Sets the map on all markers in the array.
+  setMapOnAll(map) {
+    if(!this.marcadores){
+      return false;
+    }
+    for (var i = 0; i < this.marcadores.length; i++) {
+      this.marcadores[i].setMap(map);
+    }
+  }
+
+  // Removes the markers from the map, but keeps them in the array.
+  esconderMarcadores() {
+    this.setMapOnAll(null);
+  }
+
+  // Shows any markers currently in the array.
+  mostrarMarcadores() {
+    this.setMapOnAll(this.mapa);
+  }
+
+  // Deletes all markers in the array by removing references to them.
+  deletarMarcadores() {
+    this.esconderMarcadores();
+    this.marcadores = [];
+  }
+
+  adicionarMarcadores(places){
+    let map = this.mapa;
+    this.marcadores = [];
+    for (var i = 0; i < places.length; i++) {
+      var place = places[i];
+      //var address = place.address;
+      var id = parseInt(place.id);
+      var lat = place.lat;
+      var lon = place.lon;
+      var nome = place.nome;
+      var imagem = place.imagem;
+      //console.log("marcador id = "+id);
+
+      lat = parseFloat(lat);
+      lon = parseFloat(lon);
+
+      var image = {
+        url: 'http://tcc.pelainternetsistemas.com.br/app/images/marker.png',
+        // This marker is 20 pixels wide by 32 pixels high.
+        size: new google.maps.Size(32, 32),
+        // The origin for this image is (0, 0).
+        origin: new google.maps.Point(0, 0),
+        // The anchor for this image is the base of the flagpole at (0, 32).
+        anchor: new google.maps.Point(0, 32)
+      };
+
+      var marker = new google.maps.Marker({
+        position: {lat: lat, lng: lon},
+        map: map,
+        title: nome,
+        animation: 'DROP',
+        zIndex: id,
+        id: id,
+        icon: image,
+        imagem: imagem
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, app) {
+        return function() {
+          let id = marker.get("id");
+          let nome = marker.get("title");
+          let imagem = marker.get("imagem");
+          console.log("touch id = "+id);
+          //console.log("touch nome = "+nome);
+
+          var elementid = 'infobox'+id;
+          let infoBox = '<div class="info-box" id="'+elementid+'">'+
+          '<div class="info-header">'+
+          '<img src="'+imagem+'">'+
+          '</div>'+
+          '<div class="info-content">'+
+          '<h6>'+nome+'</h6>'+
+          '</div>'+
+          '<div class="info-footer">'+
+          '<button ion-button full>'+
+          '<span class="button-inner">Visualizar</span>'+
+          '</button>'+
+          '</div>'+
+          '</div>';
+    
+          let infowindow = new google.maps.InfoWindow({
+            content: infoBox,
+            maxWidth: 200
+          });
+    
+          infowindow.open(map, marker);
+          
+          //app.irPonto(marker.get("id"), marker.get("title"));
+          google.maps.event.addListenerOnce(infowindow, 'domready', () => {
+            document.getElementById(elementid).addEventListener('click', () => {
+              console.log("touch = "+id);
+              infowindow.close();
+              app.navCtrl.push(PlacePage, {"id":id, "nome":nome});
+            });
+          });
+        }
+      })(marker, this));
+
+      this.marcadores.push(marker);
+    }
+    console.log(this.marcadores);
   }
 
   centralizar(){
@@ -170,9 +285,11 @@ export class MapPage {
     if(!this.adicionar){
       this.adicionar=true;
       this.adicionarClass="lightPrimary";
+      this.esconderMarcadores();
     }else{
       this.adicionar=false;
       this.adicionarClass="primary";
+      this.mostrarMarcadores();
     }
     this.enderecos = [];
   }
@@ -273,85 +390,6 @@ export class MapPage {
       }
     });
     this.toggleCriar();
-  }
-
-  addMarkers(places, map){
-    for (var i = 0; i < places.length; i++) {
-      var place = places[i];
-      //var address = place.address;
-      var id = parseInt(place.id);
-      var lat = place.lat;
-      var lon = place.lon;
-      var nome = place.nome;
-      var imagem = place.imagem;
-      //console.log("marcador id = "+id);
-
-      lat = parseFloat(lat);
-      lon = parseFloat(lon);
-
-      var image = {
-        url: 'http://tcc.pelainternetsistemas.com.br/app/images/marker.png'/*,
-        // This marker is 20 pixels wide by 32 pixels high.
-        size: new google.maps.Size(20, 28),
-        // The origin for this image is (0, 0).
-        origin: new google.maps.Point(0, 0),
-        // The anchor for this image is the base of the flagpole at (0, 32).
-        anchor: new google.maps.Point(0, 28)*/
-      };
-
-      var marker = new google.maps.Marker({
-        position: {lat: lat, lng: lon},
-        map: map,
-        title: nome,
-        animation: 'DROP',
-        zIndex: id,
-        id: id,
-        icon: image,
-        imagem: imagem
-      });
-
-      google.maps.event.addListener(marker, 'click', (function(marker, app) {
-        return function() {
-          let id = marker.get("id");
-          let nome = marker.get("title");
-          let imagem = marker.get("imagem");
-          console.log("touch id = "+id);
-          //console.log("touch nome = "+nome);
-
-          var elementid = 'infobox'+id;
-          let infoBox = '<div class="info-box" id="'+elementid+'">'+
-          '<div class="info-header">'+
-          '<img src="'+imagem+'">'+
-          '</div>'+
-          '<div class="info-content">'+
-          '<h6>'+nome+'</h6>'+
-          '</div>'+
-          '<div class="info-footer">'+
-          '<button ion-button full>'+
-          '<span class="button-inner">Visualizar</span>'+
-          '</button>'+
-          '</div>'+
-          '</div>';
-    
-          let infowindow = new google.maps.InfoWindow({
-            content: infoBox,
-            maxWidth: 200
-          });
-    
-          infowindow.open(map, marker);
-          
-          //app.irPonto(marker.get("id"), marker.get("title"));
-          google.maps.event.addListenerOnce(infowindow, 'domready', () => {
-            document.getElementById(elementid).addEventListener('click', () => {
-              console.log("touch = "+id);
-              infowindow.close();
-              app.navCtrl.push(PlacePage, {"id":id, "nome":nome});
-            });
-          });
-        }
-      })(marker, this));
-
-    }
   }
 
   irEndereco(place) {       
