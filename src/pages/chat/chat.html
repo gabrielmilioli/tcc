@@ -13,20 +13,22 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
 
 </ion-content>
 
-<ion-footer>
 
-    <ion-toolbar color="primary">
-      <ion-input [(ngModel)]="message" placeholder="Escreva algo..."></ion-input>
+<ion-footer bottom center>
+
+  <ion-row>
+    <ion-col col-10>
+      <ion-input [(ngModel)]="inputMensagem" placeholder="Escreva algo..."></ion-input>
+    </ion-col>
+    <ion-col col-2>
+      <button id="enviarMensagem" end ion-button round color="primary" (click)="enviarMensagem()">
+        <ion-icon name="send"></ion-icon>
+      </button>
+    </ion-col>
+  </ion-row>
   
-      <ion-buttons end>
-        <button ion-button (click)="sendMessage()">
-          <ion-icon name="send" color="primary"></ion-icon>
-        </button>
-      </ion-buttons>
-    </ion-toolbar>
-  
-  </ion-footer>
+</ion-footer>

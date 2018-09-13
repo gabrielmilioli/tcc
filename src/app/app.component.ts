@@ -11,6 +11,7 @@ import { HomePage } from '../pages/home/home';
 })
 export class MyApp {
   rootPage:any = HomePage;
+  response:any;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public authService: AuthServiceProvider) {
     platform.ready().then(() => {
@@ -22,11 +23,21 @@ export class MyApp {
       splashScreen.hide();
 
       this.authService.afAuth.authState.subscribe(user => {
-          if (user) {
+        this.authService.loginFirebase(user.email).then((result) => {
+          this.response = result;
+          console.log(this.response);
+          if(this.response.status === 'success'){
+            localStorage.setItem('user', JSON.stringify(this.response.data));
+            
+            this.authService.set_logged(true);
+            this.authService.set_user(this.response.data);
             this.rootPage = TabsPage;
-          } else {
-            this.rootPage = HomePage;
+          }else{ 
+            console.log(this.response.data);
           }
+        }).catch(error=>{
+          console.log(error.message);
+        });
         },
         () => {
           this.rootPage = HomePage;

@@ -26,22 +26,7 @@ export class AuthServiceProvider {
   constructor(public http: HttpClient, public afAuth: AngularFireAuth) {
     //console.log('Hello AuthServiceProvider Provider');
     afAuth.authState.subscribe(user => {
-      this.loginFirebase(user.email).then((result) => {
-        this.response = result;
-        console.log(this.response);
-        if(this.response.status === 'success'){
-          localStorage.setItem('user', JSON.stringify(this.response.data));
-          
-          this.set_logged(true);
-          this.set_user(this.response.data);
-          this.fbuser = user;
-        }else{ 
-          console.log(this.response.data);
-        }
-      }).catch(error=>{
-        console.log(error.message);
-      });
-			
+      
 		});
   }
 
@@ -77,10 +62,9 @@ export class AuthServiceProvider {
           // The signed-in user info.
           let user = result.user;*/
           return result;
-          console.log(result);
         }).catch(function(error) {
           // Handle Errors here.
-          console.log(error.message);
+          return error;
         });
       });
     }

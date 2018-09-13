@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
+import { UserProvider } from './../../providers/user/user';
 
 /**
  * Generated class for the ChatPage page.
@@ -14,16 +16,40 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'chat.html',
 })
 export class ChatPage {
-  message:string;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  inputMensagem:string;
+  usuarioLogadoId:any;
+  loading:any;
+  response:any;
+  amigo_id:any;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public userService: UserProvider,
+    public alertCtrl: AlertController, public loadingCtrl: LoadingController, public authService: AuthServiceProvider) {
+    this.usuarioLogadoId = this.authService.get_user_id();
+    this.amigo_id = this.navParams.get('id');
   }
 
-  sendMessage(){
+  enviarMensagem(){
+    console.log(this.inputMensagem);
+  }
+
+  carregaMensagens(amigo_id, usuario_id){
     
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ChatPage');
+  
+  
+  ionViewDidEnter(){
+    this.loading = this.loadingCtrl.create({
+      content: 'Carregando conversa...'
+    });
+    this.loading.present();
+
+    var usuario_id = this.authService.get_user_id();
+    
+    this.carregaMensagens(this.amigo_id, usuario_id);
+
+    this.loading.dismiss();
   }
+
 
 }

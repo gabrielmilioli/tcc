@@ -32,13 +32,13 @@ export class NovoPontoPage {
     console.log('ionViewDidLoad NovoPontoPage');
   }
 
-  adicionarPonto(endereco) {
+  adicionarPonto() {
     this.loading = this.loadingCtrl.create({
       content: 'Criando ponto...'
     });
     this.loading.present();
     this.endereco.imagem = this.imagem;
-
+    console.log(this.endereco);
     var id = this.authService.get_user_id();
     this.pontosProvider.set_ponto(id, this.endereco).then((result) => {
       //console.log(result);

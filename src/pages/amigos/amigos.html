@@ -7,53 +7,60 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Contatos</ion-title>
+    <ion-title [hidden]="mostrarBuscar">Contatos</ion-title>
+    <ion-title>
+      <ion-searchbar #searchbar [(ngModel)]="inputBuscar" 
+      placeholder="Buscar um contato" (ionInput)="buscar($event)" 
+      [hidden]="!mostrarBuscar"></ion-searchbar>
+    </ion-title>
+
+    <ion-buttons right>
+      <button ion-button (click)="toggleBusca()">
+        <ion-icon name="search" [hidden]="mostrarBuscar"></ion-icon>
+        <ion-icon name="close" [hidden]="!mostrarBuscar"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
-  
+  <ion-segment [(ngModel)]="contatos" class="segment-primary">
+    <ion-segment-button value="a">
+      Amigos
+    </ion-segment-button>
+    <ion-segment-button value="p">
+      Pendentes
+      <ion-badge *ngIf="amigos && amigos.pendentes_total > 0" color="light" item-end>{{amigos.pendentes_total}}</ion-badge>
+    </ion-segment-button>
+  </ion-segment>
 </ion-header>
 
 
-<ion-content padding>
-  <ion-title *ngIf="!amigos" text-center>Nenhuma amizade ainda</ion-title>
-  <ng-container *ngIf="amigos">
-    <div>
-      <ion-segment [(ngModel)]="contatos">
-        <ion-segment-button value="a">
-          Amigos
-        </ion-segment-button>
-        <ion-segment-button value="p">
-          Pendentes
-          <ion-badge *ngIf="amigos.pendentes_total" color="primary" item-end>{{amigos.pendentes_total}}</ion-badge>
-        </ion-segment-button>
-      </ion-segment>
-    </div>
-
-    <div [ngSwitch]="contatos">
-      <ion-list *ngSwitchCase="'a'">
-        <ion-title *ngIf="!amigos.aceitos" text-center>Nenhum amigo adicionado</ion-title>
-        <ion-item *ngFor="let a of amigos.aceitos" (click)="visualizarPerfil(a.amigo_id);">
-          <ion-avatar class="usuario-foto" item-start left>
-            <img [src]="a.amigo_foto" item-left>
-          </ion-avatar>
-          <h2>{{a.amigo_nome}}</h2>
-          <button color="primary" ion-button outline item-end (click)="$event.stopPropagation();">
-            Conversar
-          </button>
-        </ion-item>
-      </ion-list>
-    
-      <ion-list *ngSwitchCase="'p'">
-        <ion-title *ngIf="!amigos.pendentes" text-center>Nenhuma amizade pendente</ion-title>
-        <ion-item *ngFor="let p of amigos.pendentes" (click)="visualizarPerfil(p.amigo_id);">
-          <ion-avatar class="usuario-foto" item-start left>
-            <img [src]="p.amigo_foto" item-left>
-          </ion-avatar>
-          <h2>{{p.amigo_nome}}</h2>
-          <button color="primary" ion-button outline item-end (click)="aceitarAmizade(p.amigo_id);$event.stopPropagation();">
-            Aceitar
-          </button>
-        </ion-item>
-      </ion-list>
-    </div>
+<ion-content>
+  <p *ngIf="!amigos" center text-center>Nenhuma amizade ainda</p>
+  
+  <ng-container [ngSwitch]="contatos" *ngIf="amigos">
+    <ion-list *ngSwitchCase="'a'">
+      <p *ngIf="!amigos.aceitos" center text-center>Nenhum amigo adicionado</p>
+      <ion-item *ngFor="let a of amigos.aceitos" (click)="visualizarPerfil(a.amigo_id);">
+        <ion-avatar class="usuario-foto" item-start left>
+          <img [src]="a.amigo_foto" item-left>
+        </ion-avatar>
+        <h2>{{a.amigo_nome}}</h2>
+        <button color="primary" ion-button outline item-end (click)="$event.stopPropagation();">
+          Conversar
+        </button>
+      </ion-item>
+    </ion-list>
+  
+    <ion-list *ngSwitchCase="'p'">
+      <p *ngIf="!amigos.pendentes" center text-center>Nenhuma amizade pendente</p>
+      <ion-item *ngFor="let p of amigos.pendentes" (click)="visualizarPerfil(p.amigo_id);">
+        <ion-avatar class="usuario-foto" item-start left>
+          <img [src]="p.amigo_foto" item-left>
+        </ion-avatar>
+        <h2>{{p.amigo_nome}}</h2>
+        <button color="primary" ion-button outline item-end (click)="aceitarAmizade(p.amigo_id);$event.stopPropagation();">
+          Aceitar
+        </button>
+      </ion-item>
+    </ion-list>
   </ng-container>
 </ion-content>

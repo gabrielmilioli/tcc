@@ -7,19 +7,37 @@
 <ion-header>
 
   <ion-navbar color="primary">
-      <ion-buttons left>
-        <button ion-button menuToggle>
-          <ion-icon name="menu"></ion-icon>
-        </button>
-      </ion-buttons>
-    <ion-title>Pontos</ion-title>
+    <ion-buttons left [hidden]="mostrarBuscar">
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title [hidden]="mostrarBuscar">Pontos</ion-title>
+
+    <ion-title>
+      <ion-searchbar #searchbar [(ngModel)]="inputBuscar" 
+      placeholder="Buscar um ponto" (ionInput)="buscar($event)" 
+      [hidden]="!mostrarBuscar"></ion-searchbar>
+    </ion-title>
+
     <ion-buttons right>
       <button ion-button (click)="toggleBusca()">
-        <ion-icon name="search"></ion-icon>
+        <ion-icon name="search" [hidden]="mostrarBuscar"></ion-icon>
+        <ion-icon name="close" [hidden]="!mostrarBuscar"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
-
+  <ion-segment [(ngModel)]="escolherPontos" class="segment-primary" (ionChange)="carregaPontos()">
+    <ion-segment-button value="t">
+      <ion-icon name="bus"></ion-icon>
+      Todos os pontos
+    </ion-segment-button>
+    <ion-segment-button value="s">
+      <ion-icon name="heart"></ion-icon>
+      Pontos salvos
+    </ion-segment-button>
+  </ion-segment>
 </ion-header>
 
 <ion-content #content>
@@ -27,45 +45,69 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-searchbar #searchbar [(ngModel)]="inputBuscar" placeholder="Buscar um ponto" (ionInput)="buscar($event)" [hidden]="!mostrarBuscar"></ion-searchbar>
+  <p *ngIf="!pontos" center text-center>Nenhum ponto encontrado</p>
 
-  <div id="pontos-opcoes">
-    <button icon-end ion-button round (click)="carregaPontos()">
-        Todos
-      <ion-icon name="bus"></ion-icon>
-    </button>
-    <button icon-end ion-button round (click)="carregaMeusPontos()">
-        Meus favoritos
-      <ion-icon name="heart"></ion-icon>
-    </button>
-  </div>
+  <ng-container [ngSwitch]="escolherPontos">
+    <div *ngSwitchCase="'t'">
+      
+      <ion-card *ngFor="let p of pontos; let i = index" (click)="visualizarPonto(p.id, p.nome);" [id]="i" >
+        <ion-fab right>
+          <button primary color="primary" ion-fab (click)="favoritarPonto(p.id, i);$event.stopPropagation();">
+            <ion-icon [name]="p.favorito"></ion-icon>
+          </button>
+        </ion-fab>
+          
+        <div class="ponto-img">
+          <img [src]="p.imagem"/>
+        </div>
+    
+        <ion-card-content>
+          <ion-card-title>
+            {{p.nome}}
+          </ion-card-title>
+          <p>
+            {{p.endereco}}
+          </p>
+          <div id="classification">
+            <p center color="primary" *ngIf="!p.class">Nenhuma classificação ainda</p>
+            <button class="button-star" *ngFor="let c of p.class" full>
+              <ion-icon class="star" [name]="c.icon"></ion-icon>
+            </button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div *ngSwitchCase="'s'">
+      <ion-card *ngFor="let p of pontos; let i = index" (click)="visualizarPonto(p.id, p.nome);" [id]="i" >
+        <ion-fab right>
+          <button primary color="primary" ion-fab (click)="favoritarPonto(p.id, i);$event.stopPropagation();">
+            <ion-icon [name]="p.favorito"></ion-icon>
+          </button>
+        </ion-fab>
+          
+        <div class="ponto-img">
+          <img [src]="p.imagem"/>
+        </div>
+    
+        <ion-card-content>
+          <ion-card-title>
+            {{p.nome}}
+          </ion-card-title>
+          <p>
+            {{p.endereco}}
+          </p>
+          <div id="classification">
+            <p center color="primary" *ngIf="!p.class">Nenhuma classificação ainda</p>
+            <button class="button-star" *ngFor="let c of p.class" full>
+              <ion-icon class="star" [name]="c.icon"></ion-icon>
+            </button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ng-container>
   
-  <ion-title *ngIf="!this.pontos" text-center>Nenhum ponto encontrado</ion-title>
-
-  <ion-card *ngFor="let p of pontos; let i = index" (click)="visualizarPonto(p.id, p.nome);" [id]="i" >
-    <ion-fab right>
-      <button primary color="primary" ion-fab (click)="favoritarPonto(p.id, i);$event.stopPropagation();">
-        <ion-icon [name]="p.favorito"></ion-icon>
-      </button>
-    </ion-fab>
-    <img [src]="p.imagem" class="p-imagem" />
-
-    <ion-card-content>
-      <ion-card-title>
-        {{p.nome}}
-      </ion-card-title>
-      <p>
-        {{p.endereco}}
-      </p>
-      <div id="classification">
-        <p center color="primary" *ngIf="!p.class">Nenhuma classificação ainda</p>
-        <button class="button-star" *ngFor="let c of p.class" full>
-          <ion-icon class="star" [name]="c.icon"></ion-icon>
-        </button>
-      </div>
-    </ion-card-content>
-  </ion-card>
-
   <ion-infinite-scroll (ionInfinite)="carregarMais($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>

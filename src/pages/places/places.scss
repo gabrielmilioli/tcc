@@ -21,18 +21,6 @@ page-places {
     }
     ion-fab{
         margin:10px;
-        margin-right: 25px;
-    }
-    #pontos-opcoes{
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: space-between;
-    }
-    #pontos-opcoes button{
-        width:50%;
-    }
-    #pontos-opcoes button icon{
-        padding-left:10px;
+        margin-right: 15px;
     }
 }

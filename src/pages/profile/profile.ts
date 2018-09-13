@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController, ActionSheetController, Events } from 'ionic-angular';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { ChatPage } from '../chat/chat';
 
 /**
  * Generated class for the ProfilePage page.
@@ -172,6 +173,14 @@ export class ProfilePage {
     }).catch(error=>{
       this.alert('Atenção', error);
     });
+  }
+
+  conversar(id){
+    console.log(id+" = "+this.usuarioLogadoId);
+    if(id == this.usuarioLogadoId){
+      return false;
+    }
+    this.navCtrl.push(ChatPage, {"id": id});
   }
 
   alert(title, subTitle) {

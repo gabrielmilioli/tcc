@@ -97,6 +97,7 @@ export class TabsPage {
   }
 
   logout(){
+    this.authService.signOut();
     this.authService.set_logged(false);
     this.authService.set_user(null);
     this.app.getRootNav().setRoot(HomePage);

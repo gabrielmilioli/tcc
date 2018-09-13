@@ -7,20 +7,21 @@
 <ion-header>
 
   <ion-navbar color="primary">
-      <ion-buttons left>
+      <ion-buttons left [hidden]="mostrarBuscar">
         <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
         </button>
       </ion-buttons>
     <ion-title>
-        <ion-searchbar color="primary" placeholder="Buscar por itinetário"
-        [(ngModel)]="endereco" #searchbar id="searchbar" 
-        (setAddress)="irEndereco($event)" [hidden]="!mostrarBuscar" (ionInput)="updateSearchResults()">
-        </ion-searchbar>
+      <ion-searchbar color="primary" placeholder="Buscar por itinetário"
+      [(ngModel)]="endereco" #searchbar id="searchbar" 
+      (setAddress)="irEndereco($event)" [hidden]="!mostrarBuscar" (ionInput)="updateSearchResults()">
+      </ion-searchbar>
     </ion-title>
     <ion-buttons right>
       <button ion-button (click)="toggleBusca()">
-        <ion-icon name="search"></ion-icon>
+        <ion-icon name="search" [hidden]="mostrarBuscar"></ion-icon>
+        <ion-icon name="close" [hidden]="!mostrarBuscar"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>

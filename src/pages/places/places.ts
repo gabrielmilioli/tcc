@@ -28,9 +28,11 @@ export class PlacesPage {
   inputBuscar:string;
   mostrarBuscar:boolean=false;
   todosPontos:Array<{id: string, nome: string, endereco: string, data_registro: string, imagem: string, favorito: string, class: any }>;
+  escolherPontos:string = 't';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthServiceProvider,
     public alertCtrl: AlertController, public loadingCtrl: LoadingController, public ponto: PontosProvider) {
+      this.escolherPontos = "t";
   }
 
   ionViewWillEnter(refresher = null){
@@ -39,11 +41,7 @@ export class PlacesPage {
     });
     this.loading.present();
 
-    if(this.tab==="t"){
-      this.carregaPontos();
-    }else{
-      this.carregaMeusPontos();
-    }
+    this.carregaPontos();
     
     this.loading.dismiss();
     if(refresher){
@@ -82,38 +80,34 @@ export class PlacesPage {
   }
 
   carregaPontos(){
-    this.tab="t";
     var id = this.authService.get_user_id();
-    this.ponto.get_pontos(id).then((result) => {
-      console.log(result);
-      this.response = result;
-      if(this.response.status === 'success'){
-        this.todosPontos = this.response.data;
-        let length = 3;
-        if(this.pontos){
-          length = this.pontos.length;
-        }
-        this.pontos = [];
-        for (let i = 0; i < length; i++) {
-          if(this.todosPontos[i]){
-            this.pontos.push( this.todosPontos[i] );
+    if(this.escolherPontos === "s"){
+      if(id){
+        this.ponto.get_usuarios_pontos(id).then((result) => {
+          console.log(result);
+          this.response = result;
+          if(this.response.status === 'success'){
+            this.todosPontos = this.response.data;
+            let length = 3;
+            if(this.pontos){
+              length = this.pontos.length;
+            }
+            this.pontos = [];
+            for (let i = 0; i < length; i++) {
+              if(this.todosPontos[i]){
+                this.pontos.push( this.todosPontos[i] );
+              }
+            }
+          }else{ 
+            this.alert('Atenção', this.response.data);
           }
-        }
-      }else{ 
-        this.alert('Atenção', this.response.data);
+        }).catch(error=>{
+          console.log(error);
+          this.alert('Atenção', error);
+        });
       }
-    }).catch(error=>{
-      console.log(error);
-      this.alert('Atenção', error);
-    });
-  }
-
-  carregaMeusPontos(){
-    this.tab="m";
-
-    var id = this.authService.get_user_id();
-    if(id){
-      this.ponto.get_usuarios_pontos(id).then((result) => {
+    }else{
+      this.ponto.get_pontos(id).then((result) => {
         console.log(result);
         this.response = result;
         if(this.response.status === 'success'){
@@ -136,6 +130,7 @@ export class PlacesPage {
         this.alert('Atenção', error);
       });
     }
+    
   }
 
   visualizarPonto(id, nome){

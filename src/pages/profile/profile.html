@@ -49,12 +49,12 @@
             </button>
           </ion-col>
           <ion-col *ngIf="usuario.amizade_aceita">
-            <button disabled ion-button full round color="lightPrimary" item-right>
+            <button ion-button full round color="lightPrimary" item-right>
               Desfazer amizade
             </button>
           </ion-col>
           <ion-col *ngIf="usuario.amizade_aceita">
-            <button ion-button full round color="primary" item-right (click)="adicionarAmigo(usuario.id)">
+            <button ion-button full round color="primary" item-right (click)="conversar(usuario.id)">
               Conversar
             </button>
           </ion-col>

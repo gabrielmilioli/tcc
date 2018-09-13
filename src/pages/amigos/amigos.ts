@@ -19,17 +19,20 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 export class AmigosPage {
   amigos:{aceitos: [{amigo_id: string, amigo_nome: string, amigo_foto: string, aceito_data: string}],
           pendentes: [{amigo_id: string, amigo_nome: string, amigo_foto: string}],
-          aceitos_total: any, pendentes_total: any};
+          aceitos_total: 0, pendentes_total: 0};
   loading: any;
   response: any;
   usuario_id: any;
   contatos: string = 'a';
+  inputBuscar:string;
+  mostrarBuscar:boolean=false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthServiceProvider,
     public alertCtrl: AlertController, public loadingCtrl: LoadingController, public viewCtrl: ViewController,
     public userService: UserProvider) {
     //navParams.get("userId");
     this.usuario_id = this.authService.get_user_id();
+    this.contatos = "a";
   }
 
   ionViewDidEnter() {
@@ -41,6 +44,46 @@ export class AmigosPage {
     this.carregaAmigos();
 
     this.loading.dismiss();
+  }
+
+  buscar(e){
+    let val = e.target.value;
+    let results = [];
+    var buscarPor = val;
+    if(this.contatos === "a"){
+      for (var i=0 ; i < this.amigos.aceitos.length ; i++)
+      {
+        var nome = this.amigos.aceitos[i].amigo_nome;
+        console.log("nome: " + nome);
+        console.log("buscarPor: " + buscarPor);
+        console.log("indexOf: " + nome.indexOf(buscarPor));
+        if(nome.indexOf(buscarPor) != -1){
+          results.push(this.amigos.aceitos[i]);
+        }
+      }
+    }else{
+      for (var i=0 ; i < this.amigos.pendentes.length ; i++)
+      {
+        var nome = this.amigos.pendentes[i].amigo_nome;
+        console.log("nome: " + nome);
+        console.log("buscarPor: " + buscarPor);
+        console.log("indexOf: " + nome.indexOf(buscarPor));
+        if(nome.indexOf(buscarPor) != -1){
+          results.push(this.amigos.pendentes[i]);
+        }
+      }
+    }
+    
+    //console.log(this.pontos);
+  }
+
+  toggleBusca(){
+    if (this.mostrarBuscar) {
+      this.mostrarBuscar = false;
+    } else {
+      this.mostrarBuscar = true;
+      //this.searchbarElement.setFocus();
+    }
   }
 
   carregaAmigos(){
