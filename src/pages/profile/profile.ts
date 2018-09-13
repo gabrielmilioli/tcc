@@ -106,7 +106,7 @@ export class ProfilePage {
       this.loading.dismiss();
       this.usuario.foto = 'data:image/jpeg;base64,' + imageData;
     }).catch(error=>{
-      this.alert('Erro', error);
+      this.alert('Atenção', error);
     });
   }
 
@@ -132,10 +132,10 @@ export class ProfilePage {
         this.editando = false;
         this.ionViewDidEnter();
       }else{ 
-        this.alert('Erro', this.response.data);
+        this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
-      this.alert('Erro', error);
+      this.alert('Atenção', error);
     });
   }
 
@@ -148,10 +148,10 @@ export class ProfilePage {
         this.usuario = this.response.data;
         this.events.publish('usuario:changed', this.usuario);
       }else{ 
-        this.alert('Erro', this.response.data);
+        this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
-      this.alert('Erro', error);
+      this.alert('Atenção', error);
     });
   }
 
@@ -167,10 +167,10 @@ export class ProfilePage {
         this.usuario.solicitou_amizade = true;
         this.ionViewDidEnter();
       }else{ 
-        this.alert('Erro', this.response.data);
+        this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
-      this.alert('Erro', error);
+      this.alert('Atenção', error);
     });
   }
 

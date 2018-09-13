@@ -58,11 +58,11 @@ export class ClassificarPontoPage {
       if(this.response.status === 'success'){
         this.classificacaoNivel = this.response.data;
       }else{ 
-        this.alert('Erro', this.response.data);
+        this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
       console.log(error);
-      this.alert('Erro', error);
+      this.alert('Atenção', error);
     });
   }
 
@@ -74,11 +74,11 @@ export class ClassificarPontoPage {
       if(this.response.status === 'success'){
         this.classificacoes = this.response.data;
       }else{ 
-        this.alert('Erro', this.response.data);
+        this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
       console.log(error);
-      this.alert('Erro', error);
+      this.alert('Atenção', error);
     });
   }
 
@@ -102,11 +102,11 @@ export class ClassificarPontoPage {
         });
         alert.present();
       }else{ 
-        this.alert('Erro', this.response.data);
+        this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
       console.log(error);
-      this.alert('Erro', error);
+      this.alert('Atenção', error);
     });
   }
 

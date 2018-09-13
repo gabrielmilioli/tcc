@@ -96,7 +96,7 @@ export class MapPage {
       this.lat = pos.coords.latitude;
       this.lon = pos.coords.longitude;
     }).catch((error) => {
-      this.alert('Erro', error);
+      this.alert('Atenção', error);
     });
 
     const location = new google.maps.LatLng(this.lat,this.lon);
@@ -143,10 +143,10 @@ export class MapPage {
         this.places = this.response.data;
         this.adicionarMarcadores(this.places);
       }else{ 
-        this.alert('Erro', this.response.data);
+        this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
-      this.alert('Erro', error.message);
+      this.alert('Atenção', error.message);
     });
   }
 
@@ -273,7 +273,7 @@ export class MapPage {
       this.loading.dismiss();
       this.mapa.setCenter(new google.maps.LatLng(this.lat, this.lon));
     }).catch((error) => {
-      this.alert('Erro', error);
+      this.alert('Atenção', error);
     });
     
     if(this.loading){
@@ -310,10 +310,10 @@ export class MapPage {
       if(this.response.status === 'success'){
         this.places = this.response.data;
       }else{ 
-        this.alert('Erro', this.response.data);
+        this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
-      this.alert('Erro', error);
+      this.alert('Atenção', error);
     });
   }
 
@@ -374,7 +374,7 @@ export class MapPage {
           endereco.place_id = result.place_id;
           endereco.endereco_completo = result.formatted_address;
           if(!criciuma){
-            this.alert('Erro', 'Escolha um endereço válido em Criciúma');
+            this.alert('Atenção', 'Escolha um endereço válido em Criciúma');
           }else{
             console.log(result);
             app.navCtrl.push(NovoPontoPage, {"endereco":endereco});
@@ -383,10 +383,10 @@ export class MapPage {
           }
 
         } else {
-          app.alert('Erro', 'Nenhum endereço encontrado');
+          app.alert('Atenção', 'Nenhum endereço encontrado');
         }
       } else {
-        app.alert('Erro', 'Geocoder falhou: ' + status);
+        app.alert('Atenção', 'Geocoder falhou: ' + status);
       }
     });
     this.toggleCriar();
@@ -409,10 +409,10 @@ export class MapPage {
         if (results[0]) {
           
         } else {
-          app.alert('Erro', 'Nenhum endereço encontrado');
+          app.alert('Atenção', 'Nenhum endereço encontrado');
         }
       } else {
-        app.alert('Erro', 'Geocoder falhou: ' + status);
+        app.alert('Atenção', 'Geocoder falhou: ' + status);
       }
     });*/
   }

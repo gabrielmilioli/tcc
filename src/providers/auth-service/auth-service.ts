@@ -2,6 +2,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
+import AuthProvider = firebase.auth.AuthProvider;
+
 let restUrl = "http://tcc.pelainternetsistemas.com.br/rest.php";
 let restClass = "TalkingBus";
 
@@ -16,9 +20,70 @@ export class AuthServiceProvider {
   public loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public user: BehaviorSubject<object> = new BehaviorSubject<object>({});
   public userData:any;
-
-  constructor(public http: HttpClient) {
+  private fbuser: firebase.User;
+  response: any;
+  
+  constructor(public http: HttpClient, public afAuth: AngularFireAuth) {
     //console.log('Hello AuthServiceProvider Provider');
+    afAuth.authState.subscribe(user => {
+      this.loginFirebase(user.email).then((result) => {
+        this.response = result;
+        console.log(this.response);
+        if(this.response.status === 'success'){
+          localStorage.setItem('user', JSON.stringify(this.response.data));
+          
+          this.set_logged(true);
+          this.set_user(this.response.data);
+          this.fbuser = user;
+        }else{ 
+          console.log(this.response.data);
+        }
+      }).catch(error=>{
+        console.log(error.message);
+      });
+			
+		});
+  }
+
+  signInWithEmail(credentials) {
+		console.log('Sign in with email');
+		return this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.senha);
+	}
+
+  signUp(credentials) {
+    return this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.senha);
+  }
+
+  signOut(): Promise<void> {
+    return this.afAuth.auth.signOut();
+  }
+
+  signInWithGoogle() {
+		console.log('Sign in with google');
+		return this.oauthSignIn(new firebase.auth.GoogleAuthProvider());
+  }
+
+  private oauthSignIn(provider: AuthProvider) {
+    if (!(<any>window).cordova) {
+      return this.afAuth.auth.signInWithPopup(provider);
+    } else {
+      return this.afAuth.auth.signInWithRedirect(provider)
+      .then(() => {
+        return this.afAuth.auth.getRedirectResult().then( result => {
+          /*
+          // This gives you a Google Access Token.
+          // You can use it to access the Google API.
+          let token = result.credential.accessToken;
+          // The signed-in user info.
+          let user = result.user;*/
+          return result;
+          console.log(result);
+        }).catch(function(error) {
+          // Handle Errors here.
+          console.log(error.message);
+        });
+      });
+    }
   }
 
   get_user() {
@@ -41,6 +106,24 @@ export class AuthServiceProvider {
 
   set_logged(status) {
     this.loggedIn.next(status);
+  }
+
+  loginFirebase(email) {
+    let credentials = {
+      "class": restClass,
+      "method": "loginFirebase",
+      "email": email
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+    
   }
 
   login(credentials) {

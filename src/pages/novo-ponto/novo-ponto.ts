@@ -59,10 +59,10 @@ export class NovoPontoPage {
         });
         alert.present();
       }else{ 
-        this.alert('Erro', this.response.data);
+        this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
-      this.alert('Erro', error);
+      this.alert('Atenção', error);
     });
     this.loading.dismiss();
   }
@@ -114,7 +114,7 @@ export class NovoPontoPage {
       this.loading.dismiss();
       this.imagem = 'data:image/jpeg;base64,' + imageData;
     }).catch(error=>{
-      this.alert('Erro', error);
+      this.alert('Atenção', error);
     });
   }
 

@@ -39,10 +39,10 @@ export class LinhasPage {
         this.linhas = this.response.data;
         console.log(this.linhas);
       }else{ 
-        this.alert('Erro', this.response.data);
+        this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
-      this.alert('Erro', error);
+      this.alert('Atenção', error);
     });
   }
 

@@ -51,10 +51,10 @@ export class MessagesPage {
         this.messages = this.response.data;
         console.log(this.response.data);
       }else{ 
-        this.alert('Erro', this.response.data);
+        this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
-      this.alert('Erro', error.message);
+      this.alert('Atenção', error.message);
     });
   }
 

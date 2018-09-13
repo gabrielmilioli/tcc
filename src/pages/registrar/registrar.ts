@@ -98,11 +98,11 @@ export class RegistrarPage {
         this.estados = this.response.data.estados;
         this.cidades = this.response.data.cidades;
       }else{ 
-        this.alert('Erro', this.response.data);
+        this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
       console.log(error);
-      this.alert('Erro', error);
+      this.alert('Atenção', error);
     });
   }
 
@@ -114,10 +114,10 @@ export class RegistrarPage {
         console.log(this.response.data);
         this.usuario = this.response.data;
       }else{ 
-        this.alert('Erro', this.response.data);
+        this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
-      this.alert('Erro', error);
+      this.alert('Atenção', error);
     });
   }
 
@@ -130,11 +130,11 @@ export class RegistrarPage {
     if(this.usuario.nome.length === 0 || this.usuario.email.length === 0 ||
       this.usuario.senha.length === 0 || this.usuario.resenha.length === 0||
       this.usuario.cidade.length === 0 || this.usuario.estado.length === 0){
-        this.alert('Erro', 'Preencha os campos!'); 
+        this.alert('Atenção', 'Preencha os campos!'); 
         return false;
     }
     if(this.usuario.senha != this.usuario.resenha){
-        this.alert('Erro', 'Senhas incompatíveis!'); 
+        this.alert('Atenção', 'Senhas incompatíveis!'); 
         return false;
     }
 
@@ -168,11 +168,11 @@ export class RegistrarPage {
         });
         alert.present();
       }else{ 
-        this.alert('Erro', this.response.data);
+        this.alert('Atenção', this.response.data);
       }
     }, (err) => {
       // Error log
-      this.alert('Erro', err);
+      this.alert('Atenção', err);
     });
 
     this.loading.dismiss();

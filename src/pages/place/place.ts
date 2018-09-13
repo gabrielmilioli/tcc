@@ -66,11 +66,11 @@ export class PlacePage {
       if(this.response.status === 'success'){
         this.ponto = this.response.data;
       }else{ 
-        this.alert('Erro', this.response.data);
+        this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
       console.log(error);
-      this.alert('Erro', error);
+      this.alert('Atenção', error);
     });
   }
 

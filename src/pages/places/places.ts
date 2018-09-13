@@ -100,11 +100,11 @@ export class PlacesPage {
           }
         }
       }else{ 
-        this.alert('Erro', this.response.data);
+        this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
       console.log(error);
-      this.alert('Erro', error);
+      this.alert('Atenção', error);
     });
   }
 
@@ -129,11 +129,11 @@ export class PlacesPage {
             }
           }
         }else{ 
-          this.alert('Erro', this.response.data);
+          this.alert('Atenção', this.response.data);
         }
       }).catch(error=>{
         console.log(error);
-        this.alert('Erro', error);
+        this.alert('Atenção', error);
       });
     }
   }
@@ -152,11 +152,11 @@ export class PlacesPage {
           this.ionViewWillEnter();
           this.scrollTo(index);
         }else{ 
-          this.alert('Erro', this.response.data);
+          this.alert('Atenção', this.response.data);
         }
       }).catch(error=>{
         console.log(error);
-        this.alert('Erro', error);
+        this.alert('Atenção', error);
       });
     }
     return false;

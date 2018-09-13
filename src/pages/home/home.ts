@@ -3,11 +3,12 @@ import { UserProvider } from './../../providers/user/user';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Facebook } from '@ionic-native/facebook';
 import { Component } from '@angular/core';
-import { NavParams, NavController, AlertController, LoadingController } from 'ionic-angular';
+import { NavParams, NavController, AlertController, LoadingController, Platform } from 'ionic-angular';
 import { RegistrarPage } from '../registrar/registrar';
 import { TabsPage } from '../tabs/tabs';
 import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
 import { Network } from '@ionic-native/network';
+import * as firebase from 'Firebase';
 
 @Component({
   selector: 'page-home',
@@ -17,7 +18,7 @@ export class HomePage {
 
   user = {
     "email": "gmilioli@Outlook.com",
-    "senha": "admin"
+    "senha": "admin123"
   };
   response: any;
   userLogged: object;
@@ -26,7 +27,7 @@ export class HomePage {
   loading: any;
   online: boolean = true;
 
-  constructor(public navParams: NavParams, public navCtrl: NavController, public authService: AuthServiceProvider, 
+  constructor(public navParams: NavParams, public navCtrl: NavController, public platform: Platform, public authService: AuthServiceProvider, 
     public alertCtrl: AlertController, public loadingCtrl: LoadingController, public fb: Facebook, public gp: GooglePlus,
      public userService: UserProvider, public network: Network) {
       this.authService.set_logged(false);
@@ -45,6 +46,91 @@ export class HomePage {
 
   }
 
+  login() {
+/*
+    if (this.platform.is('core')) {
+      firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider()).then(fbRes => {
+        console.log('login success');
+        console.log(fbRes.additionalUserInfo.profile);
+      }).catch(err => console.log(err));
+    }
+
+    // pop as cordova plugin
+    else {
+      this.fb.login(['public_profile', 'email']).then(res => {
+        let credential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
+        firebase.auth().signInWithCredential(credential).then(() => {
+          // fetching user data
+          this.fb.api("me/?fields=id,email,first_name,picture,gender", ["public_profile", "email"]).then(data => {
+            console.log(data)
+          }).catch(err => console.log(err));
+
+        }).catch((err) => console.log(err));
+
+      }).catch(err => console.log(err));
+    }
+*/
+    
+    if(this.user.email.length === 0 || this.user.senha.length === 0){
+        this.alert('Atenção', 'Preencha os campos!'); 
+        return false;
+    }
+
+    this.loading = this.loadingCtrl.create({
+      content: 'Acessando...'
+    });
+    this.loading.present();
+
+    this.authService.signInWithEmail(this.user).then(() => {
+      this.authService.login(this.user).then((result) => {
+        this.response = result;
+        if(this.response.status === 'success'){
+          this.loading.dismiss();
+          localStorage.setItem('user', JSON.stringify(this.response.data));
+          
+          this.authService.set_logged(true);
+          this.authService.set_user(this.response.data);
+          this.navCtrl.setRoot(TabsPage);
+        }else{ 
+          this.alert('Atenção', this.response.data);
+        }
+      }).catch(error=>{
+        this.alert('Atenção', error.message);
+      });
+
+    }).catch(error=>{
+      console.log(error);
+      if(error.code == 'auth/wrong-password'){
+        this.alert('Atenção', 'Senha incorreta');
+      }else if(error.code == 'auth/user-not-found'){
+        let alert = this.alertCtrl.create({
+          title: 'Atenção',
+          subTitle: 'Usuário não encontrado. Deseja registrar-se?',
+          buttons: [
+            {
+              text: 'Não',
+              role: 'cancel',
+              handler: data => {
+                console.log('Cancel clicked');
+              }
+            },
+            {
+              text: 'Sim',
+              handler: data => {
+                this.registrar();
+              }
+            }
+          ]
+        });
+        alert.present();
+      }
+    });
+    
+    setTimeout(() => {
+      this.loading.dismiss();
+    }, 30000);
+  }
+
   ionViewDidEnter() {
     this.network.onConnect().subscribe(data => {
       this.online = true;
@@ -54,7 +140,7 @@ export class HomePage {
    
     this.network.onDisconnect().subscribe(data => {
       this.online = false;
-      this.alert('Erro', 'Offline!');
+      this.alert('Atenção', 'Offline!');
       console.log(data)
     }, error => console.error(error));
   }
@@ -65,6 +151,45 @@ export class HomePage {
     });
     this.loading.present();
     
+    this.authService.signInWithGoogle().then(result => {
+      console.log(result);
+      this.response = result;
+      let credentials = {
+        "accessToken": this.response.credential.accessToken,
+        "displayName": this.response.additionalUserInfo.profile.name,
+        "email": this.response.additionalUserInfo.profile.email,
+        "familyName": this.response.additionalUserInfo.profile.family_name,
+        "givenName": this.response.additionalUserInfo.profile.given_name,
+        "idToken": this.response.credential.id,
+        "imageUrl": this.response.additionalUserInfo.profile.picture,
+        "userId": this.response.additionalUserInfo.profile.id,
+        "login": "googleplus"
+      };
+
+      //registrar / logar
+      this.authService.login(credentials).then((result) => {
+        console.log(result);
+        this.response = result;
+        if(this.response.status === 'success'){
+          localStorage.setItem('user', JSON.stringify(this.response.data));
+
+          this.isLogged = true;
+          this.authService.set_logged(true);
+          this.authService.set_user(this.response.data);
+          this.loading.dismiss();
+          if(this.response.data.concluirCadastro){
+            this.setSenha(this.response.data.id);
+          }else{
+            this.gotoTabs();
+          }
+        }else{ 
+          this.alert('Atenção', this.response.data);
+        }
+      }).catch(error=>{
+        this.alert('Atenção', error.message);
+      });
+    }).catch(err => console.log(err));
+    /*
     this.gp.login({}).then(res => {
       let credentials = {
         "accessToken": res.accessToken,
@@ -98,60 +223,20 @@ export class HomePage {
             this.gotoTabs();
           }
         }else{ 
-          this.alert('Erro', this.response.data);
+          this.alert('Atenção', this.response.data);
         }
       }).catch(error=>{
-        this.alert('Erro', error.message);
+        this.alert('Atenção', error.message);
       });
     }).catch(err => console.error(err));
+    */
     setTimeout(() => {
       this.loading.dismiss();
-    }, 60000);
+    }, 30000);
   }
 
   setSenha(id){
     this.navCtrl.push(RegistrarPage, {id: id});
-    /*
-      let alert = this.alertCtrl.create({
-        title: 'Defina uma senha',
-        inputs: [
-          {
-            name: 'senha',
-            placeholder: 'Senha',
-            type: 'password'
-          },
-          {
-            name: 'repetir_senha',
-            placeholder: 'Repita a senha',
-            type: 'password'
-          }
-        ],
-        buttons: [
-          {
-            text: 'Cancelar',
-            role: 'cancel',
-            handler: data => {
-              console.log('Cancel clicked');
-            }
-          },
-          {
-            text: 'Salvar',
-            handler: data => {
-              if(data.senha != data.repetir_senha){
-                this.alert('Erro', 'Senhas incompatíveis');
-                return false;
-              }else if(data.senha.length < 4){
-                this.alert('Erro', 'Defina uma senha com no mínimo 4 dígitos');
-                return false;
-              }
-              //salvar senha
-              this.userService.set_usuario_senha(id, data.senha);
-              this.gotoTabs();
-            }
-          }
-        ]
-      });
-      alert.present();*/
   }
 
   gotoTabs(){
@@ -192,21 +277,21 @@ export class HomePage {
             this.loading.dismiss();
             this.navCtrl.setRoot(TabsPage);
           }else{ 
-            this.alert('Erro', this.response.data);
+            this.alert('Atenção', this.response.data);
           }
         }).catch(error=>{
-          this.alert('Erro', error.message);
+          this.alert('Atenção', error.message);
         });
 
       }).catch(error=>{
-        this.alert('Erro', error.message);
+        this.alert('Atenção', error.message);
       });
     }).catch(error=>{
-      this.alert('Erro', error.message);
+      this.alert('Atenção', error.message);
     });
     setTimeout(() => {
       this.loading.dismiss();
-    }, 60000);
+    }, 30000);
     
   }
 
@@ -215,39 +300,8 @@ export class HomePage {
       this.userInfo = {};
       this.isLogged = false;
     }).catch(error=>{
-      this.alert('Erro', error.message);
+      this.alert('Atenção', error.message);
     });
-  }
-
-  login() {
-    if(this.user.email.length === 0 || this.user.senha.length === 0){
-        this.alert('Erro', 'Preencha os campos!'); 
-        return false;
-    }
-
-    this.loading = this.loadingCtrl.create({
-      content: 'Acessando...'
-    });
-    this.loading.present();
-    
-    this.authService.login(this.user).then((result) => {
-      this.response = result;
-      if(this.response.status === 'success'){
-        this.loading.dismiss();
-        localStorage.setItem('user', JSON.stringify(this.response.data));
-        
-        this.authService.set_logged(true);
-        this.authService.set_user(this.response.data);
-        this.navCtrl.setRoot(TabsPage);
-      }else{ 
-        this.alert('Erro', this.response.data);
-      }
-    }).catch(error=>{
-      this.alert('Erro', error.message);
-    });
-    setTimeout(() => {
-      this.loading.dismiss();
-    }, 60000);
   }
 
   alert(title, subTitle) {
@@ -303,21 +357,21 @@ export class HomePage {
             this.loading.present();
             
             if(data.nome.length < 1){
-              this.alert('Erro', 'Insira um nome válido');
+              this.alert('Atenção', 'Insira um nome válido');
               return false;
             }
             if(data.email.length < 1){
-              this.alert('Erro', 'Insira um e-mail válido');
+              this.alert('Atenção', 'Insira um e-mail válido');
               return false;
             }else if(data.email.indexOf('@') === -1){
-              this.alert('Erro', 'Insira um e-mail válido');
+              this.alert('Atenção', 'Insira um e-mail válido');
               return false;
             }
             if(data.senha != data.repetir_senha){
-              this.alert('Erro', 'Senhas incompatíveis');
+              this.alert('Atenção', 'Senhas incompatíveis');
               return false;
             }else if(data.senha.length < 4){
-              this.alert('Erro', 'Defina uma senha com no mínimo 4 dígitos');
+              this.alert('Atenção', 'Defina uma senha com no mínimo 4 dígitos');
               return false;
             }
             

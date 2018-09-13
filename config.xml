@@ -3,7 +3,7 @@
     <name>TalkingBus</name>
     <description>Protótipo TCC.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Gabriel e Lucas</author>
-    <content original-src="index.html" src="http://192.168.0.39:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -113,4 +113,5 @@
     <engine name="android" spec="^7.1.1" />
     <engine name="browser" spec="5.0.4" />
     <engine name="ios" spec="4.5.5" />
+    <plugin name="cordova-plugin-firebase" spec="^2.0.1" />
 </widget>

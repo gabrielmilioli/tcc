@@ -37,6 +37,21 @@ import { Network } from '@ionic-native/network';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { File } from '@ionic-native/file';
 import { Camera } from '@ionic-native/camera';
+import * as firebase from 'firebase';
+
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuth } from 'angularfire2/auth';
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyBf0JuSDTO44vDVOKg8swsVNoVJCsIHji4",
+  authDomain: "talkingbus-211300.firebaseapp.com",
+  databaseURL: "https://talkingbus-211300.firebaseio.com",
+  projectId: "talkingbus-211300",
+  storageBucket: "talkingbus-211300.appspot.com",
+  messagingSenderId: "138261567653"
+};
+
+firebase.initializeApp(firebaseConfig);
 
 @NgModule({
   declarations: [
@@ -64,7 +79,8 @@ import { Camera } from '@ionic-native/camera';
     BrowserModule,
     IonicModule.forRoot(MyApp, {tabsPlacement: 'bottom', tabsHideOnSubPages: true}),
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    AngularFireModule.initializeApp(firebaseConfig)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -102,7 +118,8 @@ import { Camera } from '@ionic-native/camera';
     Network,
     FileTransfer,
     File,
-    Camera
+    Camera,
+    AngularFireAuth
   ]
 })
 export class AppModule {}
