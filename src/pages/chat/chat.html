@@ -7,14 +7,51 @@
 <ion-header>
 
     <ion-navbar color="primary">
-      <ion-title>Chat</ion-title>
+      <div class="chat-header">
+        <ng-container *ngIf="amigo">
+          <ion-avatar *ngIf="amigo.foto" mini>
+            <img [src]="amigo.foto">
+          </ion-avatar>
+          <ion-title>{{amigo.nome}}</ion-title>
+        </ng-container>
+      </div>
     </ion-navbar>
     
 </ion-header>
 
 
 <ion-content>
+  <p *ngIf="mensagens_total === 0" center text-center>Inicie a conversa</p>
 
+  <ion-list id="mensagens-chat" no-lines>
+    <ion-item *ngFor="let m of mensagens" id="m.mensagem_id">
+      <ng-container *ngIf="!m.eu">
+        <div class="mensagem-amigo">
+          <div class="mensagem-amigo-corpo">
+            <p text-wrap>
+              {{m.mensagem}}
+            </p>
+          </div>
+          <div class="mensagem-amigo-pe">
+            <ion-note>{{m.data_registro}}</ion-note>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="m.eu">
+        <div class="mensagem-eu">
+          <div class="mensagem-eu-corpo">
+            <p text-wrap>
+              {{m.mensagem}}
+            </p>
+          </div>
+          <div class="mensagem-eu-pe">
+            <ion-note>{{m.data_registro}}</ion-note>
+          </div>
+        </div>
+      </ng-container>
+    </ion-item>
+  </ion-list>
 </ion-content>
 
 

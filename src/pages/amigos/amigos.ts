@@ -1,3 +1,4 @@
+import { ChatPage } from './../chat/chat';
 import { ProfilePage } from './../profile/profile';
 import { UserProvider } from './../../providers/user/user';
 import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
@@ -114,10 +115,29 @@ export class AmigosPage {
       this.alert('Atenção', error.message);
     });
   }
+
+  recusarAmizade(id){
+    this.userService.set_usuarios_amigos(this.usuario_id, id, 2).then((result) => {
+      console.log(result);
+      this.response = result;
+      if(this.response.status === 'success'){
+        this.carregaAmigos();
+      }else{ 
+        this.alert('Atenção', this.response.data);
+      }
+    }).catch(error=>{
+      this.alert('Atenção', error.message);
+    });
+  }
   
   visualizarPerfil(id){
     //console.log(id);
     this.navCtrl.push(ProfilePage, {"id":id});
+  }
+
+  conversar(id){
+    //console.log(id);
+    this.navCtrl.push(ChatPage, {"id":id});
   }
 
   alert(title, subTitle) {
@@ -128,16 +148,6 @@ export class AmigosPage {
       buttons: ['Ok']
     });
     alert.present();
-  }
-
-  openChat(friend_id){
-    //this.navCtrl.push();
-    let data = { 'friend_id': friend_id };
-    this.viewCtrl.dismiss(data);
-  }
-
-  back(){
-    this.navCtrl.pop();
   }
 
 }

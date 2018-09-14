@@ -44,7 +44,7 @@
           <img [src]="a.amigo_foto" item-left>
         </ion-avatar>
         <h2>{{a.amigo_nome}}</h2>
-        <button color="primary" ion-button outline item-end (click)="$event.stopPropagation();">
+        <button color="primary" ion-button outline item-end (click)="conversar(a.amigo_id);$event.stopPropagation();">
           Conversar
         </button>
       </ion-item>
@@ -57,7 +57,10 @@
           <img [src]="p.amigo_foto" item-left>
         </ion-avatar>
         <h2>{{p.amigo_nome}}</h2>
-        <button color="primary" ion-button outline item-end (click)="aceitarAmizade(p.amigo_id);$event.stopPropagation();">
+        <button color="primary" ion-button outline item-end (click)="recusarAmizade(p.amigo_id);$event.stopPropagation();">
+          Recusar
+        </button>
+        <button color="primary" ion-button item-end (click)="aceitarAmizade(p.amigo_id);$event.stopPropagation();">
           Aceitar
         </button>
       </ion-item>

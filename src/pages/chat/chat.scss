@@ -4,4 +4,72 @@ page-chat {
         height: 40px;
         padding: 0px !important;
     }
+    .chat-header > ion-avatar{
+        float:left;
+        width: 48px !important;
+        height: 48px !important;
+    }
+    .chat-header > ion-title{
+        float:left;
+        line-height: 48px;
+    }
+    .chat-header > ion-title > div{
+        font-size: 1.7rem !important;
+    }
+    .mensagem-amigo, .mensagem-eu{
+        width: 80%;
+        padding: 0.5em;
+        border: 0px solid transparent;
+        border-radius: 6px;
+    }
+    .mensagem-amigo-pe:before {
+        border-radius: 0px;
+        content: '';
+        display: block;
+        position: absolute;
+        border: 8px solid transparent;
+        border-bottom-color: color($colors, chatLight);
+        margin-top: 2px;
+        left:0px;
+        transform: rotateZ(-90deg);
+    }
+    .mensagem-eu-pe:before {
+        border-radius: 0px;
+        content: '';
+        display: block;
+        position: absolute;
+        border: 8px solid transparent;
+        border-bottom-color: color($colors, chatPrimaryLight);
+        margin-top: 2px;
+        right:0px;
+        transform: rotateZ(90deg);
+    }
+    .mensagem-amigo{
+        float:left;
+        text-align:left;
+        background-color:color($colors, chatLight);
+        color:color($colors, dark);
+    }
+    .mensagem-eu{
+        float:right;
+        text-align:left;
+        background-color:color($colors, chatPrimaryLight);
+        color:color($colors, dark);
+    }
+    .mensagem-amigo-corpo{
+
+    }
+    .mensagem-amigo-pe{
+        
+    }
+    .mensagem-eu-corpo{
+        
+    }
+    .mensagem-eu-pe{
+        
+    }
+    .mensagem-amigo-pe, .mensagem-eu-pe, .mensagem-amigo-pe > ion-note, .mensagem-eu-pe > ion-note{
+        font-size: 0.8em;
+        color:color($colors, dark) !important;
+    }
 }
