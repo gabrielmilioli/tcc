@@ -13,7 +13,7 @@ let restClass = "apiUsuarios";
 */
 @Injectable()
 export class UserProvider {
-  user:{id:any, name:string, email:string, Registrar_date:string};
+  user:{id:any, name:string, email:string, register_date:string};
 
   constructor(public http: HttpClient) {
     console.log('Hello UserProvider Provider');
@@ -94,45 +94,6 @@ export class UserProvider {
       "method": "get_usuarios_amigos",
       "id": id,
       "tipo": tipo
-    };
-
-    return new Promise((resolve, reject) => {
-      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
-        .subscribe(res => {
-          resolve(res);
-        }, (err) => {
-          reject(err);
-        });
-    });
-    
-  }
-
-  set_usuarios_mensagens(id, amigo_id, mensagem) {
-    let credentials = {
-      "class": restClass,
-      "method": "set_usuarios_mensagens",
-      "id": id,
-      "amigo_id": amigo_id,
-      "mensagem": mensagem
-    };
-
-    return new Promise((resolve, reject) => {
-      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
-        .subscribe(res => {
-          resolve(res);
-        }, (err) => {
-          reject(err);
-        });
-    });
-    
-  }
-
-  get_usuarios_mensagens(id, amigo_id) {
-    let credentials = {
-      "class": restClass,
-      "method": "get_usuarios_mensagens",
-      "id": id,
-      "amigo_id": amigo_id
     };
 
     return new Promise((resolve, reject) => {

@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'Rxjs/rx';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, Content } from 'ionic-angular';
 import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
 import { UserProvider } from './../../providers/user/user';
+import { MensagensProvider } from '../../providers/mensagens/mensagens';
 
 /**
  * Generated class for the ChatPage page.
@@ -16,6 +19,7 @@ import { UserProvider } from './../../providers/user/user';
   templateUrl: 'chat.html',
 })
 export class ChatPage {
+  @ViewChild(Content) content: Content;
   inputMensagem:string;
   usuario_id:any;
   loading:any;
@@ -27,17 +31,47 @@ export class ChatPage {
     amizade_aceita:boolean, solicitou_amizade:boolean};
   amigo:{id: string, nome: string, email: string, foto: string, register_date: string, 
     amizade_aceita:boolean, solicitou_amizade:boolean};
+  intervalo:Subscription;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public userService: UserProvider,
-    public alertCtrl: AlertController, public loadingCtrl: LoadingController, public authService: AuthServiceProvider) {
+    public alertCtrl: AlertController, public loadingCtrl: LoadingController, public authService: AuthServiceProvider, 
+    public msgService: MensagensProvider) {
     this.usuario_id = this.authService.get_user_id();
     this.amigo_id = this.navParams.get('id');
   }
 
+  fim(mensagem_id){
+    if(this.mensagens){
+      console.log('mensagens', this.mensagens);
+      let mensagem = this.mensagens[this.mensagens.length - 1];
+      console.log(mensagem_id +" - "+mensagem.mensagem_id);
+      setTimeout(() => {
+        this.content.scrollToBottom(0);
+      }, 1000);
+    }
+  }
+
   enviarMensagem(){
     let mensagem = this.inputMensagem;
+    if(mensagem.length === 0){
+      return false;
+    }
+
+    let today = new Date();
+    let nova_mensagem = {
+      eu: true, 
+      mensagem_id: '', 
+      mensagem: mensagem, 
+      data_registro: ''+today, 
+      visualizado: '', 
+      visualizado_data: ''
+    };
+
+    this.mensagens.push(nova_mensagem);
+
     mensagem = btoa(mensagem);
-    this.userService.set_usuarios_mensagens(this.usuario_id, this.amigo_id, mensagem).then((result) => {
+    this.inputMensagem = "";
+    this.msgService.set_usuarios_mensagens(this.usuario_id, this.amigo_id, mensagem).then((result) => {
       console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
@@ -46,17 +80,23 @@ export class ChatPage {
         this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
+      console.log(error);
       this.alert('Atenção', error.message);
     });
   }
 
   carregaMensagens(amigo_id){
-    this.userService.get_usuarios_mensagens(this.usuario_id, amigo_id).then((result) => {
+    console.log('entrou');
+    this.msgService.get_usuarios_mensagens(this.usuario_id, amigo_id).then((result) => {
       console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
+        this.response.data.mensagens.sort(function (a, b) {
+          return a.data_registro.localeCompare(b.data_registro);
+        });
         this.mensagens = this.response.data.mensagens;
         this.mensagens_total = this.response.data.mensagens_total;
+        this.fim(null);
       }else{ 
         this.alert('Atenção', this.response.data);
       }
@@ -67,10 +107,8 @@ export class ChatPage {
 
   carregaPerfis(usuario_id, amigo_id){
     this.userService.get_usuario(usuario_id, null).then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
-        console.log(this.response.data);
         this.usuario = this.response.data;
       }else{ 
         this.alert('Atenção', this.response.data);
@@ -80,10 +118,8 @@ export class ChatPage {
     });
 
     this.userService.get_usuario(amigo_id, null).then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
-        console.log(this.response.data);
         this.amigo = this.response.data;
       }else{ 
         this.alert('Atenção', this.response.data);
@@ -99,11 +135,32 @@ export class ChatPage {
     });
     this.loading.present();
 
+    this.msgService.set_usuarios_mensagens_visualizado(this.usuario_id, this.amigo_id).then((result) => {
+      console.log(result);
+      this.response = result;
+      if(this.response.status === 'success'){
+        this.carregaMensagens(this.amigo_id);
+      }else{ 
+        this.alert('Atenção', this.response.data);
+      }
+    }).catch(error=>{
+      console.log(error);
+      this.alert('Atenção', error.message);
+    });
+
     this.carregaPerfis(this.usuario_id, this.amigo_id);
 
     this.carregaMensagens(this.amigo_id);
 
     this.loading.dismiss();
+
+    this.intervalo = Observable.interval(2000).subscribe(()=>{
+      this.carregaMensagens(this.amigo_id);
+    });
+  }
+
+  ionViewDidLeave(){
+    this.intervalo.unsubscribe();
   }
 
   alert(title, subTitle) {

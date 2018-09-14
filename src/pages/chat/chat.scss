@@ -48,13 +48,14 @@ page-chat {
         float:left;
         text-align:left;
         background-color:color($colors, chatLight);
-        color:color($colors, dark);
     }
     .mensagem-eu{
         float:right;
         text-align:left;
         background-color:color($colors, chatPrimaryLight);
-        color:color($colors, dark);
+    }
+    .mensagem-amigo-corpo > p, .mensagem-eu-corpo > p{
+        color:color($colors, dark) !important;
     }
     .mensagem-amigo-corpo{
 
@@ -71,5 +72,9 @@ page-chat {
     .mensagem-amigo-pe, .mensagem-eu-pe, .mensagem-amigo-pe > ion-note, .mensagem-eu-pe > ion-note{
         font-size: 0.8em;
         color:color($colors, dark) !important;
+    }
+    .input-wrapper > .label{
+        margin-bottom:0px;
+        margin-top:8px;
     }
 }

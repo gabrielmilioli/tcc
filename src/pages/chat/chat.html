@@ -20,11 +20,11 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content #content>
   <p *ngIf="mensagens_total === 0" center text-center>Inicie a conversa</p>
 
   <ion-list id="mensagens-chat" no-lines>
-    <ion-item *ngFor="let m of mensagens" id="m.mensagem_id">
+    <ion-item *ngFor="let m of mensagens; let last = last" id="m.mensagem_id">
       <ng-container *ngIf="!m.eu">
         <div class="mensagem-amigo">
           <div class="mensagem-amigo-corpo">
@@ -46,7 +46,7 @@
             </p>
           </div>
           <div class="mensagem-eu-pe">
-            <ion-note>{{m.data_registro}}</ion-note>
+            <ion-note>{{m.data_registro | date: 'dd/MM/yyyy H:mm' }}</ion-note>
           </div>
         </div>
       </ng-container>

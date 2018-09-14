@@ -41,6 +41,7 @@ import * as firebase from 'firebase';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { MensagensProvider } from '../providers/mensagens/mensagens';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyBf0JuSDTO44vDVOKg8swsVNoVJCsIHji4",
@@ -119,7 +120,8 @@ firebase.initializeApp(firebaseConfig);
     FileTransfer,
     File,
     Camera,
-    AngularFireAuth
+    AngularFireAuth,
+    MensagensProvider
   ]
 })
 export class AppModule {}
