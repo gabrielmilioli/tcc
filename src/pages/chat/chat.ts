@@ -42,12 +42,13 @@ export class ChatPage {
 
   fim(mensagem_id){
     if(this.mensagens){
+      /*
       console.log('mensagens', this.mensagens);
       let mensagem = this.mensagens[this.mensagens.length - 1];
       console.log(mensagem_id +" - "+mensagem.mensagem_id);
       setTimeout(() => {
         this.content.scrollToBottom(0);
-      }, 1000);
+      }, 1000);*/
     }
   }
 
@@ -96,7 +97,7 @@ export class ChatPage {
         });
         this.mensagens = this.response.data.mensagens;
         this.mensagens_total = this.response.data.mensagens_total;
-        this.fim(null);
+        //this.fim(null);
       }else{ 
         this.alert('Atenção', this.response.data);
       }

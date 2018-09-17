@@ -33,7 +33,7 @@
             </p>
           </div>
           <div class="mensagem-amigo-pe">
-            <ion-note>{{m.data_registro}}</ion-note>
+            <ion-note>{{m.data_registro | date: 'dd/MM/yyyy H:mm' }}</ion-note>
           </div>
         </div>
       </ng-container>
