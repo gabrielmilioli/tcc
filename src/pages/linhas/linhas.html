@@ -8,11 +8,22 @@
 
   <ion-navbar color="primary">
     <ion-title>
-      Linhas
+      <ion-searchbar #searchbar [(ngModel)]="inputBuscar" 
+      placeholder="Buscar uma linha" (ionInput)="buscar($event)" ></ion-searchbar>
     </ion-title>
+<!--
     <ion-buttons right>
-      <button ion-button>
-        <ion-icon name="search"></ion-icon>
+      <button ion-button (click)="toggleBusca()">
+        <ion-icon name="search" [hidden]="mostrarBuscar"></ion-icon>
+        <ion-icon name="close" [hidden]="!mostrarBuscar"></ion-icon>
+      </button>
+    </ion-buttons>-->
+    <ion-buttons right>
+      <button ion-button [hidden]="editar" (click)="toggleEditar()">
+        <ion-icon name="create"></ion-icon>
+      </button>
+      <button ion-button [hidden]="!editar" (click)="salvarLinhas();toggleEditar()">
+        <ion-icon name="checkmark"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -20,30 +31,28 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
   <ng-container *ngIf="!linhas" center>
-    <h2>Nenhuma linha presente neste ponto</h2>
+    <p *ngIf="!linhas" center text-center>Nenhuma linha presente</p>
   </ng-container>
 
-  <ion-list>
-    <ion-item *ngFor="let l of linhas">
-      <ion-avatar item-start>
-        <ion-icon name="bus"></ion-icon>
-      </ion-avatar>
-      <h2>{{l.numero}} - {{l.nome}}</h2>
-      <ion-label>Itinetários</ion-label>
-      <div id="itinetarios">
-        <p *ngFor="let i of l.itinetarios" (click)="buscarItinetario(i.itinetario);">
-          {{i.itinetario}}
-        </p>
-      </div>
-      <ion-note>{{l.data_ultima_alt}}</ion-note>
+  <ng-container *ngIf="linhas">
+    <ion-list>
+      <ion-item *ngFor="let l of linhas; let i = index">
+        <ion-label>{{l.numero}} - {{l.nome}}
 <!--
-      <ion-label>
-          <h2>Recent</h2>
-          <ion-note>Settings you changed recently</ion-note>
-      </ion-label>
--->
-    </ion-item>
-  </ion-list>
+          <ng-container *ngIf="l.itinerarios">
+            <div class="itinerarios">
+              <span *ngFor="let i of l.itinerarios; let last = last" (click)="buscarItinerario(i.itinerario);">
+                {{last ? i.itinerario : i.itinerario+' - '}}
+              </span>
+            </div>
+          </ng-container>-->
+
+        </ion-label>
+        <ion-checkbox [hidden]="!editar" [checked]="l.selecionado" [(ngModel)]="l.selecionado"></ion-checkbox>
+        <button ion-button outline item-end color="primary" (click)="itinerarios(i)">Itinerários</button>
+      </ion-item>
+    </ion-list>
+  </ng-container>
 </ion-content>

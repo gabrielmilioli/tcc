@@ -1,13 +1,20 @@
 page-linhas {
-    #itinetarios{
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: space-between;
-        font-size: 1em;
-        text-align:center;
+    .itinerarios{
+        text-align: justify;
+        white-space: initial;
     }
-    #itinetarios > p{
-        width:33%;
+    .itinerarios > span{
+        margin: 0 0 2px;
+        overflow: inherit;
+        font-size: 1.4rem;
+        line-height: normal;
+        text-overflow: inherit;
+        color: #666;
+    }
+    h2{
+        text-align: center;
+    }
+    ion-checkbox{
+        margin-right: 9px !important;
     }
 }

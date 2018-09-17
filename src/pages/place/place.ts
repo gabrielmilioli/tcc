@@ -1,3 +1,4 @@
+import { LinhasPage } from './../linhas/linhas';
 import { ProfilePage } from './../profile/profile';
 import { ClassificarPontoPage } from './../classificar-ponto/classificar-ponto';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -5,7 +6,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { PontosProvider } from '../../providers/pontos/pontos';
-import { LinhasPage } from './../linhas/linhas';
 
 /**
  * Generated class for the PlacePage page.
@@ -78,8 +78,8 @@ export class PlacePage {
     this.navCtrl.push(ClassificarPontoPage, {'ponto_id':ponto_id});
   }
 
-  linhas(ponto_id){
-    this.navCtrl.push(LinhasPage, {'ponto_id':ponto_id});
+  linhas(){
+    this.navCtrl.push(LinhasPage, {'ponto_id':this.ponto.id});
   }
 
   ionViewDidLoad() {

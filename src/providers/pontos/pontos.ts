@@ -117,6 +117,39 @@ export class PontosProvider {
     });
   }
 
+  set_pontos_linhas(ponto_id, selecionados){
+    let credentials = {
+      "class": restClass,
+      "method": "set_pontos_linhas",
+      "ponto_id": ponto_id,
+      "selecionados": selecionados
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
+  get_linhas(ponto_id){
+    let credentials = {
+      "class": restClass,
+      "method": "get_linhas",
+      "ponto_id": ponto_id
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
   set_ponto(id, endereco){
     let credentials = {
       "class": restClass,

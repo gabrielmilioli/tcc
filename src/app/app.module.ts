@@ -39,6 +39,7 @@ import { File } from '@ionic-native/file';
 import { Camera } from '@ionic-native/camera';
 import * as firebase from 'firebase';
 
+
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { MensagensProvider } from '../providers/mensagens/mensagens';
