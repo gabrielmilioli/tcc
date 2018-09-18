@@ -17,10 +17,11 @@ page-chat {
         font-size: 1.7rem !important;
     }
     .mensagem-amigo, .mensagem-eu{
-        width: 80%;
+        max-width: 80%;
         padding: 0.5em;
         border: 0px solid transparent;
         border-radius: 6px;
+        min-width: 30%;
     }
     .mensagem-amigo-pe:before {
         border-radius: 0px;
@@ -60,14 +61,14 @@ page-chat {
     .mensagem-amigo-corpo{
 
     }
-    .mensagem-amigo-pe{
-        
+    .mensagem-amigo-pe, .mensagem-eu-pe{
+        text-align: right;
     }
     .mensagem-eu-corpo{
         
     }
     .mensagem-eu-pe{
-        
+        //text-align: left;
     }
     .mensagem-amigo-pe, .mensagem-eu-pe, .mensagem-amigo-pe > ion-note, .mensagem-eu-pe > ion-note{
         font-size: 0.8em;
@@ -76,5 +77,29 @@ page-chat {
     .input-wrapper > .label{
         margin-bottom:0px;
         margin-top:8px;
+    }
+    .mensagem-data{
+        padding: 0.5em;
+        margin-bottom:8px;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-justify-content: center;
+        justify-content: center;
+    }
+    .mensagem-data > p{
+        margin:0px;
+        color:color($colors, light) !important;
+        background-color:color($colors, primary) !important;
+        border: 4px solid transparent;
+        border-bottom-color: color($colors, primary);
+        border-radius: 6px;
+        font-size: 0.7em;
+    }
+    #input {
+        width: 100%;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        resize: none;
     }
 }

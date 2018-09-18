@@ -21,45 +21,57 @@
 
 
 <ion-content #content>
+  <ion-refresher (ionRefresh)="carregarMais($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
   <p *ngIf="mensagens_total === 0" center text-center>Inicie a conversa</p>
 
   <ion-list id="mensagens-chat" no-lines>
-    <ion-item *ngFor="let m of mensagens; let last = last" id="m.mensagem_id">
+    <ion-item *ngFor="let m of mensagens; let last = last; let index = index" id="m.mensagem_id">
       <ng-container *ngIf="!m.eu">
-        <div class="mensagem-amigo">
+        <div class="mensagem mensagem-amigo">
           <div class="mensagem-amigo-corpo">
             <p text-wrap>
               {{m.mensagem}}
             </p>
           </div>
           <div class="mensagem-amigo-pe">
-            <ion-note>{{m.data_registro | date: 'dd/MM/yyyy H:mm' }}</ion-note>
+            <ion-note>{{m.hora_registro}}</ion-note>
           </div>
         </div>
       </ng-container>
 
+      <ng-container *ngIf="mensagens[index-1]">
+        <div class="mensagem-data" *ngIf="m.data_registro != mensagens[index-1].data_registro">
+          <p center text-center>{{m.data_registro | date: 'dd/MM/yyyy' }}</p>
+        </div>
+      </ng-container>
+
       <ng-container *ngIf="m.eu">
-        <div class="mensagem-eu">
+        <div class="mensagem mensagem-eu">
           <div class="mensagem-eu-corpo">
             <p text-wrap>
               {{m.mensagem}}
             </p>
           </div>
           <div class="mensagem-eu-pe">
-            <ion-note>{{m.data_registro | date: 'dd/MM/yyyy H:mm' }}</ion-note>
+            <ion-note>{{m.hora_registro}}</ion-note>
           </div>
         </div>
       </ng-container>
+      {{last ? scrollToBottom(1) : ''}}
     </ion-item>
   </ion-list>
 </ion-content>
-
 
 <ion-footer bottom center>
 
   <ion-row>
     <ion-col col-10>
-      <ion-input [(ngModel)]="inputMensagem" placeholder="Escreva algo..."></ion-input>
+      <ion-textarea [(ngModel)]="inputMensagem" #input id="input" placeholder="Escreva algo..." 
+      (keypress)="resize()" (keyup)="resize()"
+      rows="1" maxLength="500"></ion-textarea>
     </ion-col>
     <ion-col col-2>
       <button id="enviarMensagem" end ion-button round color="primary" (click)="enviarMensagem()">

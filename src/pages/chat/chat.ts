@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'Rxjs/rx';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController, Content } from 'ionic-angular';
 import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
 import { UserProvider } from './../../providers/user/user';
@@ -20,35 +20,59 @@ import { MensagensProvider } from '../../providers/mensagens/mensagens';
 })
 export class ChatPage {
   @ViewChild(Content) content: Content;
+  @ViewChild('input') input: ElementRef;
   inputMensagem:string;
   usuario_id:any;
   loading:any;
   response:any;
   amigo_id:any;
   mensagens_total = 0;
-  mensagens:Array<{eu: boolean, mensagem_id: string, mensagem: string, data_registro: string, visualizado: string, visualizado_data: string }>;
+  mensagens:Array<{eu: boolean, mensagem_id: string, mensagem: string, data_registro: string, hora_registro: string, visualizado: string, visualizado_data: string }>;
+  todasMensagens:Array<{eu: boolean, mensagem_id: string, mensagem: string, data_registro: string, hora_registro: string, visualizado: string, visualizado_data: string }>;
   usuario:{id: string, nome: string, email: string, foto: string, register_date: string, 
     amizade_aceita:boolean, solicitou_amizade:boolean};
   amigo:{id: string, nome: string, email: string, foto: string, register_date: string, 
     amizade_aceita:boolean, solicitou_amizade:boolean};
   intervalo:Subscription;
+  offset = 0;
+  limit = 10;
+  scrollInicial = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public userService: UserProvider,
     public alertCtrl: AlertController, public loadingCtrl: LoadingController, public authService: AuthServiceProvider, 
-    public msgService: MensagensProvider) {
+    public msgService: MensagensProvider, public element: ElementRef) {
     this.usuario_id = this.authService.get_user_id();
     this.amigo_id = this.navParams.get('id');
   }
 
-  fim(mensagem_id){
-    if(this.mensagens){
-      /*
-      console.log('mensagens', this.mensagens);
-      let mensagem = this.mensagens[this.mensagens.length - 1];
-      console.log(mensagem_id +" - "+mensagem.mensagem_id);
-      setTimeout(() => {
-        this.content.scrollToBottom(0);
-      }, 1000);*/
+  resize(resetar = null) {
+    let textArea = this.element.nativeElement.getElementsByTagName('textarea')[0];
+    textArea.style.height = 'auto';
+    if(resetar){
+      return false;
+    }
+    if (textArea.scrollHeight < 100) {
+      textArea.style.height = textArea.scrollHeight + "px";
+      textArea.style.overflowY = 'hidden';
+    } else {
+      textArea.style.height = "100px";
+      textArea.style.overflowY = 'auto';
+    }
+    this.scrollToBottom();
+  }
+
+  scrollToBottom(last = null) {
+    if(last === 1 && !this.scrollInicial){
+      this.scrollInicial = true;
+      this.content.resize();
+      if (this.content.scrollToBottom) {
+        this.content.scrollToBottom();
+      }
+    }else if (!last){
+      this.content.resize();
+      if (this.content.scrollToBottom) {
+        this.content.scrollToBottom();
+      }
     }
   }
 
@@ -59,16 +83,27 @@ export class ChatPage {
     }
 
     let today = new Date();
+
+    let ano = today.getFullYear();
+    let mes = today.getMonth(); // beware: January = 0; February = 1, etc.
+    let dia = today.getDate();
+
+    let minuto = today.getMinutes();
+    let hora = today.getHours();
+
     let nova_mensagem = {
       eu: true, 
       mensagem_id: '', 
       mensagem: mensagem, 
-      data_registro: ''+today, 
+      data_registro: ''+ano+'-'+mes+'-'+dia, 
+      hora_registro: ''+hora+':'+minuto, 
       visualizado: '', 
       visualizado_data: ''
     };
 
     this.mensagens.push(nova_mensagem);
+    this.resize(true);
+    this.scrollToBottom();
 
     mensagem = btoa(mensagem);
     this.inputMensagem = "";
@@ -89,15 +124,27 @@ export class ChatPage {
   carregaMensagens(amigo_id){
     console.log('entrou');
     this.msgService.get_usuarios_mensagens(this.usuario_id, amigo_id).then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
-        this.response.data.mensagens.sort(function (a, b) {
-          return a.data_registro.localeCompare(b.data_registro);
-        });
-        this.mensagens = this.response.data.mensagens;
-        this.mensagens_total = this.response.data.mensagens_total;
-        //this.fim(null);
+        if(this.mensagens_total != this.response.data.mensagens_total){
+          this.response.data.mensagens.sort(function (a, b) {
+            let data_a = a.data_registro + " " + a.hora_registro;
+            let data_b = b.data_registro + " " + b.hora_registro;
+            return data_a.localeCompare(data_b);
+          });
+          
+          this.todasMensagens = this.response.data.mensagens;
+
+          this.limit = 10;
+          if(this.mensagens){
+            this.limit = this.mensagens.length;
+          }
+          this.mensagens = [];
+          this.mensagens = this.todasMensagens.slice(Math.max(this.todasMensagens.length - this.limit));
+          this.mensagens_total = this.response.data.mensagens_total;
+          console.log(this.mensagens_total +" = "+ this.response.data.mensagens_total);
+          this.scrollToBottom();
+        }
       }else{ 
         this.alert('Atenção', this.response.data);
       }
@@ -130,7 +177,7 @@ export class ChatPage {
     });
   }
 
-  ionViewDidEnter(){
+  ionViewWillEnter(refresher){
     this.loading = this.loadingCtrl.create({
       content: 'Carregando conversa...'
     });
@@ -140,7 +187,7 @@ export class ChatPage {
       console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
-        this.carregaMensagens(this.amigo_id);
+        
       }else{ 
         this.alert('Atenção', this.response.data);
       }
@@ -150,14 +197,32 @@ export class ChatPage {
     });
 
     this.carregaPerfis(this.usuario_id, this.amigo_id);
-
     this.carregaMensagens(this.amigo_id);
-
-    this.loading.dismiss();
 
     this.intervalo = Observable.interval(2000).subscribe(()=>{
       this.carregaMensagens(this.amigo_id);
     });
+
+    if(refresher){
+      refresher.complete();
+    }
+    this.loading.dismiss();
+
+  }
+
+  carregarMais(infiniteScroll){
+    setTimeout(() => {
+      this.limit = this.limit + 10;
+      if(this.limit > this.todasMensagens.length){
+        this.limit = this.todasMensagens.length;
+      }
+      this.mensagens = this.todasMensagens.slice(Math.max(this.todasMensagens.length - this.limit));
+      console.log("limit = "+this.limit);
+      console.log("mensagens", this.mensagens);
+      console.log("todasMensagens", this.todasMensagens);
+
+      infiniteScroll.complete();
+    }, 500);
   }
 
   ionViewDidLeave(){
