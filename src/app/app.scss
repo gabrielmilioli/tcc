@@ -38,7 +38,10 @@ ion-avatar > img{
     height:initial !important;
 }
 ion-header ion-icon {
-    font-size: 1.6em;
+    font-size: 1.5em !important;
+}
+ion-header ion-title > div {
+    font-size: 1.3em !important;
 }
 .ponto-img{
     width: 100%;
@@ -79,6 +82,7 @@ ion-header ion-icon {
     font-size: 1.4rem !important;
     padding: 0px !important;
     padding-left: 30px !important;
+    padding-right: 30px !important;
 }
 .searchbar-search-icon{
     left: 5px !important;

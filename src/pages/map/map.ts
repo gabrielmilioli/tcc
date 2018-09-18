@@ -39,6 +39,7 @@ export class MapPage {
 
   GoogleAutocomplete = new google.maps.places.AutocompleteService();
   enderecos = [];
+  autocomplete:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, public authService: AuthServiceProvider,
   public alertCtrl: AlertController, public loadingCtrl: LoadingController, public map: GoogleMaps, public zone: NgZone) {
@@ -46,12 +47,10 @@ export class MapPage {
   }
 
   ionViewDidLoad(){
-    console.log('ionViewDidLoad');
     this.criarMapa();
   }
 
   ionViewWillEnter(){
-    console.log('ionViewDidEnter');
     this.deletarMarcadores();
     this.carregarPontos();
   }
@@ -65,12 +64,13 @@ export class MapPage {
     var options = {
       input: this.endereco,
       types: ['establishment'],
-      componentRestrictions: {country: 'BR', state: 'SC', city: 'Criciúma'}
+      componentRestrictions: {country: 'BR'}
     };
 
     this.GoogleAutocomplete.getPlacePredictions(options,
     (predictions, status) => {
       this.enderecos = [];
+      console.log(predictions);
       this.zone.run(() => {
         predictions.forEach((prediction) => {
           //Criciúma
@@ -89,8 +89,8 @@ export class MapPage {
     });
     this.loading.present();
     
-    this.lat = -28.684433;
-    this.lon = -49.369194;
+    this.lat = -28.6728;
+    this.lon = -49.3734;
 
     this.geolocation.getCurrentPosition().then(pos => {
       this.lat = pos.coords.latitude;
@@ -103,7 +103,7 @@ export class MapPage {
 
     const options = {
       center:location,
-      zoom:16,
+      zoom:14,
       streetViewControl:false,
       mapTypeId:'roadmap',
       fullscreenControl: false,
@@ -124,8 +124,31 @@ export class MapPage {
     this.mapa = new google.maps.Map(this.mapRef.nativeElement,options);
     
     google.maps.event.addListener(this.mapa, 'center_changed', () => {
-      console.log(this.mapa.getCenter().lat() + ', ' +this.mapa.getCenter().lng());
+      //console.log(this.mapa.getCenter().lat() + ', ' +this.mapa.getCenter().lng());
       this.enderecoCentro = this.mapa.getCenter().lat()+","+this.mapa.getCenter().lng();
+    });
+
+    var defaultBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(this.lat, this.lon)
+    );
+
+    const complete_options = {
+      types: ['establishment'],/*
+      componentRestrictions: {country: 'BR', state: 'SC', city: 'Criciúma'},*/
+      bounds: defaultBounds
+    };
+
+    let elem = <HTMLInputElement>document.getElementsByClassName('searchbar-input')[0];
+    let elem1 = <HTMLInputElement>document.getElementsByClassName('searchbar-input')[1];
+    this.autocomplete = new google.maps.places.Autocomplete(elem, complete_options);
+    this.autocomplete = new google.maps.places.Autocomplete(elem1, complete_options);
+
+    google.maps.event.addListener(this.autocomplete, 'place_changed', () => {
+      let place = this.autocomplete.getPlace();
+      let latitude = place.geometry.location.lat();
+      let longitude = place.geometry.location.lng();
+      console.log(latitude + ", " + longitude);
+      this.centralizar(latitude, longitude);
     });
 
     this.carregarPontos();
@@ -134,7 +157,7 @@ export class MapPage {
       this.loading.dismiss();
     }
   }
-  
+
   carregarPontos(){
     this.authService.get_places().then((result) => {
       //console.log(result);
@@ -193,13 +216,14 @@ export class MapPage {
       lon = parseFloat(lon);
 
       var image = {
-        url: 'http://tcc.pelainternetsistemas.com.br/app/images/marker.png',
+        //url: 'http://tcc.pelainternetsistemas.com.br/app/images/marker.png?1123123123',
+        url: 'http://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi2_hdpi.png',
         // This marker is 20 pixels wide by 32 pixels high.
-        size: new google.maps.Size(32, 32),
-        // The origin for this image is (0, 0).
-        origin: new google.maps.Point(0, 0),
-        // The anchor for this image is the base of the flagpole at (0, 32).
-        anchor: new google.maps.Point(0, 32)
+        //size: new google.maps.Size(9, 14.5),
+        size: new google.maps.Size(20, 32),
+        //scaledSize: new google.maps.Size(20, 32),
+        origin: new google.maps.Point(0, 0), // origin
+        anchor: new google.maps.Point(0, 32) // anchor
       };
 
       var marker = new google.maps.Marker({
@@ -209,7 +233,7 @@ export class MapPage {
         animation: 'DROP',
         zIndex: id,
         id: id,
-        icon: image,
+        //icon: image,
         imagem: imagem
       });
 
@@ -218,7 +242,6 @@ export class MapPage {
           let id = marker.get("id");
           let nome = marker.get("title");
           let imagem = marker.get("imagem");
-          console.log("touch id = "+id);
           //console.log("touch nome = "+nome);
 
           var elementid = 'infobox'+id;
@@ -246,7 +269,6 @@ export class MapPage {
           //app.irPonto(marker.get("id"), marker.get("title"));
           google.maps.event.addListenerOnce(infowindow, 'domready', () => {
             document.getElementById(elementid).addEventListener('click', () => {
-              console.log("touch = "+id);
               infowindow.close();
               app.navCtrl.push(PlacePage, {"id":id, "nome":nome});
             });
@@ -256,28 +278,30 @@ export class MapPage {
 
       this.marcadores.push(marker);
     }
-    console.log(this.marcadores);
   }
 
-  centralizar(){
+  centralizar(lat = null, lon = null){
     this.loading = this.loadingCtrl.create({
-      content: 'Centralizando...'
+      content: 'Buscando localização...'
     });
     this.loading.present();
     this.enderecos = [];
     
-    this.geolocation.getCurrentPosition().then(pos => {
-      this.lat = pos.coords.latitude;
-      this.lon = pos.coords.longitude;
+    if(!lat && !lon){
+      this.geolocation.getCurrentPosition().then(pos => {
+        this.lat = pos.coords.latitude;
+        this.lon = pos.coords.longitude;
 
+        this.loading.dismiss();
+        this.mapa.setCenter(new google.maps.LatLng(this.lat, this.lon));
+        this.mapa.setZoom(16);
+      }).catch((error) => {
+        this.alert('Atenção', error);
+      });
+    }else{
       this.loading.dismiss();
-      this.mapa.setCenter(new google.maps.LatLng(this.lat, this.lon));
-    }).catch((error) => {
-      this.alert('Atenção', error);
-    });
-    
-    if(this.loading){
-      this.loading.dismiss();
+      this.mapa.setCenter(new google.maps.LatLng(lat, lon));
+      this.mapa.setZoom(16);
     }
   }
 
@@ -376,10 +400,7 @@ export class MapPage {
           if(!criciuma){
             this.alert('Atenção', 'Escolha um endereço válido em Criciúma');
           }else{
-            console.log(result);
             app.navCtrl.push(NovoPontoPage, {"endereco":endereco});
-            //.adicionarPonto();
-            //this.alert('Informação', 'Localização selecionada: ' + result.formatted_address);
           }
 
         } else {
@@ -390,31 +411,6 @@ export class MapPage {
       }
     });
     this.toggleCriar();
-  }
-
-  irEndereco(place) {       
-    console.log('place', place);
-    /*
-    this.endereco = place['formatted_address'];
-    var location = place['geometry']['location'];
-    var lat =  location.lat();
-    var lng = location.lng();
-
-    var geocoder = new google.maps.Geocoder;
-    var latlng = {lat: parseFloat(lat), lng: parseFloat(lng)};
-    var app = this;
-    geocoder.geocode({'location': latlng}, function(results, status) {
-      console.log(results);
-      if (status === 'OK') {
-        if (results[0]) {
-          
-        } else {
-          app.alert('Atenção', 'Nenhum endereço encontrado');
-        }
-      } else {
-        app.alert('Atenção', 'Geocoder falhou: ' + status);
-      }
-    });*/
   }
 
   alert(title, subTitle) {

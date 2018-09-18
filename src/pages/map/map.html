@@ -3,6 +3,9 @@
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
+
+   (ionInput)="updateSearchResults()"
+      <input [(ngModel)]="endereco" #searchbar id="searchbar" type="text" placeholder="Buscar por itinetário" [hidden]="!mostrarBuscar" class="searchbar-input">
 -->
 <ion-header>
 
@@ -13,10 +16,7 @@
         </button>
       </ion-buttons>
     <ion-title>
-      <ion-searchbar color="primary" placeholder="Buscar por itinetário"
-      [(ngModel)]="endereco" #searchbar id="searchbar" 
-      (setAddress)="irEndereco($event)" [hidden]="!mostrarBuscar" (ionInput)="updateSearchResults()">
-      </ion-searchbar>
+      <ion-searchbar [(ngModel)]="endereco" #searchbar id="searchbar" type="text" placeholder="Buscar por itinetário" [hidden]="!mostrarBuscar"></ion-searchbar>
     </ion-title>
     <ion-buttons right>
       <button ion-button (click)="toggleBusca()">
@@ -30,12 +30,13 @@
 
 
 <ion-content>
+  <!--
   <ion-list id="enderecos" [hidden]="enderecos.length == 0">
     <ion-item *ngFor="let e of enderecos" tappable (click)="irEndereco(e)">
       {{ e.description }}
     </ion-item>
   </ion-list>
-
+-->
   <ion-fab bottom right [hidden]="adicionar">
     <button ion-fab [color]="adicionarClass" (click)="toggleCriar()">
       <ion-icon name="add"></ion-icon>
@@ -68,7 +69,7 @@
   <div id="div">
     <div #map id="map"></div>
     <div id="addPonto" [hidden]="!adicionar">
-      <img src="http://tcc.pelainternetsistemas.com.br/app/images/marker.png">
+      <img src="http://tcc.pelainternetsistemas.com.br/app/images/marker-google.png">
     </div>
   </div>
 </ion-content>

@@ -11,28 +11,38 @@
 <ion-menu [content]="content" [swipeEnabled]="false">
     <ion-header>
         <ion-toolbar>
-        <ion-title>{{usuario.nome}}</ion-title>
-        <ion-buttons right>
-          <button ion-button menuToggle>
-            <ion-icon name="menu"></ion-icon>
-          </button>
-        </ion-buttons>
+            <div class="menu-header">
+                <ng-container *ngIf="usuario">
+                    <ion-avatar *ngIf="usuario.foto" mini style="float:left; width: 48px !important; height: 48px !important;">
+                        <img [src]="usuario.foto">
+                    </ion-avatar>
+                    <ion-title style="float:left; line-height: 48px;">{{usuario.nome}}</ion-title>
+                </ng-container>
+            </div>
+            <ion-buttons right>
+            <button ion-button menuToggle>
+                <ion-icon name="menu"></ion-icon>
+            </button>
+            </ion-buttons>
         </ion-toolbar>
     </ion-header>
 
     <ion-content padding>
-    <ion-list>
-        <button *ngFor="let p of pages" menuClose ion-item (click)="openPage(p)">
-            <ion-icon item-left [name]="p.icon"></ion-icon>
-            {{p.title}}
-            <ion-badge *ngIf="p.badge" color="primary" item-end>{{p.badge}}</ion-badge>
-        </button>
-
-        <button menuClose ion-item (click)="logout()">
-            <ion-icon item-left name="log-out"></ion-icon>
-            Sair
-        </button>
-    </ion-list>
+        <ion-list no-lines>
+            <button *ngFor="let p of pages" menuClose ion-item (click)="openPage(p)">
+                <ion-icon item-left [name]="p.icon"></ion-icon>
+                {{p.title}}
+                <ion-badge *ngIf="p.badge" color="primary" item-end>{{p.badge}}</ion-badge>
+            </button>
+        </ion-list>
     </ion-content>
 
+    <ion-footer padding bottom center>
+        <ion-list no-lines style="margin:0px">
+            <button menuClose ion-item (click)="logout()">
+                <ion-icon item-left name="log-out"></ion-icon>
+                Sair
+            </button>
+        </ion-list>
+    </ion-footer>
 </ion-menu>

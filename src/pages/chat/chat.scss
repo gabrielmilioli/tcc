@@ -58,17 +58,8 @@ page-chat {
     .mensagem-amigo-corpo > p, .mensagem-eu-corpo > p{
         color:color($colors, dark) !important;
     }
-    .mensagem-amigo-corpo{
-
-    }
     .mensagem-amigo-pe, .mensagem-eu-pe{
         text-align: right;
-    }
-    .mensagem-eu-corpo{
-        
-    }
-    .mensagem-eu-pe{
-        //text-align: left;
     }
     .mensagem-amigo-pe, .mensagem-eu-pe, .mensagem-amigo-pe > ion-note, .mensagem-eu-pe > ion-note{
         font-size: 0.8em;

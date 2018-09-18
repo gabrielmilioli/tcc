@@ -37,6 +37,7 @@ export class ChatPage {
   offset = 0;
   limit = 10;
   scrollInicial = false;
+  infinite = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public userService: UserProvider,
     public alertCtrl: AlertController, public loadingCtrl: LoadingController, public authService: AuthServiceProvider, 
@@ -108,7 +109,6 @@ export class ChatPage {
     mensagem = btoa(mensagem);
     this.inputMensagem = "";
     this.msgService.set_usuarios_mensagens(this.usuario_id, this.amigo_id, mensagem).then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.carregaMensagens(this.amigo_id);
@@ -142,7 +142,6 @@ export class ChatPage {
           this.mensagens = [];
           this.mensagens = this.todasMensagens.slice(Math.max(this.todasMensagens.length - this.limit));
           this.mensagens_total = this.response.data.mensagens_total;
-          console.log(this.mensagens_total +" = "+ this.response.data.mensagens_total);
           this.scrollToBottom();
         }
       }else{ 
@@ -177,14 +176,13 @@ export class ChatPage {
     });
   }
 
-  ionViewWillEnter(refresher){
+  ionViewWillEnter(){
     this.loading = this.loadingCtrl.create({
       content: 'Carregando conversa...'
     });
     this.loading.present();
 
     this.msgService.set_usuarios_mensagens_visualizado(this.usuario_id, this.amigo_id).then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         
@@ -203,25 +201,25 @@ export class ChatPage {
       this.carregaMensagens(this.amigo_id);
     });
 
-    if(refresher){
-      refresher.complete();
-    }
     this.loading.dismiss();
 
   }
 
-  carregarMais(infiniteScroll){
+  carregarMais(infinite){
     setTimeout(() => {
       this.limit = this.limit + 10;
       if(this.limit > this.todasMensagens.length){
         this.limit = this.todasMensagens.length;
       }
       this.mensagens = this.todasMensagens.slice(Math.max(this.todasMensagens.length - this.limit));
-      console.log("limit = "+this.limit);
-      console.log("mensagens", this.mensagens);
-      console.log("todasMensagens", this.todasMensagens);
+      
+      infinite.complete();
 
-      infiniteScroll.complete();
+      if(this.todasMensagens.length === this.limit){
+        this.infinite = false;
+      }else{
+        this.infinite = true;
+      }
     }, 500);
   }
 
