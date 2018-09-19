@@ -103,6 +103,10 @@ export class LinhasPage {
     this.alert("Itinerários", message);
   }
 
+  horarios(linha_id){
+    console.log(linha_id);
+  }
+
   buscar(e){
     let val = e.target.value;
     let results = [];

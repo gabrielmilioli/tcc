@@ -51,7 +51,12 @@
 
         </ion-label>
         <ion-checkbox [hidden]="!editar" [checked]="l.selecionado" [(ngModel)]="l.selecionado"></ion-checkbox>
-        <button ion-button outline item-end color="primary" (click)="itinerarios(i)">Itinerários</button>
+        <button ion-button outline item-end icon-only color="primary" (click)="itinerarios(i)">
+          <ion-icon name="information-circle"></ion-icon>
+        </button>
+        <button ion-button outline item-end icon-only color="primary" (click)="horarios(l.id)">
+          <ion-icon name="time"></ion-icon>
+        </button>
       </ion-item>
     </ion-list>
   </ng-container>

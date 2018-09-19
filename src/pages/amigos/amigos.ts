@@ -21,6 +21,9 @@ export class AmigosPage {
   amigos:{aceitos: [{amigo_id: string, amigo_nome: string, amigo_foto: string, aceito_data: string}],
           pendentes: [{amigo_id: string, amigo_nome: string, amigo_foto: string}],
           aceitos_total: 0, pendentes_total: 0};
+  todosAmigos:{aceitos: [{amigo_id: string, amigo_nome: string, amigo_foto: string, aceito_data: string}],
+          pendentes: [{amigo_id: string, amigo_nome: string, amigo_foto: string}],
+          aceitos_total: 0, pendentes_total: 0};
   loading: any;
   response: any;
   usuario_id: any;
@@ -46,33 +49,40 @@ export class AmigosPage {
 
     this.loading.dismiss();
   }
-
+/*
   buscar(e){
     let val = e.target.value;
     let results = [];
     var buscarPor = val;
     if(this.contatos === "a"){
-      for (var i=0 ; i < this.amigos.aceitos.length ; i++)
+      for (var i=0 ; i < this.todosAmigos.aceitos.length ; i++)
       {
-        var nome = this.amigos.aceitos[i].amigo_nome;
-        console.log("nome: " + nome);
-        console.log("buscarPor: " + buscarPor);
-        console.log("indexOf: " + nome.indexOf(buscarPor));
+        var nome = this.todosAmigos.aceitos[i].amigo_nome;
         if(nome.indexOf(buscarPor) != -1){
-          results.push(this.amigos.aceitos[i]);
+          results.push(this.todosAmigos.aceitos[i]);
         }
       }
+      if(results.length === 0){
+        results = this.todosAmigos.aceitos;
+      }
+      console.log(results);
+
+      this.amigos.aceitos = results;
+
     }else{
-      for (var i=0 ; i < this.amigos.pendentes.length ; i++)
+      for (var i=0 ; i < this.todosAmigos.pendentes.length ; i++)
       {
-        var nome = this.amigos.pendentes[i].amigo_nome;
-        console.log("nome: " + nome);
-        console.log("buscarPor: " + buscarPor);
-        console.log("indexOf: " + nome.indexOf(buscarPor));
+        var nome = this.todosAmigos.pendentes[i].amigo_nome;
         if(nome.indexOf(buscarPor) != -1){
-          results.push(this.amigos.pendentes[i]);
+          results.push(this.todosAmigos.pendentes[i]);
         }
       }
+      if(results.length === 0){
+        results = this.todosAmigos.pendentes;
+      }
+      console.log(results);
+
+      this.amigos.pendentes = results;
     }
     
     //console.log(this.pontos);
@@ -85,14 +95,16 @@ export class AmigosPage {
       this.mostrarBuscar = true;
       //this.searchbarElement.setFocus();
     }
-  }
+  }*/
 
   carregaAmigos(){
     this.userService.get_usuarios_amigos(this.usuario_id, null).then((result) => {
       console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
+        this.todosAmigos = this.response.data;
         this.amigos = this.response.data;
+        
         console.log(this.response.data);
       }else{ 
         this.alert('Atenção', this.response.data);

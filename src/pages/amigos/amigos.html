@@ -13,13 +13,13 @@
       placeholder="Buscar um contato" (ionInput)="buscar($event)" 
       [hidden]="!mostrarBuscar"></ion-searchbar>
     </ion-title>
-
+<!--
     <ion-buttons right>
       <button ion-button (click)="toggleBusca()">
         <ion-icon name="search" [hidden]="mostrarBuscar"></ion-icon>
         <ion-icon name="close" [hidden]="!mostrarBuscar"></ion-icon>
       </button>
-    </ion-buttons>
+    </ion-buttons>-->
   </ion-navbar>
   <ion-segment [(ngModel)]="contatos" class="segment-primary">
     <ion-segment-button value="a">

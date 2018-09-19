@@ -17,10 +17,11 @@ page-profile {
         height: 200px;
         margin: auto;
         margin-top: 5%;
-        border: 5px solid transparent;
+        border: 0px solid transparent;
         border-radius: 100%;
         overflow: hidden;
         position: relative;
+        box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
     }
     #foto > img{
         position: absolute;

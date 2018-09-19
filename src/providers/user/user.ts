@@ -124,6 +124,25 @@ export class UserProvider {
     
   }
 
+  buscar_usuarios(id, buscar) {
+    let credentials = {
+      "class": restClass,
+      "method": "buscar_usuarios",
+      "id": id,
+      "buscar": buscar
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+    
+  }
+
   getHeaders(){
    
     return new HttpHeaders(
