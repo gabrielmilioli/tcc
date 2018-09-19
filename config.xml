@@ -19,6 +19,14 @@
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreen" value="assets/imgs/splash-nome-com-fundo.png" />
     <preference name="SplashScreenDelay" value="3000" />
+    <preference name="CordovaWebViewEngine" value="CDVUIWebViewEngine" />
+    <preference name="AndroidLaunchMode" value="singleTask" />
+    <universal-links>
+        <host name="talkingbus.page.link" scheme="https" />
+        <host name="talkingbus-211300.firebaseapp.com" scheme="https">
+            <path url="/__/auth/callback" />
+        </host>
+    </universal-links>
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
@@ -110,8 +118,12 @@
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
     <allow-navigation href="http://192.168.6.195:8100" sessionid="91ea5efc" />
+    <plugin name="cordova-plugin-firebase" spec="^2.0.1" />
+    <plugin name="cordova-plugin-buildinfo" spec="^2.0.2" />
+    <plugin name="cordova-plugin-browsertab" spec="^0.2.0" />
+    <plugin name="cordova-universal-links-plugin" spec="https://github.com/walteram/cordova-universal-links-plugin" />
+    <plugin name="cordova-plugin-inappbrowser" spec="^3.0.0" />
     <engine name="android" spec="^7.1.1" />
     <engine name="browser" spec="5.0.4" />
     <engine name="ios" spec="4.5.5" />
-    <plugin name="cordova-plugin-firebase" spec="^2.0.1" />
 </widget>

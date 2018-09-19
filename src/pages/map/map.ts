@@ -303,6 +303,12 @@ export class MapPage {
       this.mapa.setCenter(new google.maps.LatLng(lat, lon));
       this.mapa.setZoom(16);
     }
+    
+    setTimeout(() => {
+      if(this.loading){
+        this.loading.dismiss();
+      }
+    }, 10000);
   }
 
   toggleCriar(){

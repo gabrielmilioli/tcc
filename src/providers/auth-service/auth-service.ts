@@ -49,25 +49,27 @@ export class AuthServiceProvider {
   }
 
   private oauthSignIn(provider: AuthProvider) {
+    return this.afAuth.auth.signInWithRedirect(provider).then(function() {
+      return this.afAuth.auth.getRedirectResult();
+    }).then(function(result) {
+      return result;
+    }).catch(function(error) {
+      return error;
+    });
+/*
     if (!(<any>window).cordova) {
       return this.afAuth.auth.signInWithPopup(provider);
     } else {
       return this.afAuth.auth.signInWithRedirect(provider)
       .then(() => {
         return this.afAuth.auth.getRedirectResult().then( result => {
-          /*
-          // This gives you a Google Access Token.
-          // You can use it to access the Google API.
-          let token = result.credential.accessToken;
-          // The signed-in user info.
-          let user = result.user;*/
           return result;
         }).catch(function(error) {
           // Handle Errors here.
           return error;
         });
       });
-    }
+    }*/
   }
 
   get_user() {

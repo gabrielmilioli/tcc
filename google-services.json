@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "138261567653",
+    "firebase_url": "https://talkingbus-211300.firebaseio.com",
+    "project_id": "talkingbus-211300",
+    "storage_bucket": "talkingbus-211300.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138261567653:android:1dddaed03d194604",
+        "android_client_info": {
+          "package_name": "tcc.talkingbus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138261567653-mtf1l084m5i8fqmml071uatu0smghbev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMQqr4rBYHvpIXF8BCO7iZ4xrhuugyFkA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

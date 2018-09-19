@@ -75,7 +75,7 @@ ionic cordova run browser -l -c
 //release
 npm i -D -E @ionic/app-scripts
 
-ionic cordova build android --prod --release
+ionic cordova build android --prod --release //////  ionic cordova build ios --aot --minifyjs --minifycss --release
 
 keytool -genkeypair -v -keystore C:\Users\gabi\Desktop\git\tcc\talkingbus.keystore -alias talkingbus -keyalg RSA -keysize 2048 -validity 10000
 
