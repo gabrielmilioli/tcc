@@ -63,3 +63,26 @@ ionic cordova run android --device -l --debug
 ionic cordova plugin add cordova-plugin-googleplus --variable REVERSED_CLIENT_ID=apps.googleusercontent.com.138261567653-mtf1l084m5i8fqmml071uatu0smghbev --variable WEB_APPLICATION_CLIENT_ID=138261567653-mtf1l084m5i8fqmml071uatu0smghbev.apps.googleusercontent.com
 
 ionic cordova run browser -l -c
+
+
+
+
+
+
+
+
+
+//release
+npm i -D -E @ionic/app-scripts
+
+ionic cordova build android --prod --release
+
+keytool -genkeypair -v -keystore C:\Users\gabi\Desktop\git\tcc\talkingbus.keystore -alias talkingbus -keyalg RSA -keysize 2048 -validity 10000
+
+/* C:\Program Files\Java\jdk1.8.0_111\bin */
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore C:\Users\gabi\Desktop\git\tcc\talkingbus.keystore C:\Users\gabi\Desktop\git\tcc\platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk talkingbus
+
+/**pasta zipalign**/
+C:\Users\gabi\AppData\Local\Android\sdk\build-tools\26.0.2
+
+zipalign -v 4 C:\Users\gabi\Desktop\git\tcc\platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk C:\Users\gabi\Desktop\git\tcc\talking-bus-v1.apk
