@@ -48,9 +48,21 @@ export class PlacePage {
     });
     this.loading.present();
 
-    this.carregaPonto();
+    var id = this.authService.get_user_id();
+    this.pontoService.get_ponto(id, this.ponto_id).then((result) => {
+      console.log(result);
+      this.response = result;
+      if(this.response.status === 'success'){
+        this.ponto = this.response.data;
+        this.loading.dismiss();
+      }else{ 
+        this.alert('Atenção', this.response.data);
+      }
+    }).catch(error=>{
+      console.log(error);
+      this.alert('Atenção', error);
+    });
 
-    this.loading.dismiss();
   }
 
   visualizarPerfil(id){
@@ -59,19 +71,7 @@ export class PlacePage {
   }
 
   carregaPonto(){
-    var id = this.authService.get_user_id();
-    this.pontoService.get_ponto(id, this.ponto_id).then((result) => {
-      console.log(result);
-      this.response = result;
-      if(this.response.status === 'success'){
-        this.ponto = this.response.data;
-      }else{ 
-        this.alert('Atenção', this.response.data);
-      }
-    }).catch(error=>{
-      console.log(error);
-      this.alert('Atenção', error);
-    });
+    
   }
 
   classificarPonto(ponto_id) {
@@ -87,7 +87,10 @@ export class PlacePage {
   }
 
   alert(title, subTitle) {
-    this.loading.dismiss();
+    if(this.loading){
+      this.loading.dismiss();
+    }
+    
     let alert = this.alertCtrl.create({
       title: title,
       subTitle: subTitle,

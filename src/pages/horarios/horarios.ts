@@ -19,22 +19,25 @@ export class HorariosPage {
   response:any;
   loading:any;
   horarios:any;
+  linha_nome:any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public pontosProvider: PontosProvider,
     public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
     this.linha_id = this.navParams.get("linha_id");
+    this.linha_nome = this.navParams.get("linha_nome");
   }
 
   ionViewDidEnter() {
     this.loading = this.loadingCtrl.create({
-      content: 'Carregando linhas...'
+      content: 'Carregando horários...'
     });
     this.loading.present();
     this.horarios = [];
-    this.pontosProvider.get_linhas(this.linha_id).then((result) => {
+    this.pontosProvider.get_horarios(this.linha_id).then((result) => {
       console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.horarios = this.response.data;
+        this.loading.dismiss();
       }else{ 
         this.alert('Atenção', this.response.data);
       }
@@ -42,8 +45,6 @@ export class HorariosPage {
       console.log(error);
       this.alert('Atenção', error);
     });
-
-    this.loading.dismiss();
   }
 
   ionViewDidLoad() {

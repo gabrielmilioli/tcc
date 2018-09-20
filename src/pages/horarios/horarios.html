@@ -13,6 +13,102 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content full>
+  <h4 center text-center>{{linha_nome}}</h4>
+
+  <ng-container *ngIf="!horarios" center>
+    <p *ngIf="!horarios" center text-center>Nenhum horário presente</p>
+  </ng-container>
+
+  <ng-container *ngIf="horarios">
+
+
+      <ion-grid>
+        <ion-row text-center *ngFor="let h of horarios; let i = index">
+          <ion-col col-12>
+            <h5>{{h.dia_semana}}</h5>
+
+            <ng-container *ngIf="!h.partida_b">
+              <ion-row>
+                <ion-col text-center col-12>
+                  <div class="partida" *ngIf="h.partida_o[0].partida">
+                    <ion-note>{{h.partida_o[0].partida}}</ion-note>
+                  </div>
+                  <ion-row>
+                    <ion-col col-4 *ngFor="let p of h.partida_o[0].horarios; let d = index" text-center class="horario">
+                      {{p.horario}}
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+            </ng-container>
+            
+            <ng-container *ngIf="h.partida_b && h.partida_o">
+              <ion-row>
+                <ion-col text-center col-6 class="borda">
+                  <div class="partida" *ngIf="h.partida_o">
+                    <ion-note>{{h.partida_o[0].partida}}</ion-note>
+                  </div>
+                  <ion-row>
+                    <ion-col col-4 *ngFor="let p of h.partida_o[0].horarios; let d = index" text-center class="horario">
+                      {{p.horario}}
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
   
+                <ion-col text-center col-6 *ngIf="h.partida_b">
+                  <div class="partida" *ngIf="h.partida_b">
+                    <ion-note>{{h.partida_b[0].partida}}</ion-note>
+                  </div>
+                  <ion-row>
+                    <ion-col col-4 *ngFor="let p of h.partida_b[0].horarios; let d = index" text-center class="horario">
+                      {{p.horario}}
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+            </ng-container>
+            
+          </ion-col>
+        </ion-row>
+
+      </ion-grid>
+
+
+
+<!--
+      <ion-grid>
+        <ion-row>
+          <ion-col text-center col-6 *ngFor="let h of horarios; let i = index">
+          
+            <ion-row>
+              <ion-col text-center col-12>
+                <h5>{{h.dia_semana}}</h5>
+                <div class="partida">
+                  <ion-note>{{h.partida}}</ion-note>
+                </div>
+              </ion-col>
+              <ion-col col-4 *ngFor="let p of h.horarios; let x = index" text-center>
+                {{p.horario}}
+              </ion-col>
+            </ion-row>
+
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+-->
+    <!--<ion-grid>
+      <ion-row *ngFor="let h of horarios; let i = index">
+        <ion-col text-center col-12>
+          <h4>{{h.dia_semana}}</h4>
+          <p>{{h.partida}}</p>
+        </ion-col>
+        <ion-col col-4 *ngFor="let p of h.horarios; let x = index" text-center>
+          {{p.horario}}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  -->
+  </ng-container>
+
 </ion-content>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { PontosProvider } from '../../providers/pontos/pontos';
+import { HorariosPage } from '../horarios/horarios';
 
 /**
  * Generated class for the LinhasPage page.
@@ -56,6 +57,7 @@ export class LinhasPage {
         });
         this.linhas = linhas;
         this.pontos_linhas = linhas;
+        this.loading.dismiss();
       }else{ 
         this.alert('Atenção', this.response.data);
       }
@@ -64,7 +66,6 @@ export class LinhasPage {
       this.alert('Atenção', error);
     });
 
-    this.loading.dismiss();
   }
 
   salvarLinhas() {
@@ -103,8 +104,8 @@ export class LinhasPage {
     this.alert("Itinerários", message);
   }
 
-  horarios(linha_id){
-    console.log(linha_id);
+  horarios(linha_id, linha_nome){
+    this.navCtrl.push(HorariosPage, {'linha_id':linha_id, 'linha_nome':linha_nome});
   }
 
   buscar(e){

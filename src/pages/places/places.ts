@@ -43,7 +43,6 @@ export class PlacesPage {
 
     this.carregaPontos();
     
-    this.loading.dismiss();
     if(refresher){
       refresher.complete();
     }
@@ -98,6 +97,7 @@ export class PlacesPage {
                 this.pontos.push( this.todosPontos[i] );
               }
             }
+            this.loading.dismiss();
           }else{ 
             this.alert('Atenção', this.response.data);
           }
@@ -122,6 +122,7 @@ export class PlacesPage {
               this.pontos.push( this.todosPontos[i] );
             }
           }
+          this.loading.dismiss();
         }else{ 
           this.alert('Atenção', this.response.data);
         }
@@ -158,9 +159,6 @@ export class PlacesPage {
   }
 
   scrollTo(element:string) {
-    console.log(this.content);
-    console.log(element);
-    console.log(document.getElementById(element));
     let yOffset = document.getElementById(element).offsetTop;
     this.content.scrollTo(0, yOffset, 500)
   }
