@@ -73,7 +73,7 @@ ionic cordova run browser -l -c
 
 
 //release
-npm i -D -E @ionic/app-scripts
+npm i -D -E @ionic/app-scripts //////  cordova clean
 
 ionic cordova build android --prod --release //////  ionic cordova build ios --aot --minifyjs --minifycss --release
 
@@ -86,3 +86,4 @@ jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore C:\Users\gabi\D
 C:\Users\gabi\AppData\Local\Android\sdk\build-tools\26.0.2
 
 zipalign -v 4 C:\Users\gabi\Desktop\git\tcc\platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk C:\Users\gabi\Desktop\git\tcc\talking-bus-v1.apk
+
