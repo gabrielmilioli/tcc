@@ -1,3 +1,4 @@
+import { PontosProvider } from './../../providers/pontos/pontos';
 import { NovoPontoPage } from './../novo-ponto/novo-ponto';
 import { PlacePage } from './../place/place';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -36,13 +37,17 @@ export class MapPage {
   enderecoCentro:string;
   mapa:any;
   marcadores = [];
+  mostrarInfo:boolean=false;
+  infoPonto:any;
 
+  directionsService = new google.maps.DirectionsService;
+  directionsDisplay = new google.maps.DirectionsRenderer;
   GoogleAutocomplete = new google.maps.places.AutocompleteService();
   enderecos = [];
   autocomplete:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, public authService: AuthServiceProvider,
-  public alertCtrl: AlertController, public loadingCtrl: LoadingController, public map: GoogleMaps, public zone: NgZone) {
+  public alertCtrl: AlertController, public loadingCtrl: LoadingController, public map: GoogleMaps, public zone: NgZone, public pontoService: PontosProvider) {
     //console.log(map);
   }
 
@@ -157,6 +162,116 @@ export class MapPage {
       this.loading.dismiss();
     }
   }
+  
+  limparPercurso(){
+    this.directionsDisplay.set('directions', null);
+  }
+    
+  adicionarDirecao(itinerarios){
+    this.loading = this.loadingCtrl.create({
+      content: 'Carregando rota...'
+    });
+    this.loading.present();
+    
+    this.directionsDisplay.setMap(this.mapa);
+    var interval = 8; // upper bound for usage limits in google directions API is 8
+    var startIndex = 0;
+    var maxmimumIndex = itinerarios.length - 1; // Total number of waypoints in this route
+    var partialEndIndex = interval - 1; // end waypoint at start
+    var iteration = 0; // loop controler
+    var resultSet = new Array();
+    var directionsDisplayList = new Array();
+    var resultsCached = 0;
+    var bounds = new google.maps.LatLngBounds();
+  
+    do { //do...while to iterate over multiple requests
+      iteration++;
+      if (iteration > 1) {
+        startIndex = startIndex + interval;
+        partialEndIndex = startIndex + interval;
+      }
+  
+      this.directionsDisplay = new google.maps.DirectionsRenderer({
+        preserveViewport: true,
+        markerOptions: {
+          visible: false
+        }
+      });
+      directionsDisplayList.push(
+        this.directionsDisplay
+      );
+  
+      directionsDisplayList[iteration - 1].setMap(this.mapa);
+  
+      var origin = itinerarios[startIndex];
+      var destination = partialEndIndex < maxmimumIndex ? itinerarios[partialEndIndex] : itinerarios[maxmimumIndex];
+      let waypoints = new Array();
+  
+      for (var i = startIndex + 1; i < partialEndIndex; i++) {
+        if (i > maxmimumIndex) {
+          break;
+        }
+  
+        waypoints.push({
+          location: itinerarios[i],
+          stopover: true
+        });          
+      }
+  
+      var request = {
+        origin: origin,
+        destination: destination,
+        waypoints: waypoints,
+        provideRouteAlternatives: false,
+        travelMode: google.maps.TravelMode.WALKING,
+        unitSystem: google.maps.UnitSystem.METRIC
+      }
+      var mapa = this.mapa;
+      this.directionsService.route(request, function(result, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+          //Cashe the results to render directions//
+          resultSet.push(result);
+          if (resultSet.length == iteration) {
+            var bounds = new google.maps.LatLngBounds();
+            for (var i = 0; i < iteration; i++) {
+              directionsDisplayList[i].setDirections(resultSet[i]);
+              if (i == 0) {
+                bounds = resultSet[i].routes[0].bounds;
+              } else {
+                bounds.union(resultSet[i].routes[0].bounds);
+              }
+            }
+            mapa.fitBounds(bounds);
+          }
+        }
+      });
+  
+    } while (partialEndIndex <= maxmimumIndex);
+    this.loading.dismiss();
+  }
+
+  mostrarRota(id, nome) {
+    let itinerarios = [];
+    let resultado = [];
+    this.pontoService.get_ponto_itinerarios(id).then((result) => {
+      //console.log(result);
+      this.response = result;
+      if(this.response.status === 'success'){
+        resultado = this.response.data;
+        resultado.forEach(element => {
+          element.itinerarios.forEach(itinerario => {
+            itinerarios.push(itinerario.itinerario+", Criciúma - SC");
+          });
+        });
+        console.log(itinerarios);
+        this.adicionarDirecao(itinerarios);
+      }else{ 
+        this.alert('Atenção', this.response.data);
+      }
+    }).catch(error=>{
+      this.alert('Atenção', error.message);
+    });
+  }
 
   carregarPontos(){
     this.authService.get_places().then((result) => {
@@ -242,42 +357,35 @@ export class MapPage {
           let id = marker.get("id");
           let nome = marker.get("title");
           let imagem = marker.get("imagem");
-          //console.log("touch nome = "+nome);
-
-          var elementid = 'infobox'+id;
-          let infoBox = '<div class="info-box" id="'+elementid+'">'+
-          '<div class="info-header">'+
-          '<img src="'+imagem+'">'+
-          '</div>'+
-          '<div class="info-content">'+
-          '<h6>'+nome+'</h6>'+
-          '</div>'+
-          '<div class="info-footer">'+
-          '<button ion-button full>'+
-          '<span class="button-inner">Visualizar</span>'+
-          '</button>'+
-          '</div>'+
-          '</div>';
-    
-          let infowindow = new google.maps.InfoWindow({
-            content: infoBox,
-            maxWidth: 200
-          });
-    
-          infowindow.open(map, marker);
-          
-          //app.irPonto(marker.get("id"), marker.get("title"));
-          google.maps.event.addListenerOnce(infowindow, 'domready', () => {
-            document.getElementById(elementid).addEventListener('click', () => {
-              infowindow.close();
-              app.navCtrl.push(PlacePage, {"id":id, "nome":nome});
-            });
-          });
+          let position = marker.get("position");
+          let lat = position.lat;
+          let lng = position.lng;
+          app.mostrarInformacoes(id, nome, imagem);
+          app.centralizar(lat, lng);
         }
       })(marker, this));
 
       this.marcadores.push(marker);
     }
+  }
+
+  irPonto(id, nome){
+    this.navCtrl.push(PlacePage, {"id":id, "nome":nome});
+  }
+
+  mostrarInformacoes(id, nome, imagem){
+    this.infoPonto = {
+      "id": id,
+      "nome": nome,
+      "imagem": imagem
+    };
+    this.mostrarInfo = true;
+  }
+
+  esconderInformacoes(){
+    this.mostrarInfo = false;
+    this.infoPonto = {};
+    this.limparPercurso();
   }
 
   centralizar(lat = null, lon = null){
@@ -333,8 +441,9 @@ export class MapPage {
     this.enderecos = [];
   }
 
-  loadPlaces(){
-    this.authService.get_places().then((result) => {
+  carregaPontos(){
+    var id = this.authService.get_user_id();
+    this.pontoService.get_pontos(id).then((result) => {
       //console.log(result);
       this.response = result;
       if(this.response.status === 'success'){

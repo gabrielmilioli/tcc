@@ -215,7 +215,21 @@ export class PontosProvider {
     });
   }
 
-
+  get_ponto_itinerarios(ponto_id){
+    let credentials = {
+      "class": restClass,
+      "method": "get_ponto_itinerarios",
+      "ponto_id": ponto_id
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
 
 
   get_horarios(linha_id){

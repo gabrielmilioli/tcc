@@ -42,45 +42,19 @@ page-map {
         width: 3.6rem;
         padding: 0 1.3em !important;
     }
-    .info-box{
-        width: 200px;
-    }
-    .info-header{
-      width: 200px;
-      height: 100px;
-      position: relative;
-    }
-    .info-content{
-        width:100%;
-    }
-    .info-header > img{
+    #info{
         position: absolute;
-        margin: auto;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        max-height: 100px;
+        padding:0px;
+        margin:0px;
+        z-index: 9999999999;
+        width: 100%;
+        background-color:#fff;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
     }
-    .info-content-plus{
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: space-between;
-    }
-    .info-footer{
-        width:100%;
-    }
-    .info-footer > button{
-        width:100%;
-        background-color:color($colors, primary);
-        color:color($colors, light);
-        font-size: 1em;
-        padding: 0.3em;
-        border: 0 solid transparent;
-        border-radius: 50px;
-    }
-    .gm-style-iw, .gm-style-iw > div, .gm-style-iw > div > div{
-        width:100%;
+    #info ion-avatar{
+        width:75px;
+        height:75px;
+        margin:0px;
+        margin-right:10px;
     }
 }

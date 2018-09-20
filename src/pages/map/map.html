@@ -58,15 +58,63 @@
     </button>
   </ion-fab>
   
-  <!--<ion-list id="search-button">
-    <ion-item>
-      <ion-input type="text" [(ngModel)]="address" placeholder="Buscar por lugar"></ion-input>
-      <button item-right>
-        <ion-icon color="lightPrimary" name="search"></ion-icon>
-      </button>
-    </ion-item>
-  </ion-list>-->
   <div id="div">
+    <ng-container *ngIf="infoPonto">
+      <ion-card id="info" [hidden]="!mostrarInfo">
+        <ion-fab right top small mini color="primary" (click)="esconderInformacoes()">
+          <button ion-fab small mini>
+            <ion-icon name="close"></ion-icon>
+          </button>
+        </ion-fab>
+
+        <ion-item>
+          <ion-avatar item-start *ngIf="infoPonto.imagem">
+            <img [src]="infoPonto.imagem">
+          </ion-avatar>
+          <h2>{{infoPonto.nome}}</h2>
+        </ion-item>
+      
+        <ion-card-content>
+          <p>Wait a minute. Wait a minute, Doc. Uhhh... Are you telling me that you built a time machine... out of a DeLorean?! Whoa. This is heavy.</p>
+        </ion-card-content>
+      
+        <ion-row>
+          <ion-col>
+            <button ion-button icon-start clear small color="primary" (click)="mostrarRota(infoPonto.id, infoPonto.nome)">
+              <ion-icon name="pin"></ion-icon>
+              <div>Rotas</div>
+            </button>
+          </ion-col>
+          <ion-col>
+            <button ion-button icon-start clear small color="primary" (click)="irPonto(infoPonto.id, infoPonto.nome)">
+              <ion-icon name="pin"></ion-icon>
+              <div>Visualizar ponto</div>
+            </button>
+          </ion-col>
+        </ion-row>
+      
+      </ion-card>
+    </ng-container>
+
+<!--
+    <div #info id="info" full [hidden]="!mostrarInfo">
+      <ion-list no-lines *ngIf="infoPonto">
+        <ion-item>
+          <ion-avatar *ngIf="infoPonto.imagem" item-start>
+            <img [src]="infoPonto.imagem">
+          </ion-avatar>
+          <h2>
+            {{infoPonto.nome}}
+          </h2>
+          <button small ion-button outline item-end icon-only color="primary" (click)="esconderInformacoes()">
+            <ion-icon name="close"></ion-icon>
+          </button>
+        </ion-item>
+      </ion-list>
+      <button small ion-button round full color="primary" (click)="irPonto(infoPonto.id, infoPonto.nome)">Visualizar ponto</button>
+      <button small ion-button round full color="light" (click)="mostrarRota(infoPonto.id, infoPonto.nome)">Mostrar rotas</button>
+    </div>
+-->
     <div #map id="map"></div>
     <div id="addPonto" [hidden]="!adicionar">
       <img src="http://tcc.pelainternetsistemas.com.br/app/images/marker-google.png">
