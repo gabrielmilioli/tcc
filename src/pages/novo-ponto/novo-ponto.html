@@ -20,9 +20,9 @@
     
     <ion-row>
       <ion-col>
-        <div id="foto">
+        <ion-avatar id="foto">
           <img [src]="imagem"/>
-        </div>
+        </ion-avatar>
         <ion-fab id="escolherUpload" top>
           <button ion-fab color="primary" (click)="escolherUpload()" mini>
             <ion-icon name="create"></ion-icon>
@@ -65,6 +65,17 @@
       <ion-col>
         <ion-label color="primary">Nome do ponto</ion-label>
         <ion-input [(ngModel)]="endereco.nome" placeholder="Nomeie o ponto aqui"></ion-input>
+      </ion-col>
+    </ion-row>
+    
+    <ion-row *ngIf="linhas">
+      <ion-col>
+        <ion-label color="primary">Linhas recomendadas para este ponto</ion-label>
+        <ion-input *ngIf="linhas.length === 0" disabled value="Nenhuma linha encontrada neste itinerário"></ion-input>
+        <ion-item *ngFor="let l of linhas; let i = index">
+          <ion-label>{{l.numero}} - {{l.nome}}</ion-label>
+          <ion-checkbox [(ngModel)]="l.selecionado" checked></ion-checkbox>
+        </ion-item>
       </ion-col>
     </ion-row>
     

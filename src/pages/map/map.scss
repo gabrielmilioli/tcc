@@ -12,15 +12,15 @@ page-map {
         width: 100%;
         z-index: 10;
     }
-    #addPonto{
+    #addPonto > img {
         position: absolute;
-        height: 32px;
-        width: 32px;
-        margin: auto;
-        right: 0px;
-        left: 0px;
-        top: 0px;
-        bottom: 0px;
+        margin: auto !important;
+        top: -42px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width:27px !important;
+        height:42px;
     }
     #divAdicionar{
         position: absolute;

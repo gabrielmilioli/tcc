@@ -21,6 +21,8 @@ export class NovoPontoPage {
   endereco:any;
   response:any;
   loading:any;
+  linhas:any;
+  selecionados:any;
   imagem:string="assets/imgs/amarelinho-onibus.jpg";
   constructor(public navCtrl: NavController, public navParams: NavParams, public pontosProvider: PontosProvider, 
     public authService: AuthServiceProvider, private camera: Camera, public actionSheetCtrl: ActionSheetController,
@@ -28,11 +30,40 @@ export class NovoPontoPage {
     this.endereco = this.navParams.get("endereco");
   }
 
+  ionViewDidEnter(){
+    this.loading = this.loadingCtrl.create({
+      content: 'Carregando...'
+    });
+    this.loading.present();
+    
+    this.pontosProvider.get_itinerario_linhas(this.endereco.rua).then((result) => {
+      //console.log(result);
+      this.response = result;
+      if(this.response.status === 'success'){
+        this.linhas = this.response.data;
+        console.log(this.linhas);
+        this.loading.dismiss();
+      }else{ 
+        this.alert('Atenção', this.response.data);
+      }
+    }).catch(error=>{
+      this.alert('Atenção', error);
+    });
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad NovoPontoPage');
   }
 
   adicionarPonto() {
+    this.selecionados = [];
+    this.linhas.forEach(element => {
+      if(element.selecionado){
+        this.selecionados.push(element.id);
+      }
+    });
+    this.endereco.selecionados = this.selecionados;
+    
     this.loading = this.loadingCtrl.create({
       content: 'Criando ponto...'
     });
@@ -41,6 +72,7 @@ export class NovoPontoPage {
     console.log(this.endereco);
     var id = this.authService.get_user_id();
     this.pontosProvider.set_ponto(id, this.endereco).then((result) => {
+      this.loading.dismiss();
       //console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
@@ -64,7 +96,7 @@ export class NovoPontoPage {
     }).catch(error=>{
       this.alert('Atenção', error);
     });
-    this.loading.dismiss();
+    
   }
 
   escolherUpload(){

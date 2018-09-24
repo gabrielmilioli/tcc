@@ -251,6 +251,7 @@ export class MapPage {
   }
 
   mostrarRota(id, nome) {
+    /*
     let itinerarios = [];
     let resultado = [];
     this.pontoService.get_ponto_itinerarios(id).then((result) => {
@@ -270,7 +271,7 @@ export class MapPage {
       }
     }).catch(error=>{
       this.alert('Atenção', error.message);
-    });
+    });*/
   }
 
   carregarPontos(){

@@ -93,3 +93,11 @@ ion-header ion-title > div {
 ion-footer {
     background-color: #fff;
 }
+
+ion-input{
+    //border:1px solid color($colors, light) !important;
+}
+
+ion-avatar{
+    border:1px solid color($colors, light) !important;
+}
