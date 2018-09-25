@@ -138,7 +138,24 @@ export class PontosProvider {
     let credentials = {
       "class": restClass,
       "method": "get_linhas",
-      "ponto_id": ponto_id
+      "ponto_id": ponto_id,
+      "cidade_id": "75"
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
+  get_linha_pontos(linha_id){
+    let credentials = {
+      "class": restClass,
+      "method": "get_linha_pontos",
+      "linha_id": linha_id
     };
     return new Promise((resolve, reject) => {
       this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})

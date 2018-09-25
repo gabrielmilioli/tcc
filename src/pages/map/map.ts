@@ -29,7 +29,7 @@ export class MapPage {
   lat:any;
   lon:any;
   response:any;
-  places = [];
+  pontos = [];
   loading:any;
   mostrarBuscar:boolean=false;
   adicionar:boolean=false;
@@ -39,6 +39,7 @@ export class MapPage {
   marcadores = [];
   mostrarInfo:boolean=false;
   infoPonto:any;
+  linhas:any;
 
   directionsService = new google.maps.DirectionsService;
   directionsDisplay = new google.maps.DirectionsRenderer;
@@ -58,6 +59,41 @@ export class MapPage {
   ionViewWillEnter(){
     this.deletarMarcadores();
     this.carregarPontos();
+    this.carregarLinhas();
+  }
+
+  resetarLinhas(){
+    var myDiv = document.getElementById('linhas');
+    myDiv.scrollLeft = 0;
+  }
+
+  mostrarPontoLinhas(linha_id){
+    this.pontos = [];
+    this.pontoService.get_linha_pontos(linha_id).then((result) => {
+      console.log("get_linhas", result);
+      this.response = result;
+      if(this.response.status === 'success'){
+        this.pontos = this.response.data;
+      }else{ 
+        this.alert('Atenção', this.response.data);
+      }
+    }).catch(error=>{
+      this.alert('Atenção', error.message);
+    });
+  }
+
+  carregarLinhas(){
+    this.pontoService.get_linhas(null).then((result) => {
+      console.log("get_linhas", result);
+      this.response = result;
+      if(this.response.status === 'success'){
+        this.linhas = this.response.data;
+      }else{ 
+        this.alert('Atenção', this.response.data);
+      }
+    }).catch(error=>{
+      this.alert('Atenção', error.message);
+    });
   }
 
   updateSearchResults(){
@@ -279,8 +315,8 @@ export class MapPage {
       //console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
-        this.places = this.response.data;
-        this.adicionarMarcadores(this.places);
+        this.pontos = this.response.data;
+        this.adicionarMarcadores(this.pontos);
       }else{ 
         this.alert('Atenção', this.response.data);
       }
@@ -315,17 +351,17 @@ export class MapPage {
     this.marcadores = [];
   }
 
-  adicionarMarcadores(places){
+  adicionarMarcadores(pontos){
     let map = this.mapa;
     this.marcadores = [];
-    for (var i = 0; i < places.length; i++) {
-      var place = places[i];
-      //var address = place.address;
-      var id = parseInt(place.id);
-      var lat = place.lat;
-      var lon = place.lon;
-      var nome = place.nome;
-      var imagem = place.imagem;
+    for (var i = 0; i < pontos.length; i++) {
+      var ponto = pontos[i];
+      //var address = ponto.address;
+      var id = parseInt(ponto.id);
+      var lat = ponto.lat;
+      var lon = ponto.lon;
+      var nome = ponto.nome;
+      var imagem = ponto.imagem;
       //console.log("marcador id = "+id);
 
       lat = parseFloat(lat);
@@ -448,7 +484,7 @@ export class MapPage {
       //console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
-        this.places = this.response.data;
+        this.pontos = this.response.data;
       }else{ 
         this.alert('Atenção', this.response.data);
       }

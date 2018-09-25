@@ -26,6 +26,19 @@
     </ion-buttons>
   </ion-navbar>
 
+  <div id="linhas-div">
+    <div id="removerLinha">
+      <button ion-button round center color="lightPrimary" (click)="resetarLinhas()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </div>
+    <div id="linhas">
+      <button *ngFor="let l of linhas" ion-button round center color="lightPrimary" (click)="mostrarPontoLinhas(l.id)">
+        {{l.numero}} - {{l.nome}}
+      </button>
+    </div>
+  </div>
+
 </ion-header>
 
 
@@ -88,29 +101,6 @@
       
       </ion-card>
     </ng-container>
-    
-    <ion-fab top left>
-      <button ion-fab><ion-icon name="arrow-dropright"></ion-icon></button>
-      <ion-fab-list side="right">
-        <div id="linhas">
-          <ion-avatar mini>
-            <img src="http://tcc.pelainternetsistemas.com.br/app/images/marker-google.png">
-          </ion-avatar>
-          <ion-avatar mini>
-            <img src="http://tcc.pelainternetsistemas.com.br/app/images/marker-google.png">
-          </ion-avatar>
-          <ion-avatar mini>
-            <img src="http://tcc.pelainternetsistemas.com.br/app/images/marker-google.png">
-          </ion-avatar>
-          <ion-avatar mini>
-            <img src="http://tcc.pelainternetsistemas.com.br/app/images/marker-google.png">
-          </ion-avatar>
-          <ion-avatar mini>
-            <img src="http://tcc.pelainternetsistemas.com.br/app/images/marker-google.png">
-          </ion-avatar>
-        </div>
-      </ion-fab-list>
-    </ion-fab>
 
     <div #map id="map"></div>
     <div id="addPonto" [hidden]="!adicionar">

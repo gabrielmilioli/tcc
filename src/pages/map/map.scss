@@ -57,19 +57,31 @@ page-map {
         margin:0px;
         margin-right:10px;
     }
+    #linhas-div{
+        width: 100%;
+        background-color: color($colors, primary);
+    }
+    #removerLinha{
+        float:left;
+        background-color: color($colors, primary);
+    }
+    #removerLinha > button{
+        font-size: 0.7em;
+        margin:0 6px;
+        width: 20px;
+        height: 20px;
+        padding: 0.5rem;
+    }
     #linhas{
-        width: 270px;
-        height: 56px;
         white-space: nowrap;
         position: relative;
         overflow-x: scroll;
         overflow-y: hidden;
-        -webkit-overflow-scrolling: touch;
-        background-color: color($colors, light);
+        background-color: color($colors, primary);
     }
-    #linhas > ion-avatar{
-        float: none;
-        margin: 0 1%;
-        display: inline-block;
+    #linhas > button{
+        font-size:0.7em;
+        padding: 0.5rem;
+        height: initial;
     }
 }
