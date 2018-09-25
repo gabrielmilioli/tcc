@@ -232,11 +232,11 @@ export class PontosProvider {
     });
   }
 
-  get_itinerario_linhas(itinerario){
+  get_linhas_itinerario(linha_id){
     let credentials = {
       "class": restClass,
-      "method": "get_itinerario_linhas",
-      "itinerario": itinerario
+      "method": "get_linhas_itinerario",
+      "linha_id": linha_id
     };
     return new Promise((resolve, reject) => {
       this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})

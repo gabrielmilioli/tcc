@@ -54,26 +54,31 @@ export class MapPage {
 
   ionViewDidLoad(){
     this.criarMapa();
+    this.carregarLinhas();
   }
 
   ionViewWillEnter(){
     this.deletarMarcadores();
     this.carregarPontos();
-    this.carregarLinhas();
   }
 
   resetarLinhas(){
     var myDiv = document.getElementById('linhas');
     myDiv.scrollLeft = 0;
+    this.ionViewWillEnter();
+    this.limparPercurso();
   }
 
   mostrarPontoLinhas(linha_id){
     this.pontos = [];
     this.pontoService.get_linha_pontos(linha_id).then((result) => {
-      console.log("get_linhas", result);
+      console.log("get_linha_pontos", result);
       this.response = result;
       if(this.response.status === 'success'){
         this.pontos = this.response.data;
+        this.deletarMarcadores();
+        this.carregarPontos();
+        this.mostrarRota(linha_id);
       }else{ 
         this.alert('Atenção', this.response.data);
       }
@@ -84,7 +89,6 @@ export class MapPage {
 
   carregarLinhas(){
     this.pontoService.get_linhas(null).then((result) => {
-      console.log("get_linhas", result);
       this.response = result;
       if(this.response.status === 'success'){
         this.linhas = this.response.data;
@@ -200,7 +204,9 @@ export class MapPage {
   }
   
   limparPercurso(){
+    console.log(this.directionsDisplay);
     this.directionsDisplay.set('directions', null);
+    this.directionsDisplay = null;
   }
     
   adicionarDirecao(itinerarios){
@@ -266,6 +272,7 @@ export class MapPage {
       this.directionsService.route(request, function(result, status) {
         if (status == google.maps.DirectionsStatus.OK) {
           //Cashe the results to render directions//
+          
           resultSet.push(result);
           if (resultSet.length == iteration) {
             var bounds = new google.maps.LatLngBounds();
@@ -283,31 +290,24 @@ export class MapPage {
       });
   
     } while (partialEndIndex <= maxmimumIndex);
+    
     this.loading.dismiss();
   }
 
-  mostrarRota(id, nome) {
-    /*
+  mostrarRota(id) {
     let itinerarios = [];
-    let resultado = [];
-    this.pontoService.get_ponto_itinerarios(id).then((result) => {
-      //console.log(result);
+    this.pontoService.get_linhas_itinerario(id).then((result) => {
+      console.log("get_linhas_itinerario", result);
       this.response = result;
       if(this.response.status === 'success'){
-        resultado = this.response.data;
-        resultado.forEach(element => {
-          element.itinerarios.forEach(itinerario => {
-            itinerarios.push(itinerario.itinerario+", Criciúma - SC");
-          });
-        });
-        console.log(itinerarios);
+        itinerarios = this.response.data;
         this.adicionarDirecao(itinerarios);
       }else{ 
         this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
       this.alert('Atenção', error.message);
-    });*/
+    });
   }
 
   carregarPontos(){
