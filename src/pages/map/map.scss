@@ -57,4 +57,19 @@ page-map {
         margin:0px;
         margin-right:10px;
     }
+    #linhas{
+        width: 270px;
+        height: 56px;
+        white-space: nowrap;
+        position: relative;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        background-color: color($colors, light);
+    }
+    #linhas > ion-avatar{
+        float: none;
+        margin: 0 1%;
+        display: inline-block;
+    }
 }
