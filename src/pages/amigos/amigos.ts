@@ -2,8 +2,8 @@ import { ChatPage } from './../chat/chat';
 import { ProfilePage } from './../profile/profile';
 import { UserProvider } from './../../providers/user/user';
 import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController, ViewController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, ViewController, Content } from 'ionic-angular';
 
 /**
  * Generated class for the AmigosPage page.
@@ -18,6 +18,7 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
   templateUrl: 'amigos.html',
 })
 export class AmigosPage {
+  @ViewChild(Content) content: Content;
   amigos:{aceitos: [{amigo_id: string, amigo_nome: string, amigo_foto: string, aceito_data: string}],
           pendentes: [{amigo_id: string, amigo_nome: string, amigo_foto: string}],
           aceitos_total: 0, pendentes_total: 0};
@@ -30,6 +31,8 @@ export class AmigosPage {
   contatos: string = 'a';
   inputBuscar:string;
   mostrarBuscar:boolean=false;
+  perfis:any;
+  buscando:boolean=false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthServiceProvider,
     public alertCtrl: AlertController, public loadingCtrl: LoadingController, public viewCtrl: ViewController,
@@ -49,43 +52,24 @@ export class AmigosPage {
 
     this.loading.dismiss();
   }
-/*
+
   buscar(e){
+    this.perfis = [];
+    this.buscando = true;
     let val = e.target.value;
-    let results = [];
-    var buscarPor = val;
-    if(this.contatos === "a"){
-      for (var i=0 ; i < this.todosAmigos.aceitos.length ; i++)
-      {
-        var nome = this.todosAmigos.aceitos[i].amigo_nome;
-        if(nome.indexOf(buscarPor) != -1){
-          results.push(this.todosAmigos.aceitos[i]);
-        }
+    this.userService.get_usuarios(val, this.usuario_id).then((result) => {
+      this.response = result;
+      if(this.response.status === 'success'){
+        this.perfis = this.response.data;
+        this.buscando = false;
+        console.log(this.response.data);
+      }else{
+        this.alert('Atenção', this.response.data);
       }
-      if(results.length === 0){
-        results = this.todosAmigos.aceitos;
-      }
-      console.log(results);
-
-      this.amigos.aceitos = results;
-
-    }else{
-      for (var i=0 ; i < this.todosAmigos.pendentes.length ; i++)
-      {
-        var nome = this.todosAmigos.pendentes[i].amigo_nome;
-        if(nome.indexOf(buscarPor) != -1){
-          results.push(this.todosAmigos.pendentes[i]);
-        }
-      }
-      if(results.length === 0){
-        results = this.todosAmigos.pendentes;
-      }
-      console.log(results);
-
-      this.amigos.pendentes = results;
-    }
-    
-    //console.log(this.pontos);
+    }).catch(error=>{
+      console.log(error);
+      this.alert('Atenção', error.message);
+    });
   }
 
   toggleBusca(){
@@ -95,7 +79,8 @@ export class AmigosPage {
       this.mostrarBuscar = true;
       //this.searchbarElement.setFocus();
     }
-  }*/
+    this.content.resize();
+  }
 
   carregaAmigos(){
     this.userService.get_usuarios_amigos(this.usuario_id, null).then((result) => {

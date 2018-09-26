@@ -1,7 +1,7 @@
 import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
 import { UserProvider } from './../../providers/user/user';
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController, ActionSheetController, Events } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, ActionSheetController, Events, Content } from 'ionic-angular';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { ChatPage } from '../chat/chat';
@@ -19,8 +19,9 @@ import { ChatPage } from '../chat/chat';
   templateUrl: 'profile.html',
 })
 export class ProfilePage {
-  usuario:{id: string, nome: string, email: string, foto: string, register_date: string, 
-    amizade_aceita:boolean, solicitou_amizade:boolean};
+  @ViewChild(Content) content: Content;
+  usuario:any;
+  att_usuario:any;
   loading:any;
   response:any;
   usuarioLogado:boolean=false;
@@ -122,6 +123,9 @@ export class ProfilePage {
     }else{
       this.editando=false;
     }
+    setTimeout(() => {
+      this.content.resize();
+    }, 100);
   }
 
   confirmarEdicao(id){
@@ -156,7 +160,7 @@ export class ProfilePage {
     });
   }
 
-  adicionarAmigo(id){
+  solicitarAmizade(id){
     console.log(id+" = "+this.usuarioLogadoId);
     if(id == this.usuarioLogadoId){
       return false;
@@ -175,6 +179,82 @@ export class ProfilePage {
     });
   }
 
+  aceitarAmizade(id){
+    console.log(id+" = "+this.usuarioLogadoId);
+    if(id == this.usuarioLogadoId){
+      return false;
+    }
+    this.userService.set_usuarios_amigos(this.usuarioLogadoId, id, 1).then((result) => {
+      this.response = result;
+      if(this.response.status === 'success'){
+        //this.usuario = this.response.data;
+        this.usuario.solicitou_amizade = true;
+        this.ionViewDidEnter();
+      }else{ 
+        this.alert('Atenção', this.response.data);
+      }
+    }).catch(error=>{
+      this.alert('Atenção', error);
+    });
+  }
+
+  recusarAmizade(id){
+    console.log(id+" = "+this.usuarioLogadoId);
+    if(id == this.usuarioLogadoId){
+      return false;
+    }
+    this.userService.set_usuarios_amigos(this.usuarioLogadoId, id, 2).then((result) => {
+      this.response = result;
+      if(this.response.status === 'success'){
+        //this.usuario = this.response.data;
+        this.usuario.solicitou_amizade = true;
+        this.ionViewDidEnter();
+      }else{ 
+        this.alert('Atenção', this.response.data);
+      }
+    }).catch(error=>{
+      this.alert('Atenção', error);
+    });
+  }
+  
+  desfazerAmizade(id){
+    console.log(id+" = "+this.usuarioLogadoId);
+    if(id == this.usuarioLogadoId){
+      return false;
+    }
+    this.userService.set_usuarios_amigos(this.usuarioLogadoId, id, 3).then((result) => {
+      this.response = result;
+      if(this.response.status === 'success'){
+        //this.usuario = this.response.data;
+        this.usuario.solicitou_amizade = true;
+        this.ionViewDidEnter();
+      }else{ 
+        this.alert('Atenção', this.response.data);
+      }
+    }).catch(error=>{
+      this.alert('Atenção', error);
+    });
+  }
+
+  cancelarSolicitacao(id){
+    console.log(id+" = "+this.usuarioLogadoId);
+    if(id == this.usuarioLogadoId){
+      return false;
+    }
+    this.userService.set_usuarios_amigos(this.usuarioLogadoId, id, 4).then((result) => {
+      this.response = result;
+      if(this.response.status === 'success'){
+        //this.usuario = this.response.data;
+        this.usuario.solicitou_amizade = true;
+        this.ionViewDidEnter();
+      }else{ 
+        this.alert('Atenção', this.response.data);
+      }
+    }).catch(error=>{
+      this.alert('Atenção', error);
+    });
+  }
+  
   conversar(id){
     console.log(id+" = "+this.usuarioLogadoId);
     if(id == this.usuarioLogadoId){

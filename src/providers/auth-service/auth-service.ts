@@ -26,12 +26,11 @@ export class AuthServiceProvider {
   constructor(public http: HttpClient, public afAuth: AngularFireAuth) {
     //console.log('Hello AuthServiceProvider Provider');
     afAuth.authState.subscribe(user => {
-      
+      console.log("user",user);
 		});
   }
 
   signInWithEmail(credentials) {
-		console.log('Sign in with email');
 		return this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.senha);
 	}
 
@@ -44,7 +43,6 @@ export class AuthServiceProvider {
   }
 
   signInWithGoogle() {
-		console.log('Sign in with google');
 		return this.oauthSignIn(new firebase.auth.GoogleAuthProvider());
   }
 

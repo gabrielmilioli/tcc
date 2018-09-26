@@ -19,6 +19,127 @@
 
 <ion-content padding center text-center>
   <ng-container *ngIf="usuario">
+    <div [hidden]="editando">
+      <ion-list no-lines>
+        <ion-row>
+          <ion-col>
+            <div id="foto">
+              <img [src]="usuario.foto"/>
+            </div>
+          </ion-col>
+        </ion-row>
+      
+        <ion-row>
+          <ion-col>
+            <h3>
+              <ion-input [(ngModel)]="usuario.nome" readonly text-center></ion-input>
+            </h3>
+          </ion-col>
+        </ion-row>
+      
+        <ion-row>
+          <ion-col>
+            <p>
+              <ion-input [(ngModel)]="usuario.email" readonly text-center></ion-input>
+            </p>
+          </ion-col>
+        </ion-row>
+      
+        <ion-row>
+          <ion-col col-6>
+            <p>
+              <ion-input [(ngModel)]="usuario.uf" readonly text-center disabled></ion-input>
+            </p>
+          </ion-col>
+
+          <ion-col col-6>
+            <p>
+              <ion-input [(ngModel)]="usuario.cidade" readonly text-center disabled></ion-input>
+            </p>
+          </ion-col>
+        </ion-row>
+          
+        <ion-row>
+          <ion-col>
+            <ion-note>{{usuario.register_date}}</ion-note>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+    </div>
+
+    <div [hidden]="!editando">
+      <ion-list no-lines>
+        <ion-row>
+          <ion-col>
+            <div id="foto">
+              <img [src]="usuario.foto"/>
+            </div>
+            <ion-fab id="escolherUpload" top [hidden]="!editando">
+              <button ion-fab color="primary" (click)="escolherUpload()">
+                <ion-icon name="create"></ion-icon>
+              </button>
+            </ion-fab>
+          </ion-col>
+        </ion-row>
+      
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label floating>Nome</ion-label>
+              <ion-input [(ngModel)]="usuario.nome"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label floating>E-mail</ion-label>
+              <ion-input [(ngModel)]="usuario.email"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      
+        <ion-row>
+          <ion-col col-6>
+            <ion-item>
+              <ion-label floating>Nova senha</ion-label>
+              <ion-input type="password" [(ngModel)]="usuario.senha"></ion-input>
+            </ion-item>
+          </ion-col>
+
+          <ion-col col-6>
+            <ion-item>
+              <ion-label floating>Repetir senha</ion-label>
+              <ion-input type="password" [(ngModel)]="usuario.repetir_senha"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+          
+        <ion-row>
+          <ion-col col-6>
+            <ion-item>
+              <ion-label floating>Estado</ion-label>
+              <ion-select [(ngModel)]="usuario.uf"></ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col col-6>
+            <ion-item>
+              <ion-label floating>Cidade</ion-label>
+              <ion-select [(ngModel)]="usuario.cidade"></ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+          
+        <ion-row>
+          <ion-col>
+            <ion-note>{{usuario.register_date}}</ion-note>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+    </div>
+    <!--
     <ion-card>
       <div id="foto">
         <img [src]="usuario.foto"/>
@@ -79,12 +200,50 @@
         </ion-col>
       </ion-row>
 
-    </ion-card>
+    </ion-card>-->
   </ng-container>
 </ion-content>
 
-<ion-footer padding bottom center [hidden]="!editando">
-  <button ion-button full round color="primary" id="confirmarEdicao" (click)="confirmarEdicao(usuario.id)">
-    Salvar alterações
-  </button>
+<ion-footer padding bottom center *ngIf="usuario" [hidden]="!editando && usuarioLogado">
+  <div [hidden]="!editando">
+    <button ion-button full round color="primary" id="confirmarEdicao" (click)="confirmarEdicao(usuario.id)">
+      Salvar alterações
+    </button>
+  </div>
+
+  <ion-row [hidden]="usuarioLogado">
+    <ion-col *ngIf="!usuario.amizade">
+      <button ion-button full round color="primary" (click)="solicitarAmizade(usuario.id)">
+        Solicitar amizade
+      </button>
+    </ion-col>
+    <ion-col *ngIf="usuario.amizade === 1">
+      <button ion-button full round color="lightPrimary" (click)="aceitarAmizade(usuario.id)">
+        Aceitar amizade
+      </button>
+    </ion-col>
+    <ion-col *ngIf="usuario.amizade === 1">
+      <button ion-button full round color="lightPrimary" (click)="recusarAmizade(usuario.id)">
+        Recusar amizade
+      </button>
+    </ion-col>
+    <ion-col *ngIf="usuario.amizade === 2">
+      <button ion-button full round color="lightPrimary" (click)="cancelarSolicitacao(usuario.id)">
+        Cancelar solicitação de amizade
+      </button>
+    </ion-col>
+    <ion-col *ngIf="usuario.amizade === 3">
+      <button ion-button full round color="lightPrimary" (click)="desfazerAmizade(usuario.id)">
+        Desfazer amizade
+      </button>
+    </ion-col>
+    <ion-col *ngIf="usuario.amizade === 3">
+      <button ion-button full round color="primary" (click)="conversar(usuario.id)">
+        Conversar
+      </button>
+    </ion-col>
+  </ion-row>
+    
 </ion-footer>
+
+
