@@ -3,7 +3,7 @@ import { NovoPontoPage } from './../novo-ponto/novo-ponto';
 import { PlacePage } from './../place/place';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Component, ViewChild, ElementRef, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, ToastController } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { GoogleMaps } from '../../../node_modules/@ionic-native/google-maps';
 
@@ -40,6 +40,7 @@ export class MapPage {
   mostrarInfo:boolean=false;
   infoPonto:any;
   linhas:any;
+  mostrarPontos:any;
 
   directionsService = new google.maps.DirectionsService;
   directionsDisplay = new google.maps.DirectionsRenderer;
@@ -48,7 +49,8 @@ export class MapPage {
   autocomplete:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, public authService: AuthServiceProvider,
-  public alertCtrl: AlertController, public loadingCtrl: LoadingController, public map: GoogleMaps, public zone: NgZone, public pontoService: PontosProvider) {
+  public alertCtrl: AlertController, public loadingCtrl: LoadingController, public map: GoogleMaps, 
+  public zone: NgZone, public pontoService: PontosProvider, private toastCtrl: ToastController) {
     //console.log(map);
   }
 
@@ -65,11 +67,14 @@ export class MapPage {
   resetarLinhas(){
     var myDiv = document.getElementById('linhas');
     myDiv.scrollLeft = 0;
-    this.ionViewWillEnter();
-    this.limparPercurso();
+    this.ionViewDidLoad();
   }
 
   mostrarPontoLinhas(linha_id){
+    if(this.mostrarPontos === linha_id){
+      return false;
+    }
+    this.mostrarPontos = linha_id;
     this.pontos = [];
     this.pontoService.get_linha_pontos(linha_id).then((result) => {
       console.log("get_linha_pontos", result);
@@ -77,8 +82,16 @@ export class MapPage {
       if(this.response.status === 'success'){
         this.pontos = this.response.data;
         this.deletarMarcadores();
-        this.carregarPontos();
+        this.adicionarMarcadores(this.pontos);
         this.mostrarRota(linha_id);
+
+        let toast = this.toastCtrl.create({
+          message: 'Os marcadores no mapa mostram os pontos em que a linha passa',
+          duration: 5000,
+          position: 'bottom'
+        });
+
+        toast.present();
       }else{ 
         this.alert('Atenção', this.response.data);
       }
@@ -205,8 +218,10 @@ export class MapPage {
   
   limparPercurso(){
     console.log(this.directionsDisplay);
-    this.directionsDisplay.set('directions', null);
-    this.directionsDisplay = null;
+    if(this.directionsDisplay){
+      this.directionsDisplay.set('directions', null);
+    }
+    this.directionsDisplay.setMap(null);
   }
     
   adicionarDirecao(itinerarios){

@@ -101,3 +101,6 @@ ion-input{
 ion-avatar{
     border:1px solid color($colors, light) !important;
 }
+ion-header{
+    background-color: color($colors, primary);
+}

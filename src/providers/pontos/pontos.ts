@@ -249,6 +249,24 @@ export class PontosProvider {
   }
 
 
+  get_itinerario_linhas(itinerario){
+    let credentials = {
+      "class": restClass,
+      "method": "get_itinerario_linhas",
+      "itinerario": itinerario
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
+
+
   get_horarios(linha_id){
     let credentials = {
       "class": restClass,

@@ -67,12 +67,6 @@
   <div id="div">
     <ng-container *ngIf="infoPonto">
       <ion-card id="info" [hidden]="!mostrarInfo">
-        <ion-fab right top small mini color="primary" (click)="esconderInformacoes()">
-          <button ion-fab small mini>
-            <ion-icon name="close"></ion-icon>
-          </button>
-        </ion-fab>
-
         <ion-item>
           <ion-avatar item-start *ngIf="infoPonto.imagem">
             <img [src]="infoPonto.imagem">
@@ -86,15 +80,15 @@
       
         <ion-row>
           <ion-col>
-            <button ion-button icon-start clear small color="primary" (click)="mostrarRota(infoPonto.id, infoPonto.nome)">
-              <ion-icon name="pin"></ion-icon>
-              <div>Rotas</div>
-            </button>
-          </ion-col>
-          <ion-col>
             <button ion-button icon-start clear small color="primary" (click)="irPonto(infoPonto.id, infoPonto.nome)">
               <ion-icon name="pin"></ion-icon>
               <div>Visualizar ponto</div>
+            </button>
+          </ion-col>
+          <ion-col>
+            <button ion-button icon-start clear small color="primary" (click)="esconderInformacoes()">
+              <ion-icon name="close"></ion-icon>
+              <div>Fechar</div>
             </button>
           </ion-col>
         </ion-row>
