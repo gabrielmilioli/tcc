@@ -37,10 +37,15 @@ export class NovoPontoPage {
     this.loading.present();
     
     this.pontosProvider.get_itinerario_linhas(this.endereco.rua).then((result) => {
-      //console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.linhas = this.response.data;
+        this.selecionados = [];
+        this.linhas.forEach(element => {
+          if(element.selecionado){
+            this.selecionados.push(element.id);
+          }
+        });
         console.log(this.linhas);
         this.loading.dismiss();
       }else{ 
@@ -56,12 +61,11 @@ export class NovoPontoPage {
   }
 
   adicionarPonto() {
-    this.selecionados = [];
-    this.linhas.forEach(element => {
-      if(element.selecionado){
-        this.selecionados.push(element.id);
-      }
-    });
+    console.log(this.selecionados);
+    if(this.endereco.nome.length === 0){
+      this.alert('Atenção', 'Defina um nome para o ponto');
+      return false;
+    }
     this.endereco.selecionados = this.selecionados;
     
     this.loading = this.loadingCtrl.create({
@@ -69,7 +73,7 @@ export class NovoPontoPage {
     });
     this.loading.present();
     this.endereco.imagem = this.imagem;
-    console.log(this.endereco);
+    
     var id = this.authService.get_user_id();
     this.pontosProvider.set_ponto(id, this.endereco).then((result) => {
       this.loading.dismiss();

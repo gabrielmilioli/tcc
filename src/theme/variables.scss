@@ -35,9 +35,10 @@ $app-direction: ltr;
 
 $colors: (
   primary:    #db4949,
-  secondary:  #C84343,
+  secondary:  #B43C3C,
   danger:     #f53d3d,
   light:      #f4f4f4,
+  branco:      #ffffff,
   dark:       #222,
   darkFont:   #333,
   transparent: transparent,
@@ -56,6 +57,10 @@ $colors: (
   lightPrimary:(
     base: #ffffff,
     contrast: #db4949
+  ),
+  secondaryBg:(
+    base: #B43C3C,
+    contrast: #ffffff
   ),
   bcPrimary:(
     contrast: #db4949,

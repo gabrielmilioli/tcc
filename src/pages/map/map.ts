@@ -38,9 +38,11 @@ export class MapPage {
   mapa:any;
   marcadores = [];
   mostrarInfo:boolean=false;
+  aumentar:boolean=false;
   infoPonto:any;
   linhas:any;
   mostrarPontos:any;
+  escolherLinhas:string="l";
 
   directionsService = new google.maps.DirectionsService;
   directionsDisplay = new google.maps.DirectionsRenderer;
@@ -52,6 +54,7 @@ export class MapPage {
   public alertCtrl: AlertController, public loadingCtrl: LoadingController, public map: GoogleMaps, 
   public zone: NgZone, public pontoService: PontosProvider, private toastCtrl: ToastController) {
     //console.log(map);
+    this.escolherLinhas = "l";
   }
 
   ionViewDidLoad(){
@@ -61,7 +64,37 @@ export class MapPage {
 
   ionViewWillEnter(){
     this.deletarMarcadores();
-    this.carregarPontos();
+    if(this.escolherLinhas === "t"){
+      this.carregarPontos();
+    }
+  }
+
+  mostrarLinhas(){
+    if(this.escolherLinhas === "t"){
+      this.carregarPontos();
+    }else{
+      this.deletarMarcadores();
+    }
+  }
+
+  aumentarLinhas(){
+    console.log(this.aumentar);
+    if(!this.aumentar){
+      this.aumentar = true;
+      let div = document.getElementById("linhas");
+      div.classList.add("mostrarLinhas");
+    }else{
+      this.aumentar = false;
+      let div = document.getElementById("linhas");
+      div.classList.remove("mostrarLinhas");
+    }
+    
+    /*
+        width: 100%;
+    display: grid;
+    height: 200px;
+    overflow-y: scroll;
+    */
   }
 
   resetarLinhas(){
@@ -209,7 +242,7 @@ export class MapPage {
       this.centralizar(latitude, longitude);
     });
 
-    this.carregarPontos();
+    //this.carregarPontos();
 
     if(this.loading){
       this.loading.dismiss();
@@ -280,8 +313,9 @@ export class MapPage {
         destination: destination,
         waypoints: waypoints,
         provideRouteAlternatives: false,
-        travelMode: google.maps.TravelMode.WALKING,
-        unitSystem: google.maps.UnitSystem.METRIC
+        travelMode: google.maps.TravelMode.DRIVING,
+        unitSystem: google.maps.UnitSystem.METRIC,
+        optimizeWaypoints: true
       }
       var mapa = this.mapa;
       this.directionsService.route(request, function(result, status) {
@@ -540,6 +574,7 @@ export class MapPage {
             let types = element.types;
             let long_name = element.long_name;
             let short_name = element.short_name;
+            console.log(element);
             if(types.includes('country')){
               endereco.pais = short_name;
             }else if(types.includes('administrative_area_level_1')){

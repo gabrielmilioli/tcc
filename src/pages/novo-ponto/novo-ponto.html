@@ -72,10 +72,9 @@
       <ion-col>
         <ion-label color="primary">Linhas recomendadas para este ponto</ion-label>
         <ion-input *ngIf="linhas.length === 0" disabled value="Nenhuma linha encontrada neste itinerário"></ion-input>
-        <ion-item *ngFor="let l of linhas; let i = index">
-          <ion-label>{{l.numero}} - {{l.nome}}</ion-label>
-          <ion-checkbox [(ngModel)]="l.selecionado" checked></ion-checkbox>
-        </ion-item>
+        <ion-select [(ngModel)]="selecionados" multiple="true">
+          <ion-option *ngFor="let l of linhas; let i = index" [value]="l.id" selected>{{l.numero}} - {{l.nome}}</ion-option>
+        </ion-select>
       </ion-col>
     </ion-row>
     

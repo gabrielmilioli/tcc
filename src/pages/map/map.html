@@ -26,6 +26,35 @@
     </ion-buttons>
   </ion-navbar>
 
+  <ion-segment [(ngModel)]="escolherLinhas" class="segment-primary" (ionChange)="mostrarLinhas()">
+    <ion-segment-button value="l">
+      Selecionar linha
+    </ion-segment-button>
+    <ion-segment-button value="t">
+      Todos os pontos
+    </ion-segment-button>
+  </ion-segment>
+  <ng-container [ngSwitch]="escolherLinhas">
+    <div *ngSwitchCase="'l'" id="linhas-div">
+      <div id="removerLinha">
+        <button ion-button round center color="lightPrimary" (click)="resetarLinhas()">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </div>
+      <div id="maisLinhas">
+        <button ion-button round center color="lightPrimary" (click)="aumentarLinhas()">
+          <ion-icon [hidden]="aumentar" name="add"></ion-icon>
+          <ion-icon [hidden]="!aumentar" name="remove"></ion-icon>
+        </button>
+      </div>
+      <div id="linhas">
+        <button *ngFor="let l of linhas" ion-button round center color="primary" (click)="mostrarPontoLinhas(l.id)">
+          {{l.numero}} - {{l.nome}}
+        </button>
+      </div>
+    </div>
+  </ng-container>
+<!--
   <div id="linhas-div">
     <div id="removerLinha">
       <button ion-button round center color="lightPrimary" (click)="resetarLinhas()">
@@ -38,7 +67,7 @@
       </button>
     </div>
   </div>
-
+-->
 </ion-header>
 
 

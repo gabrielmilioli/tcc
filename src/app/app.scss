@@ -62,17 +62,22 @@ ion-header ion-title > div {
 
 .segment-primary{
     background-color:color($colors, primary) !important;
-    color:color($colors, light) !important;
+    color:color($colors, branco) !important;
     opacity: inherit !important;
 }
 
 .segment-primary > ion-segment-button{
     background-color:color($colors, primary) !important;
-    color:color($colors, light) !important;
+    color:color($colors, branco) !important;
     opacity: inherit !important;
+    border-bottom: 0px !important;
 }
 .segment-md .segment-button.activated, .segment-md .segment-button.segment-activated{
-    border-bottom-color:color($colors, light) !important;
+    border-bottom-color:color($colors, branco) !important;
+    background-color: color($colors, branco) !important;
+    color: color($colors, primary) !important;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 .segment-md .segment-button ion-icon {
     font-size: 1.5rem;
@@ -91,7 +96,7 @@ ion-header ion-title > div {
 }
 
 ion-footer {
-    background-color: #fff;
+    background-color: color($colors, branco);
 }
 
 ion-input{
@@ -101,11 +106,14 @@ ion-input{
 ion-avatar{
     border:0px solid #c5c5c5 !important;
     box-shadow: 0px 0px 0px 1px #dadada;
-    background-color:#ffffff;
+    background-color:color($colors, branco);
 }
 ion-header{
     background-color: color($colors, primary);
 }
 .input-cover {
     position: static;
+}
+ion-select{
+    max-width:initial !important;
 }
