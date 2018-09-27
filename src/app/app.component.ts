@@ -19,7 +19,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       //statusBar.styleDefault();
       statusBar.overlaysWebView(false);
-      //statusBar.backgroundColorByHexString('f4f4f4');
+      statusBar.backgroundColorByHexString('B43C3C');
       splashScreen.hide();
 
       this.authService.afAuth.authState.subscribe(user => {

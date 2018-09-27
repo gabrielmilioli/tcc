@@ -3,9 +3,6 @@
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
-
-   (ionInput)="updateSearchResults()"
-      <input [(ngModel)]="endereco" #searchbar id="searchbar" type="text" placeholder="Buscar por itinetário" [hidden]="!mostrarBuscar" class="searchbar-input">
 -->
 <ion-header>
 
@@ -16,7 +13,7 @@
         </button>
       </ion-buttons>
     <ion-title>
-      <ion-searchbar [(ngModel)]="endereco" #searchbar id="searchbar" type="text" placeholder="Buscar por itinetário" [hidden]="!mostrarBuscar"></ion-searchbar>
+      <ion-searchbar [(ngModel)]="endereco" #searchbar id="searchbar" type="text" placeholder="Buscar por itinerário" [hidden]="!mostrarBuscar"></ion-searchbar>
     </ion-title>
     <ion-buttons right>
       <button ion-button (click)="toggleBusca()">
@@ -54,26 +51,12 @@
       </div>
     </div>
   </ng-container>
-<!--
-  <div id="linhas-div">
-    <div id="removerLinha">
-      <button ion-button round center color="lightPrimary" (click)="resetarLinhas()">
-        <ion-icon name="close"></ion-icon>
-      </button>
-    </div>
-    <div id="linhas">
-      <button *ngFor="let l of linhas" ion-button round center color="lightPrimary" (click)="mostrarPontoLinhas(l.id)">
-        {{l.numero}} - {{l.nome}}
-      </button>
-    </div>
-  </div>
--->
 </ion-header>
 
 
 <ion-content>
   <ion-fab bottom right [hidden]="adicionar">
-    <button ion-fab [color]="adicionarClass" (click)="toggleCriar()">
+    <button ion-fab mini [color]="adicionarClass" (click)="toggleCriar()">
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>
@@ -88,7 +71,7 @@
   </div>
 
   <ion-fab bottom left [hidden]="adicionar">
-    <button ion-fab color="primary" (click)="centralizar()">
+    <button ion-fab mini color="primary" (click)="centralizar()">
       <ion-icon name="locate"></ion-icon>
     </button>
   </ion-fab>

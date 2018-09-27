@@ -3,7 +3,7 @@ import { NovoPontoPage } from './../novo-ponto/novo-ponto';
 import { PlacePage } from './../place/place';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Component, ViewChild, ElementRef, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, ToastController, Content } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { GoogleMaps } from '../../../node_modules/@ionic-native/google-maps';
 
@@ -25,6 +25,7 @@ export class MapPage {
   @ViewChild('map') mapRef:ElementRef;
   @ViewChild('address') addressRef:ElementRef;
   @ViewChild('searchbar') searchbarRef:ElementRef;
+  @ViewChild(Content) content: Content;
   endereco:string;
   lat:any;
   lon:any;
@@ -75,6 +76,9 @@ export class MapPage {
     }else{
       this.deletarMarcadores();
     }
+    setTimeout(() => {
+      this.content.resize();
+    }, 100);
   }
 
   aumentarLinhas(){
@@ -88,13 +92,6 @@ export class MapPage {
       let div = document.getElementById("linhas");
       div.classList.remove("mostrarLinhas");
     }
-    
-    /*
-        width: 100%;
-    display: grid;
-    height: 200px;
-    overflow-y: scroll;
-    */
   }
 
   resetarLinhas(){
@@ -186,63 +183,65 @@ export class MapPage {
     this.geolocation.getCurrentPosition().then(pos => {
       this.lat = pos.coords.latitude;
       this.lon = pos.coords.longitude;
+
+      const location = new google.maps.LatLng(this.lat,this.lon);
+
+      const options = {
+        center:location,
+        zoom:14,
+        streetViewControl:false,
+        mapTypeId:'roadmap',
+        fullscreenControl: false,
+        disableDefaultUI: true,
+        mapTypeControl: false,
+        scaleControl: false,
+        clickableIcons: false,
+        styles: [
+          {
+            "featureType": "poi",
+            "stylers": [
+              { "visibility": "off" }
+            ]
+          }
+        ]
+      };
+  
+      this.mapa = new google.maps.Map(this.mapRef.nativeElement,options);
+      
+      google.maps.event.addListener(this.mapa, 'center_changed', () => {
+        //console.log(this.mapa.getCenter().lat() + ', ' +this.mapa.getCenter().lng());
+        this.enderecoCentro = this.mapa.getCenter().lat()+","+this.mapa.getCenter().lng();
+      });
+  
+      var defaultBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(this.lat, this.lon)
+      );
+  
+      const complete_options = {
+        types: ['establishment'],/*
+        componentRestrictions: {country: 'BR', state: 'SC', city: 'Criciúma'},*/
+        bounds: defaultBounds
+      };
+  
+      let elem = <HTMLInputElement>document.getElementsByClassName('searchbar-input')[0];
+      let elem1 = <HTMLInputElement>document.getElementsByClassName('searchbar-input')[1];
+      this.autocomplete = new google.maps.places.Autocomplete(elem, complete_options);
+      this.autocomplete = new google.maps.places.Autocomplete(elem1, complete_options);
+  
+      google.maps.event.addListener(this.autocomplete, 'place_changed', () => {
+        let place = this.autocomplete.getPlace();
+        let latitude = place.geometry.location.lat();
+        let longitude = place.geometry.location.lng();
+        console.log(latitude + ", " + longitude);
+        this.centralizar(latitude, longitude);
+      });
+  
+      //this.carregarPontos();
+  
+
     }).catch((error) => {
       this.alert('Atenção', error);
     });
-
-    const location = new google.maps.LatLng(this.lat,this.lon);
-
-    const options = {
-      center:location,
-      zoom:14,
-      streetViewControl:false,
-      mapTypeId:'roadmap',
-      fullscreenControl: false,
-      disableDefaultUI: true,
-      mapTypeControl: false,
-      scaleControl: false,
-      clickableIcons: false,
-      styles: [
-        {
-          "featureType": "poi",
-          "stylers": [
-            { "visibility": "off" }
-          ]
-        }
-      ]
-    };
-
-    this.mapa = new google.maps.Map(this.mapRef.nativeElement,options);
-    
-    google.maps.event.addListener(this.mapa, 'center_changed', () => {
-      //console.log(this.mapa.getCenter().lat() + ', ' +this.mapa.getCenter().lng());
-      this.enderecoCentro = this.mapa.getCenter().lat()+","+this.mapa.getCenter().lng();
-    });
-
-    var defaultBounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(this.lat, this.lon)
-    );
-
-    const complete_options = {
-      types: ['establishment'],/*
-      componentRestrictions: {country: 'BR', state: 'SC', city: 'Criciúma'},*/
-      bounds: defaultBounds
-    };
-
-    let elem = <HTMLInputElement>document.getElementsByClassName('searchbar-input')[0];
-    let elem1 = <HTMLInputElement>document.getElementsByClassName('searchbar-input')[1];
-    this.autocomplete = new google.maps.places.Autocomplete(elem, complete_options);
-    this.autocomplete = new google.maps.places.Autocomplete(elem1, complete_options);
-
-    google.maps.event.addListener(this.autocomplete, 'place_changed', () => {
-      let place = this.autocomplete.getPlace();
-      let latitude = place.geometry.location.lat();
-      let longitude = place.geometry.location.lng();
-      console.log(latitude + ", " + longitude);
-      this.centralizar(latitude, longitude);
-    });
-
-    //this.carregarPontos();
 
     if(this.loading){
       this.loading.dismiss();
