@@ -11,18 +11,23 @@
 <ion-menu [content]="content" [swipeEnabled]="false">
     <ion-header>
         <ion-toolbar>
-            <div class="menu-header">
-                <ng-container *ngIf="usuario">
-                    <ion-avatar *ngIf="usuario.foto" mini style="float:left; width: 48px !important; height: 48px !important;">
-                        <img [src]="usuario.foto">
-                    </ion-avatar>
-                    <ion-title style="float:left; line-height: 48px;">{{usuario.nome}}</ion-title>
-                </ng-container>
-            </div>
+            <ion-item *ngIf="usuario" class="menu-header">
+                <ion-avatar *ngIf="usuario.foto" item-start>
+                    <img [src]="usuario.foto">
+                </ion-avatar>
+                <h2>
+                    {{usuario.nome}}
+                </h2>
+                
+                <p text-wrap>
+                    {{usuario.email}}
+                </p>
+            
+            </ion-item>
             <ion-buttons right>
-            <button ion-button menuToggle>
-                <ion-icon name="menu"></ion-icon>
-            </button>
+                <button ion-button menuToggle>
+                    <ion-icon name="menu"></ion-icon>
+                </button>
             </ion-buttons>
         </ion-toolbar>
     </ion-header>

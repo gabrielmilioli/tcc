@@ -1,10 +1,10 @@
+import { MessagesPage } from './../messages/messages';
 import { UserProvider } from './../../providers/user/user';
 import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
 import { Component } from '@angular/core';
 import { App, NavController, Events } from 'ionic-angular';
 
 import { MapPage } from '../map/map';
-import { MessagesPage } from '../messages/messages';
 import { AboutPage } from '../about/about';
 import { HomePage } from '../home/home';
 import { ProfilePage } from '../profile/profile';
@@ -43,7 +43,7 @@ export class TabsPage {
     }
     this.pages = [
       { title: 'Perfil', component: ProfilePage, icon: 'contact', badge: '' },
-      { title: 'Meus pontos', component: PlacesPage, icon: 'heart', badge: '' },
+      /*{ title: 'Mensagens', component: MessagesPage, icon: 'chatbubbles', badge: '' },*/
       { title: 'Contatos', component: AmigosPage, icon: 'people', badge: this.badge }
       /*{ title: 'Configurações', component: SettingsPage, icon: 'cog' },
       { title: 'Sobre', component: AboutPage, icon: 'information-circle' },*/

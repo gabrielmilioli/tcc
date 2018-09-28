@@ -7,6 +7,7 @@
 </ion-header>
 
 <ion-content padding no-bounce>
+  <!--
   <div *ngIf="!online">
     <ion-title class="sub-title">Você está offline! Enquanto isso, você pode...</ion-title>
     <button ion-button full color="primary" (click)="horarios()">
@@ -14,7 +15,7 @@
       <ion-icon name="time"></ion-icon>
     </button>
   </div>
-  
+  -->
   <div *ngIf="online">
     <ion-title class="sub-title">Faça seu login</ion-title>
     <ion-list>
@@ -28,9 +29,9 @@
       </ion-item>
     </ion-list>
 
-    <button ion-button round full (click)="login()">Entrar</button>
-    <button ion-button round full color="light" (click)="registrar()">Me registrar</button>
-
+    <button ion-button round full color="primary" (click)="login()">Entrar</button>
+    <button ion-button round full color="lightPrimary" (click)="registrar()">Me registrar</button>
+<!--
     <br>
     <ion-title class="sub-title">Ou pelas redes sociais</ion-title>
     <div id="social-login">
@@ -43,6 +44,6 @@
       <button class="button-gp" ion-fab full color="googlePlus" (click)="loginGp()">
         <ion-icon name="logo-googleplus"></ion-icon>
       </button>
-    </div>
+    </div>-->
   </div>
 </ion-content>

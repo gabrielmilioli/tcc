@@ -19,6 +19,60 @@
 
 <ion-content padding center text-center>
   <ng-container *ngIf="usuario">
+
+    <div id="card" class="four">
+      <div class="image-wrapper"></div>
+      <h3 class="name">{{usuario.nome}}</h3>
+      <ion-row class="info cf">
+        <ion-col col-4 class="four">
+          <span class="number">{{usuario.total_amigos}}</span>
+          {{usuario.total_amigos == 1 ? 'Amigo' : 'Amigos'}}
+        </ion-col>
+        <ion-col col-4 class="four">
+          <span class="number">{{usuario.total_classificacoes}}</span>
+          {{usuario.total_classificacoes == 1 ? 'Classificação' : 'Classificações'}}
+        </ion-col>
+        <ion-col col-4 class="four">
+          <span class="number">{{usuario.total_comentarios}}</span>
+          {{usuario.total_comentarios == 1 ? 'Comentário' : 'Comentários'}}
+        </ion-col>
+      </ion-row>
+
+      <ion-row [hidden]="usuarioLogado" class="options">
+        <ion-col *ngIf="!usuario.amizade">
+          <button ion-button full round color="primary" (click)="solicitarAmizade(usuario.id)">
+            Solicitar amizade
+          </button>
+        </ion-col>
+        <ion-col *ngIf="usuario.amizade === 1">
+          <button ion-button full round color="lightPrimary" (click)="recusarAmizade(usuario.id)">
+            Recusar amizade
+          </button>
+        </ion-col>
+        <ion-col *ngIf="usuario.amizade === 1">
+          <button ion-button full round color="primary" (click)="aceitarAmizade(usuario.id)">
+            Aceitar amizade
+          </button>
+        </ion-col>
+        <ion-col *ngIf="usuario.amizade === 2">
+          <button ion-button full round color="lightPrimary" (click)="cancelarSolicitacao(usuario.id)">
+            Cancelar solicitação de amizade
+          </button>
+        </ion-col>
+        <ion-col *ngIf="usuario.amizade === 3">
+          <button ion-button full round color="lightPrimary" (click)="desfazerAmizade(usuario.id)">
+            Desfazer amizade
+          </button>
+        </ion-col>
+        <ion-col *ngIf="usuario.amizade === 3">
+          <button ion-button full round color="primary" (click)="conversar(usuario.id)">
+            Conversar
+          </button>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!--
     <div [hidden]="editando">
       <ion-list no-lines>
         <ion-row>
@@ -203,47 +257,13 @@
     </ion-card>-->
   </ng-container>
 </ion-content>
-
+<!--
 <ion-footer padding bottom center *ngIf="usuario" [hidden]="!editando && usuarioLogado">
   <div [hidden]="!editando">
     <button ion-button full round color="primary" id="confirmarEdicao" (click)="confirmarEdicao(usuario.id)">
       Salvar alterações
     </button>
   </div>
-
-  <ion-row [hidden]="usuarioLogado">
-    <ion-col *ngIf="!usuario.amizade">
-      <button ion-button full round color="primary" (click)="solicitarAmizade(usuario.id)">
-        Solicitar amizade
-      </button>
-    </ion-col>
-    <ion-col *ngIf="usuario.amizade === 1">
-      <button ion-button full round color="lightPrimary" (click)="aceitarAmizade(usuario.id)">
-        Aceitar amizade
-      </button>
-    </ion-col>
-    <ion-col *ngIf="usuario.amizade === 1">
-      <button ion-button full round color="lightPrimary" (click)="recusarAmizade(usuario.id)">
-        Recusar amizade
-      </button>
-    </ion-col>
-    <ion-col *ngIf="usuario.amizade === 2">
-      <button ion-button full round color="lightPrimary" (click)="cancelarSolicitacao(usuario.id)">
-        Cancelar solicitação de amizade
-      </button>
-    </ion-col>
-    <ion-col *ngIf="usuario.amizade === 3">
-      <button ion-button full round color="lightPrimary" (click)="desfazerAmizade(usuario.id)">
-        Desfazer amizade
-      </button>
-    </ion-col>
-    <ion-col *ngIf="usuario.amizade === 3">
-      <button ion-button full round color="primary" (click)="conversar(usuario.id)">
-        Conversar
-      </button>
-    </ion-col>
-  </ion-row>
-    
 </ion-footer>
-
+-->
 

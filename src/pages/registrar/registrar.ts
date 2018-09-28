@@ -23,7 +23,7 @@ export class RegistrarPage {
         "nome": "",
         "email": "",
         "senha": "", 
-        "resenha": "",
+        "repetir_senha": "",
         "estado": "",
         "cidade": ""
       };
@@ -128,16 +128,19 @@ export class RegistrarPage {
     this.loading.present();
 
     if(this.usuario.nome.length === 0 || this.usuario.email.length === 0 ||
-      this.usuario.senha.length === 0 || this.usuario.resenha.length === 0||
+      this.usuario.senha.length === 0 || this.usuario.repetir_senha.length === 0||
       this.usuario.cidade.length === 0 || this.usuario.estado.length === 0){
         this.alert('Atenção', 'Preencha os campos!'); 
         return false;
     }
-    if(this.usuario.senha != this.usuario.resenha){
-        this.alert('Atenção', 'Senhas incompatíveis!'); 
-        return false;
+    if(this.usuario.senha != this.usuario.repetir_senha){
+      this.alert('Atenção', 'Senhas incompatíveis');
+      return false;
+    }else if(this.usuario.senha.length <= 4){
+      this.alert('Atenção', 'A senha deve conter no mínimo 4 caracteres');
+      return false;
     }
-
+    
     let id = null;
     if(this.id){
       id = this.id;

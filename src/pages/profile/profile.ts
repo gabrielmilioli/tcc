@@ -118,23 +118,86 @@ export class ProfilePage {
       return false;
     }
 
-    if(!this.editando){
-      this.editando=true;
-    }else{
-      this.editando=false;
-    }
-    setTimeout(() => {
-      this.content.resize();
-    }, 100);
+    let alert = this.alertCtrl.create({
+      title: 'Editar perfil',
+      inputs: [
+        {
+          name: 'nome',
+          placeholder: 'Nome',
+          value: this.usuario.nome
+        },
+        {
+          name: 'email',
+          placeholder: 'E-mail',
+          type: 'email',
+          value: this.usuario.email
+        },
+        {
+          name: 'senha',
+          placeholder: 'Senha',
+          type: 'password'
+        },
+        {
+          name: 'repetir_senha',
+          placeholder: 'Repita a senha',
+          type: 'password'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Salvar',
+          handler: data => {
+            this.loading = this.loadingCtrl.create({
+              content: 'Atualizando perfil...'
+            });
+            this.loading.present();
+            
+            if(data.nome.length < 1){
+              this.alert('Atenção', 'Insira um nome válido');
+              return false;
+            }
+            if(data.email.length < 1){
+              this.alert('Atenção', 'Insira um e-mail válido');
+              return false;
+            }else if(data.email.indexOf('@') === -1){
+              this.alert('Atenção', 'Insira um e-mail válido');
+              return false;
+            }
+            if(data.senha.length != 0){
+              if(data.senha != data.repetir_senha){
+                this.alert('Atenção', 'Senhas incompatíveis');
+                return false;
+              }else if(data.senha.length <= 4){
+                this.alert('Atenção', 'A senha deve conter no mínimo 4 caracteres');
+                return false;
+              }
+            }
+
+            this.salvarUsuario(this.usuario.id, data);
+            
+            this.loading.dismiss();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
-  confirmarEdicao(id){
-    this.userService.set_usuario(id, this.usuario).then((result) => {
+  salvarUsuario(id, dados){
+    this.userService.set_usuario(id, dados).then((result) => {
       console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         //this.usuario = this.response.data;
         this.editando = false;
+        this.events.publish('usuario:changed', this.usuario);
         this.ionViewDidEnter();
       }else{ 
         this.alert('Atenção', this.response.data);
@@ -151,7 +214,6 @@ export class ProfilePage {
       if(this.response.status === 'success'){
         console.log(this.response.data);
         this.usuario = this.response.data;
-        this.events.publish('usuario:changed', this.usuario);
       }else{ 
         this.alert('Atenção', this.response.data);
       }

@@ -37,4 +37,80 @@ page-profile {
         min-width: 0 !important;
         text-align: left !important;
     }
+        
+    #card{
+        text-align: center;
+        color: #2c3e50;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    #card .image-wrapper{
+        width: 150px;
+        height: 150px;
+        margin: 10px auto;
+        border-radius: 100%;
+        background-image: url("https://static.pexels.com/photos/7096/people-woman-coffee-meeting.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    h3{
+        margin: 20px auto;
+    }
+
+    #card .number{
+        background-color: color($colors, branco) !important;
+        color: color($colors, primary) !important;
+    }
+
+    #card .info .four{
+        text-align: center;
+        border-right: 1px solid color($colors, primary);
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        font-size: 0.9em;
+    }
+
+    #card .info .four:last-of-type{
+        border-right: none;
+    }
+
+    #card .info .four .number{
+        display: block;
+        font-size: 20px;
+        padding: 3px 0;
+        font-weight: 700;
+    }
+
+    #card .options{
+        margin-top: 30px;
+        text-align: left;
+    }
+
+    #card .options ul{
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    #card .options ul .icon{
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        background-color: #3498db;
+        border-radius: 100%;
+        margin-right: 8px;
+        vertical-align: middle;
+        color: #fff;
+        line-height: 30px;
+        text-align: center;
+    }
+
+    #card .options ul li{
+        margin: 12px 0;
+    }
+
 }

@@ -115,8 +115,13 @@ export class MapPage {
         this.adicionarMarcadores(this.pontos);
         this.mostrarRota(linha_id);
 
+        let message = 'Os marcadores no mapa mostram os pontos em que a linha passa';
+        if(this.pontos.length === 0){
+          message = 'Nenhum ponto encontrado';
+        }
+
         let toast = this.toastCtrl.create({
-          message: 'Os marcadores no mapa mostram os pontos em que a linha passa',
+          message: message,
           duration: 5000,
           position: 'bottom'
         });

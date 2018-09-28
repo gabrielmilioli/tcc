@@ -117,3 +117,9 @@ ion-header{
 ion-select{
     max-width:initial !important;
 }
+.menu-header{
+    background-color:transparent !important;
+}
+.menu-header > div{
+    border-bottom: 0px solid #dedede !important;
+}
