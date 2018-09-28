@@ -1,3 +1,4 @@
+import { ReportarPage } from './../reportar/reportar';
 import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
 import { UserProvider } from './../../providers/user/user';
 import { Component, ViewChild } from '@angular/core';
@@ -61,7 +62,30 @@ export class ProfilePage {
     this.loading.dismiss();
   }
 
-  escolherUpload(){
+  reportar(){
+    
+    let alert = this.alertCtrl.create({
+      subTitle: 'Deseja reportar '+this.usuario.nome+'?',
+      buttons: [
+        {
+          text: 'Não',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Sim',
+          handler: data => {
+            this.navCtrl.push(ReportarPage, {"id":this.usuario.id, "nome":this.usuario.nome});
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  editarFoto(){
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Escolher foto de',
       buttons: [
@@ -105,14 +129,52 @@ export class ProfilePage {
     }
 
     this.camera.getPicture(options).then((imageData) => {
-      this.loading.dismiss();
-      this.usuario.foto = 'data:image/jpeg;base64,' + imageData;
+      this.userService.set_usuario_foto(this.usuario.id, imageData).then((result) => {
+        this.response = result;
+        if(this.response.status === 'success'){
+          this.loading.dismiss();
+          this.loadProfile(this.usuarioLogadoId, this.usuario.id);
+        }else{ 
+          this.alert('Atenção', this.response.data);
+        }
+      }).catch(error=>{
+        this.alert('Atenção', error);
+      });
+      
     }).catch(error=>{
       this.alert('Atenção', error);
     });
   }
 
   editar(){
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Alterar',
+      buttons: [
+        {
+          text: 'Foto',
+          handler: () => {
+            this.editarFoto();
+          }
+        },
+        {
+          text: 'Perfil',
+          handler: () => {
+            this.editarPerfil();
+          }
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+  }
+
+  editarPerfil(){
     //console.log(this.usuario.id+" = "+this.usuarioLogadoId);
     if(this.usuario.id != this.usuarioLogadoId){
       return false;
@@ -214,6 +276,11 @@ export class ProfilePage {
       if(this.response.status === 'success'){
         console.log(this.response.data);
         this.usuario = this.response.data;
+        setTimeout(() => {
+          let div = document.getElementById('usuario-foto');
+          div.style.backgroundImage='url("'+this.usuario.foto+'")';
+        }, 100);
+        
       }else{ 
         this.alert('Atenção', this.response.data);
       }

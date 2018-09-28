@@ -88,6 +88,42 @@ export class UserProvider {
     });
   }
 
+  set_usuario_foto(id, foto){
+    let credentials = {
+      "class": restClass,
+      "method": "set_usuario_foto",
+      "id": id,
+      "foto": foto
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
+  set_reportar(id, dados){
+    let credentials = {
+      "class": restClass,
+      "method": "set_reportar",
+      "id": id,
+      "dados": dados
+    };
+    
+    return new Promise((resolve, reject) => {
+      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
   set_usuarios_amigos(id, amigo_id, aceitar){
     let credentials = {
       "class": restClass,

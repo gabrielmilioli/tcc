@@ -1,3 +1,4 @@
+import { ReportarPage } from './../pages/reportar/reportar';
 import { NovoPontoPage } from './../pages/novo-ponto/novo-ponto';
 import { LinhasPage } from './../pages/linhas/linhas';
 import { GooglePlus } from '@ionic-native/google-plus';
@@ -75,7 +76,8 @@ firebase.initializeApp(firebaseConfig);
     HorariosSalvosPage,
     ClassificarPontoPage,
     LinhasPage,
-    NovoPontoPage
+    NovoPontoPage,
+    ReportarPage
   ],
   imports: [
     BrowserModule,
@@ -104,7 +106,8 @@ firebase.initializeApp(firebaseConfig);
     HorariosSalvosPage,
     ClassificarPontoPage,
     LinhasPage,
-    NovoPontoPage
+    NovoPontoPage,
+    ReportarPage
   ],
   providers: [
     StatusBar,
