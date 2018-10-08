@@ -54,7 +54,6 @@ export class TabsPage {
       /*{ title: 'Mensagens', root: MessagesPage, icon: 'chatbubbles' }*/
       ];
     events.subscribe('usuario:changed', usuario => {
-        console.log(usuario);
         if(usuario !== undefined && usuario !== ""){
           this.usuario = usuario;
         }
@@ -66,7 +65,6 @@ export class TabsPage {
     this.userService.get_usuarios_amigos(this.usuario.id, 2).then((result) => {
       this.response = result;
       if(this.response.status === 'success'){
-        console.log(this.response.data);
         this.badge = this.response.data.pendentes_total;
       }else{ 
         console.log(this.response.data);

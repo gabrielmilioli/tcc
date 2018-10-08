@@ -45,11 +45,9 @@ export class MessagesPage {
   loadMessages(){
     
     this.authService.get_messages().then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.messages = this.response.data;
-        console.log(this.response.data);
       }else{ 
         this.alert('Atenção', this.response.data);
       }
@@ -59,7 +57,10 @@ export class MessagesPage {
   }
 
   alert(title, subTitle) {
-    this.loading.dismiss();
+    if(this.loading){
+      this.loading.dismiss();
+    }
+    
     let alert = this.alertCtrl.create({
       title: title,
       subTitle: subTitle,

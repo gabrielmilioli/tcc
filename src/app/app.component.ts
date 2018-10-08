@@ -25,7 +25,6 @@ export class MyApp {
       this.authService.afAuth.authState.subscribe(user => {
         this.authService.loginFirebase(user.email).then((result) => {
           this.response = result;
-          console.log(this.response);
           if(this.response.status === 'success'){
             localStorage.setItem('user', JSON.stringify(this.response.data));
             

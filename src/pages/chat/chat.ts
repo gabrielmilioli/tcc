@@ -102,6 +102,10 @@ export class ChatPage {
       visualizado_data: ''
     };
 
+    if(!this.mensagens){
+      this.mensagens = [];
+    }
+
     this.mensagens.push(nova_mensagem);
     this.resize(true);
     this.scrollToBottom();
@@ -122,7 +126,6 @@ export class ChatPage {
   }
 
   carregaMensagens(amigo_id){
-    console.log('entrou');
     this.msgService.get_usuarios_mensagens(this.usuario_id, amigo_id).then((result) => {
       this.response = result;
       if(this.response.status === 'success'){
@@ -228,7 +231,10 @@ export class ChatPage {
   }
 
   alert(title, subTitle) {
-    this.loading.dismiss();
+    if(this.loading){
+      this.loading.dismiss();
+    }
+    
     let alert = this.alertCtrl.create({
       title: title,
       subTitle: subTitle,

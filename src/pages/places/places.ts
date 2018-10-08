@@ -28,6 +28,7 @@ export class PlacesPage {
   inputBuscar:string;
   mostrarBuscar:boolean=false;
   todosPontos:Array<{id: string, nome: string, endereco: string, data_registro: string, imagem: string, favorito: string, class: any }>;
+  meusPontos:Array<{id: string, nome: string, endereco: string, data_registro: string, imagem: string, favorito: string, class: any }>;
   escolherPontos:string = 't';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthServiceProvider,
@@ -52,21 +53,26 @@ export class PlacesPage {
     let val = e.target.value;
     let results = [];
     var buscarPor = val;
-    this.pontos = this.todosPontos;
-    for (var i=0 ; i < this.todosPontos.length ; i++)
-    {
-      var nome = this.todosPontos[i].nome;
-      console.log("nome: " + nome);
-      console.log("buscarPor: " + buscarPor);
-      console.log("indexOf: " + nome.indexOf(buscarPor));
-      if(nome.indexOf(buscarPor) != -1){
-        results.push(this.todosPontos[i]);
+    
+    if(this.escolherPontos === "t"){
+      for (var i=0 ; i < this.todosPontos.length ; i++)
+      {
+        var nome = this.todosPontos[i].nome;
+        if(nome.indexOf(buscarPor) != -1){
+          results.push(this.todosPontos[i]);
+        }
+      }
+    }else{
+      for (var i=0 ; i < this.meusPontos.length ; i++)
+      {
+        var nome = this.meusPontos[i].nome;
+        if(nome.indexOf(buscarPor) != -1){
+          results.push(this.meusPontos[i]);
+        }
       }
     }
     
     this.pontos = results;
-
-    //console.log(this.pontos);
   }
 
   toggleBusca(){
@@ -83,18 +89,14 @@ export class PlacesPage {
     if(this.escolherPontos === "s"){
       if(id){
         this.ponto.get_usuarios_pontos(id).then((result) => {
-          console.log(result);
           this.response = result;
           if(this.response.status === 'success'){
-            this.todosPontos = this.response.data;
+            this.meusPontos = this.response.data;
             let length = 3;
-            if(this.pontos){
-              length = this.pontos.length;
-            }
             this.pontos = [];
             for (let i = 0; i < length; i++) {
-              if(this.todosPontos[i]){
-                this.pontos.push( this.todosPontos[i] );
+              if(this.meusPontos[i]){
+                this.pontos.push( this.meusPontos[i] );
               }
             }
             this.loading.dismiss();
@@ -108,14 +110,10 @@ export class PlacesPage {
       }
     }else{
       this.ponto.get_pontos(id).then((result) => {
-        console.log(result);
         this.response = result;
         if(this.response.status === 'success'){
           this.todosPontos = this.response.data;
           let length = 3;
-          if(this.pontos){
-            length = this.pontos.length;
-          }
           this.pontos = [];
           for (let i = 0; i < length; i++) {
             if(this.todosPontos[i]){
@@ -142,7 +140,6 @@ export class PlacesPage {
     var id = this.authService.get_user_id();
     if(id){
       this.ponto.set_usuarios_pontos(id, ponto_id).then((result) => {
-        //console.log(result);
         this.response = result;
         if(this.response.status === 'success'){
           this.ionViewWillEnter();
@@ -165,8 +162,15 @@ export class PlacesPage {
 
   carregarMais(infiniteScroll){
     setTimeout(() => {
-      for (let i = this.pontos.length; i < this.todosPontos.length; i++) {
-        this.pontos.push( this.todosPontos[i] );
+      let length = 3;
+      if(this.pontos.length){
+        length = this.pontos.length + 3;
+      }
+      
+      for (let i = this.pontos.length; i <= length; i++) {
+        if(this.todosPontos[i]){
+          this.pontos.push( this.todosPontos[i] );
+        }
       }
 
       infiniteScroll.complete();
@@ -178,7 +182,10 @@ export class PlacesPage {
   }
 
   alert(title, subTitle) {
-    this.loading.dismiss();
+    if(this.loading){
+      this.loading.dismiss();
+    }
+    
     let alert = this.alertCtrl.create({
       title: title,
       subTitle: subTitle,

@@ -14,7 +14,7 @@ let restClass = "apiMensagens";
 export class MensagensProvider {
 
   constructor(public http: HttpClient) {
-    console.log('Hello MensagensProvider Provider');
+    
   }
 
   
@@ -86,8 +86,6 @@ export class MensagensProvider {
       'Token':'Basic' + btoa('talkingbus' + ":" + 'zx96@28#')
       });
 
-    //console.log(headers);
-    //return headers;
   }
 
 

@@ -33,7 +33,6 @@ export class HorariosPage {
     this.loading.present();
     this.horarios = [];
     this.pontosProvider.get_horarios(this.linha_id).then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.horarios = this.response.data;
@@ -48,7 +47,7 @@ export class HorariosPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad HorariosPage');
+    
   }
 
   abrirHorarios(linha_id){

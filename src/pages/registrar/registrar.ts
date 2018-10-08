@@ -66,12 +66,12 @@ export class RegistrarPage {
         this.messageError = "";
       }
     }else {
-      console.log("Login Realizado");
+      
     }
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RegistrarPage');
+    
   }
 
   ionViewDidEnter(){
@@ -93,7 +93,6 @@ export class RegistrarPage {
   carregarEstadosCidades(){
     this.userService.get_estados_cidades().then((result) => {
       this.response = result;
-      console.log(this.response);
       if(this.response.status === 'success'){
         this.estados = this.response.data.estados;
         this.cidades = this.response.data.cidades;
@@ -108,10 +107,8 @@ export class RegistrarPage {
 
   carregarPerfil(id, usuario_id){
     this.userService.get_usuario(id, usuario_id).then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
-        console.log(this.response.data);
         this.usuario = this.response.data;
       }else{ 
         this.alert('Atenção', this.response.data);
@@ -147,7 +144,6 @@ export class RegistrarPage {
     }
     
     this.userService.set_usuario(id, this.usuario).then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         let alert = this.alertCtrl.create({
@@ -158,7 +154,7 @@ export class RegistrarPage {
               text: 'Cancelar',
               role: 'cancel',
               handler: data => {
-                console.log('Cancel clicked');
+                
               }
             },
             {
@@ -199,19 +195,16 @@ export class RegistrarPage {
     let value = event._value;
     if (!regex.test(value)) {
       value = value.replace(/[^A-Za-z]/g, '');
-      console.log("nao tem string permitida");
       this.usuario.nome = value;
       event._value = value;
       this.onChangeName(event);
     }
     event.setFocus();
-    console.log(value);
   }
 
   onChangeEmail(event) {
     let value = event._value;
     value = value.replace(/[a-z0-9.@]/gi,'');
-    console.log(value);
     this.usuario.email=value;
   }
   

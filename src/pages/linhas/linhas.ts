@@ -34,7 +34,7 @@ export class LinhasPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LinhasPage');
+    
   }
 
   ionViewDidEnter() {
@@ -45,7 +45,6 @@ export class LinhasPage {
     this.linhas = [];
     this.pontos_linhas = [];
     this.pontosProvider.get_linhas(this.ponto_id).then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.todasLinhas = this.response.data;
@@ -76,7 +75,6 @@ export class LinhasPage {
     });
 
     this.pontosProvider.set_pontos_linhas(this.ponto_id, this.selecionados).then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.ionViewDidEnter();
@@ -123,7 +121,6 @@ export class LinhasPage {
     {
       let nome = linhas[i].nome;
       let numero = linhas[i].numero;
-      console.log(buscarPor+" = "+nome+" - "+numero);
       if(nome.indexOf(buscarPor) != -1 || numero.indexOf(buscarPor) != -1){
         results.push(linhas[i]);
       }
@@ -134,8 +131,6 @@ export class LinhasPage {
     }
 
     this.linhas = results;
-
-    //console.log(this.pontos);
   }
 
   toggleEditar(){

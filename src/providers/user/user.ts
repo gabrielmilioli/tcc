@@ -225,9 +225,6 @@ export class UserProvider {
       'Accept':'*',
       'Token':'Basic' + btoa('talkingbus' + ":" + 'zx96@28#')
       });
-
-    //console.log(headers);
-    //return headers;
   }
 
 

@@ -71,7 +71,7 @@ export class ProfilePage {
           text: 'Não',
           role: 'cancel',
           handler: data => {
-            console.log('Cancel clicked');
+            
           }
         },
         {
@@ -105,7 +105,7 @@ export class ProfilePage {
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
-            console.log('Cancel clicked');
+            
           }
         }
       ]
@@ -166,7 +166,7 @@ export class ProfilePage {
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
-            console.log('Cancel clicked');
+            
           }
         }
       ]
@@ -175,7 +175,6 @@ export class ProfilePage {
   }
 
   editarPerfil(){
-    //console.log(this.usuario.id+" = "+this.usuarioLogadoId);
     if(this.usuario.id != this.usuarioLogadoId){
       return false;
     }
@@ -210,7 +209,7 @@ export class ProfilePage {
           text: 'Cancelar',
           role: 'cancel',
           handler: data => {
-            console.log('Cancel clicked');
+            
           }
         },
         {
@@ -254,7 +253,6 @@ export class ProfilePage {
 
   salvarUsuario(id, dados){
     this.userService.set_usuario(id, dados).then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         //this.usuario = this.response.data;
@@ -271,10 +269,8 @@ export class ProfilePage {
 
   loadProfile(id, usuario_id){
     this.userService.get_usuario(id, usuario_id).then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
-        console.log(this.response.data);
         this.usuario = this.response.data;
         setTimeout(() => {
           let div = document.getElementById('usuario-foto');
@@ -290,7 +286,6 @@ export class ProfilePage {
   }
 
   solicitarAmizade(id){
-    console.log(id+" = "+this.usuarioLogadoId);
     if(id == this.usuarioLogadoId){
       return false;
     }
@@ -309,7 +304,6 @@ export class ProfilePage {
   }
 
   aceitarAmizade(id){
-    console.log(id+" = "+this.usuarioLogadoId);
     if(id == this.usuarioLogadoId){
       return false;
     }
@@ -328,7 +322,6 @@ export class ProfilePage {
   }
 
   recusarAmizade(id){
-    console.log(id+" = "+this.usuarioLogadoId);
     if(id == this.usuarioLogadoId){
       return false;
     }
@@ -347,7 +340,6 @@ export class ProfilePage {
   }
   
   desfazerAmizade(id){
-    console.log(id+" = "+this.usuarioLogadoId);
     if(id == this.usuarioLogadoId){
       return false;
     }
@@ -366,7 +358,6 @@ export class ProfilePage {
   }
 
   cancelarSolicitacao(id){
-    console.log(id+" = "+this.usuarioLogadoId);
     if(id == this.usuarioLogadoId){
       return false;
     }
@@ -385,7 +376,6 @@ export class ProfilePage {
   }
   
   conversar(id){
-    console.log(id+" = "+this.usuarioLogadoId);
     if(id == this.usuarioLogadoId){
       return false;
     }
@@ -393,7 +383,10 @@ export class ProfilePage {
   }
 
   alert(title, subTitle) {
-    this.loading.dismiss();
+    if(this.loading){
+      this.loading.dismiss();
+    }
+    
     let alert = this.alertCtrl.create({
       title: title,
       subTitle: subTitle,
@@ -403,7 +396,7 @@ export class ProfilePage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ProfilePage');
+    
   }
 
 }

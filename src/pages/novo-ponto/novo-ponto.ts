@@ -46,7 +46,6 @@ export class NovoPontoPage {
             this.selecionados.push(element.id);
           }
         });
-        console.log(this.linhas);
         this.loading.dismiss();
       }else{ 
         this.alert('Atenção', this.response.data);
@@ -57,11 +56,10 @@ export class NovoPontoPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad NovoPontoPage');
+    
   }
 
   adicionarPonto() {
-    console.log(this.selecionados);
     if(this.endereco.nome.length === 0){
       this.alert('Atenção', 'Defina um nome para o ponto');
       return false;
@@ -77,10 +75,8 @@ export class NovoPontoPage {
     var id = this.authService.get_user_id();
     this.pontosProvider.set_ponto(id, this.endereco).then((result) => {
       this.loading.dismiss();
-      //console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
-        console.log(this.response);
         let alert = this.alertCtrl.create({
           title: 'Sucesso',
           subTitle: this.response.data,
@@ -123,7 +119,7 @@ export class NovoPontoPage {
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
-            console.log('Cancel clicked');
+            
           }
         }
       ]
@@ -155,7 +151,10 @@ export class NovoPontoPage {
   }
 
   alert(title, subTitle) {
-    this.loading.dismiss();
+    if(this.loading){
+      this.loading.dismiss();
+    }
+    
     let alert = this.alertCtrl.create({
       title: title,
       subTitle: subTitle,

@@ -62,7 +62,6 @@ export class AmigosPage {
       if(this.response.status === 'success'){
         this.perfis = this.response.data;
         this.buscando = false;
-        console.log(this.response.data);
       }else{
         this.alert('Atenção', this.response.data);
       }
@@ -84,13 +83,10 @@ export class AmigosPage {
 
   carregaAmigos(){
     this.userService.get_usuarios_amigos(this.usuario_id, null).then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.todosAmigos = this.response.data;
         this.amigos = this.response.data;
-        
-        console.log(this.response.data);
       }else{ 
         this.alert('Atenção', this.response.data);
       }
@@ -101,7 +97,6 @@ export class AmigosPage {
 
   aceitarAmizade(id){
     this.userService.set_usuarios_amigos(this.usuario_id, id, 1).then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.carregaAmigos();
@@ -115,7 +110,6 @@ export class AmigosPage {
 
   recusarAmizade(id){
     this.userService.set_usuarios_amigos(this.usuario_id, id, 2).then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.carregaAmigos();
@@ -128,17 +122,18 @@ export class AmigosPage {
   }
   
   visualizarPerfil(id){
-    //console.log(id);
     this.navCtrl.push(ProfilePage, {"id":id});
   }
 
   conversar(id){
-    //console.log(id);
     this.navCtrl.push(ChatPage, {"id":id});
   }
 
   alert(title, subTitle) {
-    this.loading.dismiss();
+    if(this.loading){
+      this.loading.dismiss();
+    }
+    
     let alert = this.alertCtrl.create({
       title: title,
       subTitle: subTitle,

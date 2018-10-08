@@ -33,7 +33,6 @@ export class HomePage {
       this.authService.set_logged(false);
       this.userLogged = this.authService.get_user();
       if(this.userLogged){
-        console.log("this.userLogged", this.userLogged);
         // this.user = JSON.parse(localStorage.getItem('user'));
         // faz login
         this.authService.set_logged(true);
@@ -47,30 +46,6 @@ export class HomePage {
   }
 
   login() {
-/*
-    if (this.platform.is('core')) {
-      firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider()).then(fbRes => {
-        console.log('login success');
-        console.log(fbRes.additionalUserInfo.profile);
-      }).catch(err => console.log(err));
-    }
-
-    // pop as cordova plugin
-    else {
-      this.fb.login(['public_profile', 'email']).then(res => {
-        let credential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
-        firebase.auth().signInWithCredential(credential).then(() => {
-          // fetching user data
-          this.fb.api("me/?fields=id,email,first_name,picture,gender", ["public_profile", "email"]).then(data => {
-            console.log(data)
-          }).catch(err => console.log(err));
-
-        }).catch((err) => console.log(err));
-
-      }).catch(err => console.log(err));
-    }
-*/
-    
     if(this.user.email.length === 0 || this.user.senha.length === 0){
         this.alert('Atenção', 'Preencha os campos!'); 
         return false;
@@ -85,11 +60,11 @@ export class HomePage {
       this.authService.login(this.user).then((result) => {
         this.response = result;
         if(this.response.status === 'success'){
-          this.loading.dismiss();
           localStorage.setItem('user', JSON.stringify(this.response.data));
           
           this.authService.set_logged(true);
           this.authService.set_user(this.response.data);
+          this.loading.dismiss();
           this.navCtrl.setRoot(TabsPage);
         }else{ 
           this.alert('Atenção', this.response.data);
@@ -111,7 +86,6 @@ export class HomePage {
               text: 'Não',
               role: 'cancel',
               handler: data => {
-                console.log('Cancel clicked');
               }
             },
             {
@@ -126,22 +100,17 @@ export class HomePage {
       }
     });
     
-    setTimeout(() => {
-      this.loading.dismiss();
-    }, 30000);
   }
 
   ionViewDidEnter() {
     this.network.onConnect().subscribe(data => {
       this.online = true;
       this.alert('Sucesso', 'Online!');
-      console.log(data)
     }, error => console.error(error));
    
     this.network.onDisconnect().subscribe(data => {
       this.online = false;
       this.alert('Atenção', 'Offline!');
-      console.log(data)
     }, error => console.error(error));
   }
 
@@ -152,7 +121,6 @@ export class HomePage {
     this.loading.present();
     
     this.authService.signInWithGoogle().then(result => {
-      console.log(result);
       this.response = result;
       let credentials = {
         "accessToken": this.response.credential.accessToken,
@@ -168,7 +136,6 @@ export class HomePage {
 
       //registrar / logar
       this.authService.login(credentials).then((result) => {
-        console.log(result);
         this.response = result;
         if(this.response.status === 'success'){
           localStorage.setItem('user', JSON.stringify(this.response.data));
@@ -189,50 +156,6 @@ export class HomePage {
         this.alert('Atenção', error.message);
       });
     }).catch(err => console.log(err));
-    /*
-    this.gp.login({}).then(res => {
-      let credentials = {
-        "accessToken": res.accessToken,
-        "displayName": res.displayName,
-        "email": res.email,
-        "expires": res.expires,
-        "expires_in": res.expires_in,
-        "familyName": res.familyName,
-        "givenName": res.givenName,
-        "idToken": res.idToken,
-        "imageUrl": res.imageUrl,
-        "serverAuthCode": res.serverAuthCode,
-        "userId": res.userId,
-        "login": "googleplus"
-      };
-
-      //registrar / logar
-      this.authService.login(credentials).then((result) => {
-        console.log(result);
-        this.response = result;
-        if(this.response.status === 'success'){
-          localStorage.setItem('user', JSON.stringify(this.response.data));
-
-          this.isLogged = true;
-          this.authService.set_logged(true);
-          this.authService.set_user(this.response.data);
-          this.loading.dismiss();
-          if(this.response.data.concluirCadastro){
-            this.setSenha(this.response.data.id);
-          }else{
-            this.gotoTabs();
-          }
-        }else{ 
-          this.alert('Atenção', this.response.data);
-        }
-      }).catch(error=>{
-        this.alert('Atenção', error.message);
-      });
-    }).catch(err => console.error(err));
-    */
-    setTimeout(() => {
-      this.loading.dismiss();
-    }, 30000);
   }
 
   setSenha(id){
@@ -266,7 +189,6 @@ export class HomePage {
 
         //registrar / logar
         this.authService.login(this.userInfo).then((result) => {
-          console.log(result);
           this.response = result;
           if(this.response.status === 'success'){
             localStorage.setItem('user', JSON.stringify(this.response.data));
@@ -289,9 +211,6 @@ export class HomePage {
     }).catch(error=>{
       this.alert('Atenção', error.message);
     });
-    setTimeout(() => {
-      this.loading.dismiss();
-    }, 30000);
     
   }
 
@@ -305,7 +224,10 @@ export class HomePage {
   }
 
   alert(title, subTitle) {
-    this.loading.dismiss();
+    if(this.loading){
+      this.loading.dismiss();
+    }
+    
     let alert = this.alertCtrl.create({
       title: title,
       subTitle: subTitle,
@@ -316,75 +238,6 @@ export class HomePage {
 
   registrar() {
     this.navCtrl.push(RegistrarPage);
-    /*
-    let alert = this.alertCtrl.create({
-      title: 'Insira seus dados',
-      inputs: [
-        {
-          name: 'nome',
-          placeholder: 'Nome'
-        },
-        {
-          name: 'email',
-          placeholder: 'E-mail',
-          type: 'email'
-        },
-        {
-          name: 'senha',
-          placeholder: 'Senha',
-          type: 'password'
-        },
-        {
-          name: 'repetir_senha',
-          placeholder: 'Repita a senha',
-          type: 'password'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Salvar',
-          handler: data => {
-            this.loading = this.loadingCtrl.create({
-              content: 'Criando conta...'
-            });
-            this.loading.present();
-            
-            if(data.nome.length < 1){
-              this.alert('Atenção', 'Insira um nome válido');
-              return false;
-            }
-            if(data.email.length < 1){
-              this.alert('Atenção', 'Insira um e-mail válido');
-              return false;
-            }else if(data.email.indexOf('@') === -1){
-              this.alert('Atenção', 'Insira um e-mail válido');
-              return false;
-            }
-            if(data.senha != data.repetir_senha){
-              this.alert('Atenção', 'Senhas incompatíveis');
-              return false;
-            }else if(data.senha.length < 4){
-              this.alert('Atenção', 'Defina uma senha com no mínimo 4 dígitos');
-              return false;
-            }
-            
-            this.loading.dismiss();
-            //salvar senha
-            this.userService.set_usuario(null, data);
-            this.user = data;
-            this.login();
-          }
-        }
-      ]
-    });
-    alert.present();*/
   }
 
 }

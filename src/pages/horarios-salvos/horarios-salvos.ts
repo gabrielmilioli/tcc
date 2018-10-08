@@ -24,7 +24,7 @@ export class HorariosSalvosPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad HorariosSalvosPage');
+    
   }
 
   carregaHorarios(){

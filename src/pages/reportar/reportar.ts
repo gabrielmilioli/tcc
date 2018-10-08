@@ -34,7 +34,7 @@ export class ReportarPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ReportarPage');
+    
   }
 
   reportar(){
@@ -99,7 +99,6 @@ export class ReportarPage {
     }
 
     this.camera.getPicture(options).then((imageData) => {
-      console.log(imageData);
       this.print = imageData;
       this.anexo = true;
       this.loading.dismiss();
@@ -109,7 +108,10 @@ export class ReportarPage {
   }
   
   alert(title, subTitle) {
-    this.loading.dismiss();
+    if(this.loading){
+      this.loading.dismiss();
+    }
+    
     let alert = this.alertCtrl.create({
       title: title,
       subTitle: subTitle,

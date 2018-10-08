@@ -54,7 +54,6 @@ export class MapPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, public authService: AuthServiceProvider,
   public alertCtrl: AlertController, public loadingCtrl: LoadingController, public map: GoogleMaps, 
   public zone: NgZone, public pontoService: PontosProvider, private toastCtrl: ToastController) {
-    //console.log(map);
     this.escolherLinhas = "l";
   }
 
@@ -82,7 +81,6 @@ export class MapPage {
   }
 
   aumentarLinhas(){
-    console.log(this.aumentar);
     if(!this.aumentar){
       this.aumentar = true;
       let div = document.getElementById("linhas");
@@ -107,7 +105,6 @@ export class MapPage {
     this.mostrarPontos = linha_id;
     this.pontos = [];
     this.pontoService.get_linha_pontos(linha_id).then((result) => {
-      console.log("get_linha_pontos", result);
       this.response = result;
       if(this.response.status === 'success'){
         this.pontos = this.response.data;
@@ -163,11 +160,9 @@ export class MapPage {
     this.GoogleAutocomplete.getPlacePredictions(options,
     (predictions, status) => {
       this.enderecos = [];
-      console.log(predictions);
       this.zone.run(() => {
         predictions.forEach((prediction) => {
           //Criciúma
-          console.log(prediction);
           if(prediction.description.indexOf('Criciúma - SC') !== -1){
             this.enderecos.push(prediction);
           }
@@ -214,7 +209,6 @@ export class MapPage {
       this.mapa = new google.maps.Map(this.mapRef.nativeElement,options);
       
       google.maps.event.addListener(this.mapa, 'center_changed', () => {
-        //console.log(this.mapa.getCenter().lat() + ', ' +this.mapa.getCenter().lng());
         this.enderecoCentro = this.mapa.getCenter().lat()+","+this.mapa.getCenter().lng();
       });
   
@@ -237,7 +231,6 @@ export class MapPage {
         let place = this.autocomplete.getPlace();
         let latitude = place.geometry.location.lat();
         let longitude = place.geometry.location.lng();
-        console.log(latitude + ", " + longitude);
         this.centralizar(latitude, longitude);
       });
   
@@ -254,7 +247,6 @@ export class MapPage {
   }
   
   limparPercurso(){
-    console.log(this.directionsDisplay);
     if(this.directionsDisplay){
       this.directionsDisplay.set('directions', null);
     }
@@ -350,7 +342,6 @@ export class MapPage {
   mostrarRota(id) {
     let itinerarios = [];
     this.pontoService.get_linhas_itinerario(id).then((result) => {
-      console.log("get_linhas_itinerario", result);
       this.response = result;
       if(this.response.status === 'success'){
         itinerarios = this.response.data;
@@ -365,7 +356,6 @@ export class MapPage {
 
   carregarPontos(){
     this.authService.get_places().then((result) => {
-      //console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.pontos = this.response.data;
@@ -415,7 +405,6 @@ export class MapPage {
       var lon = ponto.lon;
       var nome = ponto.nome;
       var imagem = ponto.imagem;
-      //console.log("marcador id = "+id);
 
       lat = parseFloat(lat);
       lon = parseFloat(lon);
@@ -534,7 +523,6 @@ export class MapPage {
   carregaPontos(){
     var id = this.authService.get_user_id();
     this.pontoService.get_pontos(id).then((result) => {
-      //console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.pontos = this.response.data;
@@ -578,7 +566,6 @@ export class MapPage {
             let types = element.types;
             let long_name = element.long_name;
             let short_name = element.short_name;
-            console.log(element);
             if(types.includes('country')){
               endereco.pais = short_name;
             }else if(types.includes('administrative_area_level_1')){

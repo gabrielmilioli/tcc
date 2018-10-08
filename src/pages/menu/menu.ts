@@ -52,15 +52,12 @@ export class MenuPage {
   }
 
   ionViewDidLoad() {
-    //console.log('ionViewDidLoad MenuPage');
     this.userData = this.authService.get_user();
     this.isLogged$ = this.authService.get_logged;
     if( this.userData ){
       this.name = this.userData.name;
       this.email = this.userData.email;
     }
-    
-    console.log(this.userData);
   }
 
 }

@@ -38,7 +38,6 @@ export class ClassificarPontoPage {
   }
 
   ionViewWillEnter() {
-    console.log('ionViewWillEnter ClassificarPontoPage');
     this.loading = this.loadingCtrl.create({
       content: 'Carregando pontos...'
     });
@@ -53,7 +52,6 @@ export class ClassificarPontoPage {
   carregaClassificacaoNivel(){
     // carregar classificacoes
     this.ponto.get_classificacao_nivel().then((result) => {
-      //console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.classificacaoNivel = this.response.data;
@@ -61,7 +59,6 @@ export class ClassificarPontoPage {
         this.alert('Atenção', this.response.data);
       }
     }).catch(error=>{
-      console.log(error);
       this.alert('Atenção', error);
     });
   }
@@ -69,7 +66,6 @@ export class ClassificarPontoPage {
   carregaClassificacoes(){
     // carregar classificacoes
     this.ponto.get_classificacoes().then((result) => {
-      //console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.classificacoes = this.response.data;
@@ -85,7 +81,6 @@ export class ClassificarPontoPage {
   classificar(){
     var id = this.authService.get_user_id();
     this.ponto.set_usuarios_ponto_class(id, this.ponto_id, this.valoresClassificacao).then((result) => {
-      //console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         let alert = this.alertCtrl.create({
@@ -111,7 +106,10 @@ export class ClassificarPontoPage {
   }
 
   alert(title, subTitle) {
-    this.loading.dismiss();
+    if(this.loading){
+      this.loading.dismiss();
+    }
+    
     let alert = this.alertCtrl.create({
       title: title,
       subTitle: subTitle,

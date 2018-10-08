@@ -33,7 +33,7 @@ export class PlacePage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthServiceProvider,
     public alertCtrl: AlertController, public loadingCtrl: LoadingController, public pontoService: PontosProvider,
     public geo: Geolocation) {
-      console.log(geo);
+      
   }
 
   ionViewDidEnter(){
@@ -42,7 +42,6 @@ export class PlacePage {
 
     this.position = this.geo.getCurrentPosition();
 
-    console.log(this.ponto);
     this.loading = this.loadingCtrl.create({
       content: 'Carregando ponto...'
     });
@@ -50,7 +49,6 @@ export class PlacePage {
 
     var id = this.authService.get_user_id();
     this.pontoService.get_ponto(id, this.ponto_id).then((result) => {
-      console.log(result);
       this.response = result;
       if(this.response.status === 'success'){
         this.ponto = this.response.data;
@@ -66,7 +64,6 @@ export class PlacePage {
   }
 
   visualizarPerfil(id){
-    //console.log(id);
     this.navCtrl.push(ProfilePage, {"id":id});
   }
 
@@ -83,7 +80,7 @@ export class PlacePage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PlacePage');
+    
   }
 
   alert(title, subTitle) {
