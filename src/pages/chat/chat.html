@@ -9,7 +9,7 @@
     <ion-navbar color="primary">
       <div class="chat-header">
         <ng-container *ngIf="amigo">
-          <ion-avatar *ngIf="amigo.foto" mini>
+          <ion-avatar *ngIf="amigo.foto">
             <img [src]="amigo.foto">
           </ion-avatar>
           <ion-title>{{amigo.nome}}</ion-title>

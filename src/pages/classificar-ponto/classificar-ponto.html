@@ -21,9 +21,12 @@
       <p *ngIf="c.descricao">{{c.descricao}}</p>
       <div class="classificacao">
         <div class="opcao" *ngFor="let n of classificacaoNivel">
-          <ion-note [color]="n.cor">{{n.nome}}</ion-note>
-          <br>
-          <ion-radio [color]="n.cor" [value]="n.valor" [checked]="n.valorInicial"></ion-radio>
+          <div class="classificacao-nome">
+            <ion-note [color]="n.cor">{{n.nome}}</ion-note>
+          </div>
+          <div class="classificacao-radio">
+            <ion-radio [color]="n.cor" [value]="n.valor" [checked]="n.valorInicial"></ion-radio>
+          </div>
         </div>
       </div>
     </ion-col>
@@ -36,11 +39,7 @@
       <ion-textarea placeholder="Escreva algo..." [(ngModel)]="valoresClassificacao[0]"></ion-textarea>
     </ion-col>
   </ion-row>
-
-</ion-content>
-
-<ion-footer padding bottom center>
   <button ion-button full round (click)="classificar()">
     Enviar classificação
   </button>
-</ion-footer>
+</ion-content>
