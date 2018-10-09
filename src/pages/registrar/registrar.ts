@@ -33,7 +33,6 @@ export class RegistrarPage {
   estados:Array<{id:string, sigla:string}>;
   cidades:Array<{id:string, nome:string}>;
   loading:any;
-  id:any;
 
   constructor(public navParams: NavParams, public formBuilder: FormBuilder, public navCtrl: NavController, 
     public authService:AuthServiceProvider, public alertCtrl: AlertController, 
@@ -80,11 +79,6 @@ export class RegistrarPage {
     });
     this.loading.present();
 
-    this.id = this.navParams.get("id");
-    if(this.id){
-      this.carregarPerfil(this.id, null);
-    }
-
     this.carregarEstadosCidades();
     
     this.loading.dismiss();
@@ -101,19 +95,6 @@ export class RegistrarPage {
       }
     }).catch(error=>{
       console.log(error);
-      this.alert('Atenção', error);
-    });
-  }
-
-  carregarPerfil(id, usuario_id){
-    this.userService.get_usuario(id, usuario_id).then((result) => {
-      this.response = result;
-      if(this.response.status === 'success'){
-        this.usuario = this.response.data;
-      }else{ 
-        this.alert('Atenção', this.response.data);
-      }
-    }).catch(error=>{
       this.alert('Atenção', error);
     });
   }
@@ -139,9 +120,6 @@ export class RegistrarPage {
     }
     
     let id = null;
-    if(this.id){
-      id = this.id;
-    }
     
     this.userService.set_usuario(id, this.usuario).then((result) => {
       this.response = result;

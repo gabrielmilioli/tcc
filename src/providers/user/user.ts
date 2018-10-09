@@ -66,7 +66,7 @@ export class UserProvider {
       "dados": dados
     };
     
-    if(dados.senha){
+    if(id){
       if(dados.senha.length !== 0){
         var user = firebase.auth().currentUser;
   
