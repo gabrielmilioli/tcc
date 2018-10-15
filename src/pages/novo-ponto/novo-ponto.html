@@ -20,16 +20,6 @@
     
     <ion-row>
       <ion-col>
-        <ion-avatar id="foto">
-          <img [src]="imagem"/>
-        </ion-avatar>
-        <ion-fab id="escolherUpload" top>
-          <button ion-fab color="primary" (click)="escolherUpload()" mini>
-            <ion-icon name="create"></ion-icon>
-          </button>
-        </ion-fab>
-      </ion-col>
-      <ion-col>
         <ion-label color="primary">Estado</ion-label>
         <ion-input disabled [(ngModel)]="endereco.estado"></ion-input>
       </ion-col>
