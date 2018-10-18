@@ -188,12 +188,6 @@ export class ProfilePage {
           value: this.usuario.nome
         },
         {
-          name: 'email',
-          placeholder: 'E-mail',
-          type: 'email',
-          value: this.usuario.email
-        },
-        {
           name: 'senha',
           placeholder: 'Senha',
           type: 'password'
@@ -224,13 +218,15 @@ export class ProfilePage {
               this.alert('Atenção', 'Insira um nome válido');
               return false;
             }
+            data.email = this.usuario.email;
+            /*
             if(data.email.length < 1){
               this.alert('Atenção', 'Insira um e-mail válido');
               return false;
             }else if(data.email.indexOf('@') === -1){
               this.alert('Atenção', 'Insira um e-mail válido');
               return false;
-            }
+            }*/
             if(data.senha.length != 0){
               if(data.senha != data.repetir_senha){
                 this.alert('Atenção', 'Senhas incompatíveis');
