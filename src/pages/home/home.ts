@@ -17,8 +17,8 @@ import * as firebase from 'Firebase';
 export class HomePage {
 
   user = {
-    "email": "gmilioli@Outlook.com",
-    "senha": "admin123"
+    "email": "",
+    "senha": ""
   };
   response: any;
   userLogged: object;
@@ -105,12 +105,12 @@ export class HomePage {
   ionViewDidEnter() {
     this.network.onConnect().subscribe(data => {
       this.online = true;
-      this.alert('Sucesso', 'Online!');
+      //this.alert('Sucesso', 'Online!');
     }, error => console.error(error));
    
     this.network.onDisconnect().subscribe(data => {
       this.online = false;
-      this.alert('Atenção', 'Offline!');
+      //this.alert('Atenção', 'Offline!');
     }, error => console.error(error));
   }
 
