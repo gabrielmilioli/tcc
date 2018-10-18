@@ -6,7 +6,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import AuthProvider = firebase.auth.AuthProvider;
 
-let restUrl = "http://tcc.pelainternetsistemas.com.br/rest.php";
+let restUrl = "http://tcc3.pelocelular.com.br/rest.php";
 let restClass = "TalkingBus";
 
 /*

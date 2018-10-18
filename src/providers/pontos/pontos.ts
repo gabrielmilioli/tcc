@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-let restUrl = "http://tcc.pelainternetsistemas.com.br/rest.php";
+let restUrl = "http://tcc3.pelocelular.com.br/rest.php";
 let restClass = "apiPontos";
 
 /*

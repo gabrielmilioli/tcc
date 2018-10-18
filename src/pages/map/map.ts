@@ -410,7 +410,7 @@ export class MapPage {
       lon = parseFloat(lon);
 
       var image = {
-        //url: 'http://tcc.pelainternetsistemas.com.br/app/images/marker.png?1123123123',
+        //url: 'http://tcc3.pelocelular.com.br/app/images/marker.png?1123123123',
         url: 'http://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi2_hdpi.png',
         // This marker is 20 pixels wide by 32 pixels high.
         //size: new google.maps.Size(9, 14.5),
