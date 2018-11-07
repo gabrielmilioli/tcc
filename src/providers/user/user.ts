@@ -2,10 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase/app';
-import AuthProvider = firebase.auth.AuthProvider;
-
 let restUrl = "http://tcc3.pelocelular.com.br/rest.php";
 let restClass = "apiUsuarios";
 
@@ -18,9 +14,8 @@ let restClass = "apiUsuarios";
 @Injectable()
 export class UserProvider {
   user:{id:any, name:string, email:string, register_date:string};
-  private fbuser: firebase.User;
 
-  constructor(public http: HttpClient, public afAuth: AngularFireAuth) {
+  constructor(public http: HttpClient) {
     console.log('Hello UserProvider Provider');
   }
 
@@ -65,18 +60,6 @@ export class UserProvider {
       "id": id,
       "dados": dados
     };
-    
-    if(id){
-      if(dados.senha.length !== 0){
-        var user = firebase.auth().currentUser;
-  
-        user.updatePassword(dados.senha).then(function() {
-          // Update successful.
-        }).catch(function(error) {
-          return error;
-        });
-      }
-    }
     
     return new Promise((resolve, reject) => {
       this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})

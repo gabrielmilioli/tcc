@@ -1,4 +1,3 @@
-import { TabsPage } from './../pages/tabs/tabs';
 import { AuthServiceProvider } from './../providers/auth-service/auth-service';
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
@@ -21,28 +20,6 @@ export class MyApp {
       statusBar.overlaysWebView(false);
       statusBar.backgroundColorByHexString('B43C3C');
       splashScreen.hide();
-
-      this.authService.afAuth.authState.subscribe(user => {
-        this.authService.loginFirebase(user.email).then((result) => {
-          this.response = result;
-          if(this.response.status === 'success'){
-            localStorage.setItem('user', JSON.stringify(this.response.data));
-            
-            this.authService.set_logged(true);
-            this.authService.set_user(this.response.data);
-            this.rootPage = TabsPage;
-          }else{ 
-            console.log(this.response.data);
-          }
-        }).catch(error=>{
-          console.log(error.message);
-        });
-        },
-        () => {
-          this.rootPage = HomePage;
-        }
-      );
-
     });
   }
 }

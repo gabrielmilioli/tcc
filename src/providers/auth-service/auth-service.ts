@@ -2,10 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase/app';
-import AuthProvider = firebase.auth.AuthProvider;
-
 let restUrl = "http://tcc3.pelocelular.com.br/rest.php";
 let restClass = "TalkingBus";
 
@@ -23,51 +19,7 @@ export class AuthServiceProvider {
   private fbuser: firebase.User;
   response: any;
   
-  constructor(public http: HttpClient, public afAuth: AngularFireAuth) {
-    //console.log('Hello AuthServiceProvider Provider');
-    afAuth.authState.subscribe(user => {
-      console.log("user",user);
-		});
-  }
-
-  signInWithEmail(credentials) {
-		return this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.senha);
-	}
-
-  signUp(credentials) {
-    return this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.senha);
-  }
-
-  signOut(): Promise<void> {
-    return this.afAuth.auth.signOut();
-  }
-
-  signInWithGoogle() {
-		return this.oauthSignIn(new firebase.auth.GoogleAuthProvider());
-  }
-
-  private oauthSignIn(provider: AuthProvider) {
-    return this.afAuth.auth.signInWithRedirect(provider).then(function() {
-      return this.afAuth.auth.getRedirectResult();
-    }).then(function(result) {
-      return result;
-    }).catch(function(error) {
-      return error;
-    });
-/*
-    if (!(<any>window).cordova) {
-      return this.afAuth.auth.signInWithPopup(provider);
-    } else {
-      return this.afAuth.auth.signInWithRedirect(provider)
-      .then(() => {
-        return this.afAuth.auth.getRedirectResult().then( result => {
-          return result;
-        }).catch(function(error) {
-          // Handle Errors here.
-          return error;
-        });
-      });
-    }*/
+  constructor(public http: HttpClient) {
   }
 
   get_user() {
@@ -90,24 +42,6 @@ export class AuthServiceProvider {
 
   set_logged(status) {
     this.loggedIn.next(status);
-  }
-
-  loginFirebase(email) {
-    let credentials = {
-      "class": restClass,
-      "method": "loginFirebase",
-      "email": email
-    };
-
-    return new Promise((resolve, reject) => {
-      this.http.post(restUrl, JSON.stringify(credentials), {headers: this.getHeaders()})
-        .subscribe(res => {
-          resolve(res);
-        }, (err) => {
-          reject(err);
-        });
-    });
-    
   }
 
   login(credentials) {

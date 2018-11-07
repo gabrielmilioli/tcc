@@ -8,7 +8,6 @@ import { RegistrarPage } from '../registrar/registrar';
 import { TabsPage } from '../tabs/tabs';
 import { AuthServiceProvider } from './../../providers/auth-service/auth-service';
 import { Network } from '@ionic-native/network';
-import * as firebase from 'Firebase';
 
 @Component({
   selector: 'page-home',
@@ -56,50 +55,23 @@ export class HomePage {
     });
     this.loading.present();
 
-    this.authService.signInWithEmail(this.user).then(() => {
-      this.authService.login(this.user).then((result) => {
-        this.response = result;
-        if(this.response.status === 'success'){
-          localStorage.setItem('user', JSON.stringify(this.response.data));
-          
-          this.authService.set_logged(true);
-          this.authService.set_user(this.response.data);
-          this.loading.dismiss();
-          this.navCtrl.setRoot(TabsPage);
-        }else{ 
-          this.alert('Atenção', this.response.data);
-        }
-      }).catch(error=>{
-        this.alert('Atenção', error.message);
-      });
 
-    }).catch(error=>{
-      console.log(error);
-      if(error.code == 'auth/wrong-password'){
-        this.alert('Atenção', 'Senha incorreta');
-      }else if(error.code == 'auth/user-not-found'){
-        let alert = this.alertCtrl.create({
-          title: 'Atenção',
-          subTitle: 'Usuário não encontrado. Deseja registrar-se?',
-          buttons: [
-            {
-              text: 'Não',
-              role: 'cancel',
-              handler: data => {
-              }
-            },
-            {
-              text: 'Sim',
-              handler: data => {
-                this.registrar();
-              }
-            }
-          ]
-        });
-        alert.present();
+    this.authService.login(this.user).then((result) => {
+      this.response = result;
+      if(this.response.status === 'success'){
+        localStorage.setItem('user', JSON.stringify(this.response.data));
+        
+        this.authService.set_logged(true);
+        this.authService.set_user(this.response.data);
+        this.loading.dismiss();
+        this.navCtrl.setRoot(TabsPage);
+      }else{ 
+        this.alert('Atenção', this.response.data);
       }
+    }).catch(error=>{
+      this.alert('Atenção', error.message);
     });
-    
+
   }
 
   ionViewDidEnter() {
@@ -115,6 +87,7 @@ export class HomePage {
   }
 
   loginGp(){
+    /*
     this.loading = this.loadingCtrl.create({
       content: 'Acessando...'
     });
@@ -156,6 +129,7 @@ export class HomePage {
         this.alert('Atenção', error.message);
       });
     }).catch(err => console.log(err));
+    */
   }
 
   setSenha(id){
